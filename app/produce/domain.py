@@ -26,7 +26,7 @@ class Delivery:
         return self.complete
 
     def __str__(self):
-        return f"deliv_id: {self.id}, driver: {self.driver_id}, complete: {self.complete}, addr: {self.address}"
+        return f"deliv_id: {self.id}, driver_id: {self.driver_id}, complete: {self.complete}, addr: {self.address}"
 
 
 class Driver:

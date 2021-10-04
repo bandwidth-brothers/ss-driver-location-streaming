@@ -1,4 +1,3 @@
-
 from app.config import Config
 from app.db.database import Database
 from app.data.dbdata import DataGenerator

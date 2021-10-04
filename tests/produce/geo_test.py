@@ -1,4 +1,3 @@
-
 from app.produce.geo import Geo, TravelPlan
 from tests.produce.common import _get_drivers_list
 

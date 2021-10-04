@@ -1,11 +1,10 @@
-
 import argparse
 import logging as log
-import sys
 
 from argparse import RawTextHelpFormatter
 from app.produce.constants import PRODUCER_DEFAULT_BUFFER_SIZE
 from app.produce.constants import PRODUCER_DEFAULT_MAX_THREADS
+
 
 class DriverLocationParser:
     def __init__(self, args):
@@ -38,8 +37,3 @@ examples:
 
     def get_args(self):
         return self._args
-
-
-if __name__ == '__main__':
-    args = DriverLocationParser(sys.argv[1:]).get_args()
-    print(args)

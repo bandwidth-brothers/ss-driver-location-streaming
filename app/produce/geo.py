@@ -1,8 +1,7 @@
 import os
-import logging as log
 import sys
-
 import googlemaps
+import logging as log
 
 from datetime import datetime
 from googlemaps.maps import StaticMapMarker

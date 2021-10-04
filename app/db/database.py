@@ -1,7 +1,6 @@
 import sys
-import logging as log
-
 import jaydebeapi
+import logging as log
 
 
 class Database:
