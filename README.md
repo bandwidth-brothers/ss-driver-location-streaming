@@ -198,8 +198,8 @@ INFO:root:total pings: 7106
 
 When the producer is first run, Google Maps API calls will be made to get directions for a delivery.
 Coordinates will be generated based off the directions, and the points will be saved into a file.
-If no deliveries have been added to the database since the previous run, the coordinate data will be
-retrieved from these files, and no API calls will need to be made for the deliveries.
+On the next run, if no deliveries have been added to the database since the previous run, the coordinate
+data will be retrieved from these files, and no API calls will need to be made for the deliveries.
 
 #### Consume the producer in an application
 

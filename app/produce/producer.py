@@ -95,7 +95,7 @@ class DriverLocationProducer:
             self._location_buffer.put(location)
 
         self._delivery_manager.complete_driver_delivery(driver_id)
-        log.info(f"delivery: {delivery.id}, points: {len(plan.points)}")
+        log.info(f"Delivery: {delivery.id}, Points: {len(plan.points)}")
 
     def _produce(self):
         driver_ids = self._delivery_manager.get_drivers_ids()

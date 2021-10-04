@@ -1,5 +1,7 @@
 import os
 import logging as log
+import sys
+
 import googlemaps
 
 from datetime import datetime
@@ -23,6 +25,8 @@ class TravelPlan:
 
 class Geo:
     def __init__(self, meters_per_ping=DEFAULT_METERS_PER_PING):
+        if not config.api_key:
+            log.warning('GOOGLE_API_KEY environment variable not set.')
         self.gmaps = googlemaps.Client(key=config.api_key)
         self.meters_per_ping = meters_per_ping
 
@@ -78,12 +82,17 @@ class Geo:
 
     def _get_plan_from_api(self, driver: Driver, delivery: Delivery) -> TravelPlan:
         """
-        Get a travel plan for a delivery from the Google Maps API.
+        Get a travel plan for a delivery from the Google Maps API. An API
+        key must be provided with the GOOGLE_API_KEY environment variable.
 
         :param driver: the driver
         :param delivery: the delivery
         :return:
         """
+        if not config.api_key:
+            log.error('Unable to make API calls. No API key present.')
+            sys.exit(0)
+
         directions = self.gmaps.directions(str(driver.current_location),
                                            str(delivery.address),
                                            mode='driving', departure_time=datetime.now())
