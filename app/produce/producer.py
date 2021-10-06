@@ -113,8 +113,9 @@ class DriverLocationProducer:
         Start the producer. This method must be called before calling
         get_driver_locations().
         """
-        self._producer_thread = Thread(target=self._produce, daemon=True)
-        self._producer_thread.start()
+        if not self._producer_thread:
+            self._producer_thread = Thread(target=self._produce, daemon=True)
+            self._producer_thread.start()
 
     def join(self):
         """
@@ -122,7 +123,6 @@ class DriverLocationProducer:
         the produce may not emit all locations from the buffer and cause
         the program to hang.
         """
-        self._producer_thread.join()
         self._location_buffer.join()
 
     def get_driver_locations(self) -> Iterable[DriverLocation]:

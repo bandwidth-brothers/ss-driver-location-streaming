@@ -1,11 +1,6 @@
 from functools import reduce
-from app.config import Config
-from app.db.database import Database
 from app.data.dbdata import DataGenerator
 from app.data.deliveries import Deliveries
-
-
-db = Database(Config())
 
 
 def test_deliveries_get_driver_deliveries():

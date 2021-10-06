@@ -13,10 +13,22 @@
     * [Run Tests](#run-tests)
 * [Production](#production)
 * [Application](#application)
+    * [Adding Initial Data](#adding-initial-data)
     * [Driver Location Producer](#driver-location-producer)
+        * [Run the producer as an application](#run-the-producer-as-an-application)
+        * [Consume the producer in an application](#consume-the-producer-in-an-application)
+    * [Driver Location Kinesis Consumer](#driver-location-kinesis-consumer)
+        * [Setup AWS keys](#setup-aws-keys)
+        * [Setup Kinesis stream and Lambda logging consumer](#setup-kinesis-stream-and-lambda-logging-consumer)
+        * [Run Kinesis Consumer](#run-kinesis-consumer)
+        * [View data streamed to Kinesis](#view-data-streamed-to-kinesis)
 
 
 ## Setup Python Virtual Environment
+
+Before running the programs, either in development or production, the Python
+virtual environment should set up and dependencies installed. This project was
+created with Python 3.9.
 
 ### UNIX
 ```shell
@@ -166,23 +178,32 @@ They are only for development and should be used in production.
 
 ## Application
 
-### Driver Location Producer
-
 * First make sure the [Python virtual environment is set up](#setup-python-virtual-environment).
 * Environment variables should be set up for:
     * `GOOGLE_API_KEY`
-    
-To run the producer program, there needs to be deliveries in the database. Deliveries can be
-added using the `app.data.dbdata` module.
+* See [Production](#production) if running in production.
+
+###  Adding Initial Data
+
+To run the producer or consumer programs, there needs to be deliveries in the database. Deliveries
+can be added using the `app.data.dbdata` module.
 
 ```shell
 (.venv) $ python -m app.data.dbdata --drivers 2 --custs 10  --orders 10
 ```
 
-#### Test run the producer
+Deliveries are dependent on there also being customers, restaurants and orders. Those
+can also be created with the program.
+
+### Driver Location Producer
+
+First make sure there is some [initial data](#adding-initial-data). Then you can either
+run the producer as an application or consume the data from another application.
+
+#### Run the producer as an application
 
 ```shell
-(.venv) $ python -m app.produce
+(.venv) $ python -m app.produce [--help]
 ...
 INFO:root:No file tmp/points/CF939A82461A45BC9700A85B7C1C13F1-6-points.txt. Will make an API call to get points.
 INFO:root:delivery: 6, points: 675
@@ -210,11 +231,10 @@ from app.produce.producer import DriverLocationProducer
 
 producer = DriverLocationProducer()
 producer.start()
+producer.join()
 
 for location in producer.get_driver_locations():
     print(location)
-
-producer.join()
 ```
 
 The loop will end when there are no more deliveries to process, and the last driver location for the
@@ -222,4 +242,85 @@ last delivery has been emitted. Driver locations will be emitted in random order
 being intertwined. To make sure all locations are emitted and that the program doesn't hang, the client
 must call `producer.join()`.
 
+
+### Driver Location Kinesis Consumer
+
+#### Setup AWS keys
+
+To be able to stream the driver location data to Kinesis, you will need to have an AWS account, set up
+the [AWS CLI][aws-cli] on your machine, and set up AWS access key ID and the secret access key. There
+are two ways to do this:
+
+* With environment variables. The following three variables shoule be set:
+    * `AWS_ACCESS_KEY_ID`
+    * `AWS_SECRED_ACCESS_KEY`
+    * `AWS_DEFAULT_REGION`
+* Use the AWS CLI or manually edit the `~/.aws/xxx` files. With the CLI, run `aws configure`,
+  and you will be prompted to set up the keys and region. To manually edit the config files, The two
+  below files should have the following details:
+    * `~/.aws/credentials`:
+      ```
+      [default]
+      aws_access_key_id = <your-access-key-id>
+      aws_secret_access_key = <your-secret-access-key>
+       ```
+    * `~/.aws/config`:
+      ```
+      [default]
+      region = us-west-2
+      output = json
+      ```
+      
+#### Setup Kinesis stream and Lambda logging consumer
+
+Kinesis and the Lambda logging consumer are set up with Terraform. All the required
+Terraform infrastructure code are included in this project. The files are included
+in the `./terraform` director. [Terraform][terraform] will need to be installed to
+create the required infrastructure.
+
+The working directory will need to be changed to run Terraform commands. That can be
+accomplished with the `-chdir` option. There is a `tf.sh` script that will add this
+option automatically. There are also shortcut commands `up` and `down` which are
+equivalent to `apply` and `destroy`, respectively. You can also use all the other
+`terraform` commands with this script. Examples:
+
+* `./tf.sh init` - Initialize Terraform project. This should be called before any of
+                   the following commands
+* `./tf.sh up` - Create infrastructure (type 'yes' when prompted). Same as `terraform applu
+* `./tf.sh down` - Destroy infrastructure (type 'yes' when prompted)
+* `./tf.sh plan` - Plan infrastructure
+
+#### Run Kinesis Consumer
+
+First make sure there is some [initial data](#adding-initial-data).
+
+The consumer application will consume the data from the driver location producer and
+then stream it to Kinesis. The consumer can be run with the following Python program
+
+```shell
+(.venv) $ python -m app.consume [--help]
+```
+
+The following options are available for the program:
+
+* `-n`, `--stream-name` - name of the Kinesis stream
+* `-l`, `--log` - log level (default `INFO`)
+* `-r`, `--records-per-request` - number of records to send for each Kinesis request (default 100)
+* `-d`, `--delay` - delay (in seconds) between Kinesis requests (default 0.3)
+* `-v`, `--verbose` - same as `--log VERBOSE`
+
+#### View data streamed to Kinesis
+
+The consumer of the Kinesis stream is a Lambda function that just logs all the records.
+The logs will get sent out to CloudWatch. To view the logs:
+
+1. Go the [Lambda Home Page](https://console.aws.amazon.com/lambda/home#/functions)
+2. Select the function (default "DriverLocationConsumerFunction")
+3. Select the "Monitor" tab
+4. Click the "View logs in CloudWatch" button. This should open a new CloudWatch window.
+5. Select the latest log stream. You should now see all the driver location data logs.
+
+
 [docker]: https://docs.docker.com/get-docker/
+[aws-cli]: https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html
+[terraform]: https://www.terraform.io/downloads.html

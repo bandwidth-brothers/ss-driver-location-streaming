@@ -59,6 +59,7 @@ def test_driver_location_producer_get_driver_locations(monkeypatch, caplog):
     monkeypatch.setattr('app.produce.geo.DEFAULT_POINTS_DIR', 'tests/files')
     producer = DriverLocationProducer()
     producer.start()
+    producer.join()
 
     locations = {}
     for location in producer.get_driver_locations():
@@ -66,8 +67,6 @@ def test_driver_location_producer_get_driver_locations(monkeypatch, caplog):
         if driver_id not in locations:
             locations[driver_id] = 0
         locations[driver_id] += 1
-
-    producer.join()
 
     total_points = reduce(lambda tot, val: tot + val, locations.values(), 0)
     assert total_points == 28
