@@ -24,9 +24,6 @@ class TravelPlan:
 
 class Geo:
     def __init__(self, meters_per_ping=DEFAULT_METERS_PER_PING):
-        if not config.api_key:
-            log.warning('GOOGLE_API_KEY environment variable not set.')
-        self.gmaps = googlemaps.Client(key=config.api_key)
         self.meters_per_ping = meters_per_ping
 
     def get_points(self, driver: Driver, delivery: Delivery) -> TravelPlan:
@@ -86,11 +83,14 @@ class Geo:
 
         :param driver: the driver
         :param delivery: the delivery
-        :return:
+        :return: the travel plan
         """
-        if not config.api_key:
-            log.error('Unable to make API calls. No API key present.')
-            sys.exit(0)
+        if not self.gmaps:
+            # Create client only once
+            if not config.api_key:
+                log.error('GOOGLE_API_KEY environment variable not set.')
+                sys.exit(1)
+            self.gmaps = googlemaps.Client(key=config.api_key)
 
         directions = self.gmaps.directions(str(driver.current_location),
                                            str(delivery.address),
