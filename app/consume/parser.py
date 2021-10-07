@@ -10,7 +10,7 @@ from app.common.constants import\
 
 class KinesisConsumerArgParser:
     def __init__(self, args):
-        self._parser = argparse.ArgumentParser(description="Stream driver location data to Kinesis")
+        self._parser = argparse.ArgumentParser(prog='app.consume', description="Stream driver location data to Kinesis")
         self._parser.add_argument('-n', '--stream-name', type=str, help='name of the Kinesis stream',
                                   default=KINESIS_DEFAULT_STREAM_NAME)
         self._parser.add_argument('-l', '--log', type=str, help='log level (VERBOSE, DEBUG, INFO ←, WARN, ERROR)',

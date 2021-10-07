@@ -6,10 +6,9 @@ from tests.produce.common import _get_drivers_list
 
 
 def test_geo_get_points_from_file(monkeypatch):
-    monkeypatch.setattr('app.produce.geo.GEO_DEFAULT_POINTS_DIR', 'tests/files')
     driver = _get_drivers_list()[0]
 
-    geo = Geo(no_api_key=True)
+    geo = Geo(no_api_key=True, data_dir='tests/files')
     plan: TravelPlan = geo.get_points(driver, driver.deliveries[0])
 
     assert plan.distance == 65

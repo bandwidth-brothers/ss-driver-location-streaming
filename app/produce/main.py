@@ -2,19 +2,25 @@ import json
 import logging as log
 
 from functools import reduce
+from app.produce.geo import Geo
 from app.produce.parser import DriverLocationParser
 from app.produce.producer import DriverLocationProducer
 
 
 def main(_args):
     args = DriverLocationParser(_args).get_args()
-
     if args.verbose:
         args.log = 'VERBOSE'
     log.basicConfig(level=args.log)
 
+    if args.make_maps:
+        Geo(data_dir=args.data_dir, no_api_key=args.no_api_key)\
+            .make_maps()
+        return
+
     producer = DriverLocationProducer(buffer_size=args.buffer_size,
                                       max_threads=args.max_threads,
+                                      data_dir=args.data_dir,
                                       no_api_key=args.no_api_key)
     producer.start()
     producer.join()
