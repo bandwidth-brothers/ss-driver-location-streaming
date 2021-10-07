@@ -13,7 +13,9 @@ def main(_args):
         args.log = 'VERBOSE'
     log.basicConfig(level=args.log)
 
-    producer = DriverLocationProducer()
+    producer = DriverLocationProducer(buffer_size=args.buffer_size,
+                                      max_threads=args.max_threads,
+                                      no_api_key=args.no_api_key)
     producer.start()
     producer.join()
 

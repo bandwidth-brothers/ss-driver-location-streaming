@@ -18,6 +18,8 @@ def _get_driver_locations() -> Iterable[DriverLocation]:
 
 
 class MockDriverLocationProducer:
+    def __init__(self, *args, **kwargs):
+        pass
 
     def start(self):
         pass
@@ -30,12 +32,12 @@ class MockDriverLocationProducer:
         return _get_driver_locations()
 
 
-def test_stream_locations_to_kinesis_request_count(monkeypatch, call_count, caplog):
+def test_stream_locations_to_kinesis_request_count(monkeypatch, call_count):
     monkeypatch.setattr('app.consume.kinesis.DriverLocationProducer', MockDriverLocationProducer)
     monkeypatch.setattr('app.consume.kinesis.KinesisDriverLocationConsumer._send_locations', call_count)
 
     # if records_per_request is set to 2, there should be 4 calls, as there are 7 locations
-    consumer = KinesisDriverLocationConsumer(delay=0, records_per_request=2)
+    consumer = KinesisDriverLocationConsumer(delay=0, records_per_request=2, producer_no_api_key=True)
     consumer.stream_locations_to_kinesis()
 
     assert call_count.get_count() == 4
@@ -54,12 +56,12 @@ def records_collector():
     return RecordsCollector()
 
 
-def test_stream_locations_to_kinesis_all_locations_sent(monkeypatch, records_collector, caplog):
+def test_stream_locations_to_kinesis_all_locations_sent(monkeypatch, records_collector):
     monkeypatch.setattr('app.consume.kinesis.DriverLocationProducer', MockDriverLocationProducer)
     monkeypatch.setattr('app.consume.kinesis.KinesisDriverLocationConsumer._log_response', lambda _self, res: None)
 
     consumer = KinesisDriverLocationConsumer(delay=0, records_per_request=2)
-    consumer.client.put_records = records_collector
+    consumer._client.put_records = records_collector
     consumer.stream_locations_to_kinesis()
 
     assert len(records_collector.get_records()) == 7

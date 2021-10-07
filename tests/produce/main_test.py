@@ -7,10 +7,10 @@ from tests.produce.common import _get_drivers_list
 
 def test_producer_main(monkeypatch, caplog):
     monkeypatch.setattr('app.produce.producer.Deliveries.get_driver_deliveries', _get_drivers_list)
-    monkeypatch.setattr('app.produce.geo.DEFAULT_POINTS_DIR', 'tests/files')
+    monkeypatch.setattr('app.produce.geo.GEO_DEFAULT_POINTS_DIR', 'tests/files')
     caplog.set_level(log.INFO)
 
-    main(['--log', 'INFO'])
+    main(['--log', 'INFO', '--no-api-key'])
 
     records = list(filter(lambda rec: re.match(".*[0-9]$", rec.message), caplog.records))
     points = map(lambda rec: int(rec.message.split()[-1]), records)

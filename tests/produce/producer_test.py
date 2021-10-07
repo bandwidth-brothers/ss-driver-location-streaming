@@ -54,10 +54,10 @@ def test_delivery_manager_get_delivery(monkeypatch):
     assert driver.has_more_deliveries() is False
 
 
-def test_driver_location_producer_get_driver_locations(monkeypatch, caplog):
+def test_driver_location_producer_get_driver_locations(monkeypatch):
     monkeypatch.setattr('app.produce.producer.Deliveries.get_driver_deliveries', _get_drivers_list)
-    monkeypatch.setattr('app.produce.geo.DEFAULT_POINTS_DIR', 'tests/files')
-    producer = DriverLocationProducer()
+    monkeypatch.setattr('app.produce.geo.GEO_DEFAULT_POINTS_DIR', 'tests/files')
+    producer = DriverLocationProducer(no_api_key=True)
     producer.start()
     producer.join()
 

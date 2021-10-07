@@ -8,12 +8,11 @@ from googlemaps.maps import StaticMapMarker
 from geographiclib.geodesic import Geodesic
 from app.produce.domain import Driver, Delivery
 from app.config import Config
-
-config = Config()
-DEFAULT_METERS_PER_PING = 10
-DEFAULT_POINTS_DIR = "tmp/points"
-DEFAULT_MAP_DIR = "tmp/maps"
-MAX_MARKERS = 40
+from app.common.constants import\
+    GEO_DEFAULT_METERS_PER_PING,\
+    GEO_DEFAULT_POINTS_DIR,\
+    GEO_DEFAULT_MAP_DIR,\
+    GEO_MAX_MARKERS
 
 
 class TravelPlan:
@@ -23,8 +22,24 @@ class TravelPlan:
 
 
 class Geo:
-    def __init__(self, meters_per_ping=DEFAULT_METERS_PER_PING):
+    def __init__(self, meters_per_ping=GEO_DEFAULT_METERS_PER_PING, no_api_key=False):
+        config = Config()
+        self.api_key = config.api_key
         self.meters_per_ping = meters_per_ping
+
+        if no_api_key:
+            log.warning('Will not be able to make API calls.')
+            log.warning('All points files will need to be present for each delivery.')
+            return
+
+        if not config.api_key:
+            log.warning('GOOGLE_API_KEY environment variable not set. Cannot make API calls.')
+            sys.exit(0)
+        try:
+            self.gmaps = googlemaps.Client(key=self.api_key)
+        except ValueError as e:
+            log.error(e)
+            sys.exit(0)
 
     def get_points(self, driver: Driver, delivery: Delivery) -> TravelPlan:
         """
@@ -36,7 +51,7 @@ class Geo:
         :param delivery: the delivery
         :return: the travel plan
         """
-        points_file = f"{DEFAULT_POINTS_DIR}/{driver.id}-{delivery.id}-points.txt"
+        points_file = f"{GEO_DEFAULT_POINTS_DIR}/{driver.id}-{delivery.id}-points.txt"
         try:
             return self._get_plan_from_file(points_file)
         except FileNotFoundError:
@@ -85,13 +100,6 @@ class Geo:
         :param delivery: the delivery
         :return: the travel plan
         """
-        if not self.gmaps:
-            # Create client only once
-            if not config.api_key:
-                log.error('GOOGLE_API_KEY environment variable not set.')
-                sys.exit(1)
-            self.gmaps = googlemaps.Client(key=config.api_key)
-
         directions = self.gmaps.directions(str(driver.current_location),
                                            str(delivery.address),
                                            mode='driving', departure_time=datetime.now())
@@ -134,32 +142,35 @@ class Geo:
         Make a static map using the Google Maps API. The method will get
         all the points file in a directory and create corresponding maps
         for each delivery.
+
+        To minimize the number of markers on the map, the points will
+        be selected up to a max, at even intervals
         """
-        files = [f for f in os.listdir(DEFAULT_POINTS_DIR)]
+        files = [f for f in os.listdir(GEO_DEFAULT_POINTS_DIR)]
         for file in files:
             fields = file.split('-')
             driver = fields[0]
             delivery = fields[1]
-            out_file = f"{DEFAULT_MAP_DIR}/{driver}-{delivery}-map.png"
+            out_file = f"{GEO_DEFAULT_MAP_DIR}/{driver}-{delivery}-map.png"
 
-            plan = self._get_plan_from_file(f"{DEFAULT_POINTS_DIR}/{file}")
+            plan = self._get_plan_from_file(f"{GEO_DEFAULT_POINTS_DIR}/{file}")
             points = list(map(lambda p: (p['lat'], p['lng']), plan.points))
 
-            if len(points) > MAX_MARKERS:
-                index_steps = int(len(points) / MAX_MARKERS)
+            # filter points evenly to be less than GEO_MAX_MARKERS
+            if len(points) > GEO_MAX_MARKERS:
+                index_steps = int(len(points) / GEO_MAX_MARKERS)
                 points = points[::index_steps]
             mid = int(len(points) / 2)
 
-            gmaps = googlemaps.Client(key=config.api_key)
             markers = StaticMapMarker(locations=points, size='tiny', color='red')
 
             with open(out_file, 'wb') as f:
                 zoom_level = self._get_zoom_level(plan.distance)
-                for chunk in gmaps.static_map(size=(1000, 1000),
-                                              zoom=zoom_level,
-                                              center=points[mid],
-                                              markers=[markers],
-                                              format='png'):
+                for chunk in self.gmaps.static_map(size=(1000, 1000),
+                                                   zoom=zoom_level,
+                                                   center=points[mid],
+                                                   markers=[markers],
+                                                   format='png'):
                     f.write(chunk)
 
     @staticmethod
