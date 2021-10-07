@@ -56,8 +56,7 @@ def test_delivery_manager_get_delivery(monkeypatch):
 
 def test_driver_location_producer_get_driver_locations(monkeypatch):
     monkeypatch.setattr('app.produce.producer.Deliveries.get_driver_deliveries', _get_drivers_list)
-    monkeypatch.setattr('app.produce.geo.GEO_DEFAULT_POINTS_DIR', 'tests/files')
-    producer = DriverLocationProducer(no_api_key=True)
+    producer = DriverLocationProducer(no_api_key=True, data_dir='tests/files')
     producer.start()
     producer.join()
 

@@ -1,17 +1,20 @@
 import os
 import sys
+import math
 import googlemaps
 import logging as log
 
 from datetime import datetime
 from googlemaps.maps import StaticMapMarker
+from googlemaps.exceptions import Timeout, TransportError, ApiError
 from geographiclib.geodesic import Geodesic
 from app.produce.domain import Driver, Delivery
 from app.config import Config
 from app.common.constants import\
     GEO_DEFAULT_METERS_PER_PING,\
-    GEO_DEFAULT_POINTS_DIR,\
-    GEO_DEFAULT_MAP_DIR,\
+    GEO_DEFAULT_POINTS_DIR, \
+    GEO_DEFAULT_MAPS_DIR,\
+    GEO_DEFAULT_DATA_DIR, \
     GEO_MAX_MARKERS
 
 
@@ -22,10 +25,14 @@ class TravelPlan:
 
 
 class Geo:
-    def __init__(self, meters_per_ping=GEO_DEFAULT_METERS_PER_PING, no_api_key=False):
+    def __init__(self, meters_per_ping=GEO_DEFAULT_METERS_PER_PING, no_api_key=False, data_dir=GEO_DEFAULT_DATA_DIR):
         config = Config()
         self.api_key = config.api_key
         self.meters_per_ping = meters_per_ping
+        self._points_dir = os.path.join(data_dir, GEO_DEFAULT_POINTS_DIR)
+        self._maps_dir = os.path.join(data_dir, GEO_DEFAULT_MAPS_DIR)
+
+        self._create_data_directories_if_needed(self._points_dir, self._maps_dir)
 
         if no_api_key:
             log.warning('Will not be able to make API calls.')
@@ -41,6 +48,17 @@ class Geo:
             log.error(e)
             sys.exit(0)
 
+    @staticmethod
+    def _create_data_directories_if_needed(points_dir, maps_dir):
+        if not os.path.exists(points_dir):
+            log.info(f"{points_dir} does not exist. It will be created.")
+            os.makedirs(points_dir)
+        if not os.path.exists(maps_dir):
+            log.info(f"{maps_dir} does not exist. It will be created.")
+            os.makedirs(maps_dir)
+        log.debug(f"Points files stored in {points_dir}")
+        log.debug(f"Static Maps store in {maps_dir}")
+
     def get_points(self, driver: Driver, delivery: Delivery) -> TravelPlan:
         """
         Get a travel plan for a driver and delivery. The plan will include
@@ -51,7 +69,7 @@ class Geo:
         :param delivery: the delivery
         :return: the travel plan
         """
-        points_file = f"{GEO_DEFAULT_POINTS_DIR}/{driver.id}-{delivery.id}-points.txt"
+        points_file = f"{self._points_dir}/{driver.id}-{delivery.id}-points.txt"
         try:
             return self._get_plan_from_file(points_file)
         except FileNotFoundError:
@@ -137,7 +155,7 @@ class Geo:
             distance_til_end -= self.meters_per_ping
         return points
 
-    def make_map(self):
+    def make_maps(self):
         """
         Make a static map using the Google Maps API. The method will get
         all the points file in a directory and create corresponding maps
@@ -146,32 +164,44 @@ class Geo:
         To minimize the number of markers on the map, the points will
         be selected up to a max, at even intervals
         """
-        files = [f for f in os.listdir(GEO_DEFAULT_POINTS_DIR)]
-        for file in files:
-            fields = file.split('-')
-            driver = fields[0]
-            delivery = fields[1]
-            out_file = f"{GEO_DEFAULT_MAP_DIR}/{driver}-{delivery}-map.png"
-
-            plan = self._get_plan_from_file(f"{GEO_DEFAULT_POINTS_DIR}/{file}")
+        files = [f for f in os.listdir(self._points_dir)]
+        if len(files) == 0:
+            log.info(f"There are no points files in {self._points_dir}. No maps will be created.")
+            return
+        for points_file in files:
+            plan = self._get_plan_from_file(f"{self._points_dir}/{points_file}")
             points = list(map(lambda p: (p['lat'], p['lng']), plan.points))
 
             # filter points evenly to be less than GEO_MAX_MARKERS
             if len(points) > GEO_MAX_MARKERS:
-                index_steps = int(len(points) / GEO_MAX_MARKERS)
+                index_steps = int(math.ceil(len(points) / GEO_MAX_MARKERS))
                 points = points[::index_steps]
             mid = int(len(points) / 2)
+            center_marker = points[mid]
 
             markers = StaticMapMarker(locations=points, size='tiny', color='red')
 
-            with open(out_file, 'wb') as f:
-                zoom_level = self._get_zoom_level(plan.distance)
-                for chunk in self.gmaps.static_map(size=(1000, 1000),
-                                                   zoom=zoom_level,
-                                                   center=points[mid],
-                                                   markers=[markers],
-                                                   format='png'):
-                    f.write(chunk)
+            # noinspection PyTypeChecker
+            fields = points_file.split("-")
+            driver_id = fields[0]
+            delivery_id = fields[1]
+            map_file = f"{self._maps_dir}/{driver_id}-{delivery_id}-map.png"
+            if os.path.exists(map_file):
+                log.info(f"{map_file} already exists. Will not create a new one.")
+                continue
+
+            try:
+                with open(map_file, 'wb') as f:
+                    zoom_level = self._get_zoom_level(plan.distance)
+                    for chunk in self.gmaps.static_map(size=(1000, 1000),
+                                                       zoom=zoom_level,
+                                                       center=center_marker,
+                                                       markers=[markers],
+                                                       format='png'):
+                        f.write(chunk)
+                    log.info(f"{map_file} created.")
+            except (Timeout, TransportError, ApiError) as ex:
+                log.error(f"Could not create {map_file}: {ex}")
 
     @staticmethod
     def _get_zoom_level(distance):
