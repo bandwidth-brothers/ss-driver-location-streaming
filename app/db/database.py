@@ -28,13 +28,13 @@ class Database:
             log.error(e)
             sys.exit(1)
         finally:
-            log.info('Connection opened successfully.')
+            log.debug('Connection opened successfully.')
 
     def close_connection(self):
         if self.conn:
             self.conn.close()
             self.conn = None
-            log.info('Database connection closed.')
+            log.debug('Database connection closed.')
 
     def run_query(self, query):
         try:

@@ -10,8 +10,8 @@ from app.produce.domain import Driver
 from app.produce.domain import Delivery
 from app.produce.domain import DriverLocation
 from app.data.deliveries import Deliveries
-from app.produce.constants import PRODUCER_DEFAULT_BUFFER_SIZE
-from app.produce.constants import PRODUCER_DEFAULT_MAX_THREADS
+from app.common.constants import PRODUCER_DEFAULT_BUFFER_SIZE
+from app.common.constants import PRODUCER_DEFAULT_MAX_THREADS
 
 
 class DeliveryManager:
@@ -76,14 +76,16 @@ class DeliveryManager:
 
 
 class DriverLocationProducer:
-    def __init__(self, buffer_size: int = PRODUCER_DEFAULT_BUFFER_SIZE,
-                 max_threads: int = PRODUCER_DEFAULT_MAX_THREADS):
+    def __init__(self,
+                 buffer_size: int = PRODUCER_DEFAULT_BUFFER_SIZE,
+                 max_threads: int = PRODUCER_DEFAULT_MAX_THREADS,
+                 no_api_key=False):
         self._delivery_manager = DeliveryManager()
         self._location_buffer = Queue(maxsize=buffer_size)
         self._max_threads = max_threads
         self._producer_thread = None
         self._lock = Lock()
-        self._geo = Geo()
+        self._geo = Geo(no_api_key=no_api_key)
 
     def _process_delivery(self, delivery: Delivery, driver_id):
         driver = self._delivery_manager.get_driver(driver_id)
@@ -106,6 +108,7 @@ class DriverLocationProducer:
                     delivery = self._delivery_manager.get_delivery(driver_id)
                     if delivery is not None:
                         executor.submit(self._process_delivery, delivery, driver_id)
+
             log.info("All deliveries complete.")
 
     def start(self):
