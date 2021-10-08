@@ -5,7 +5,10 @@ import pytest
 def test_kwargs():
     class TestKwargs(object):
         def __call__(self, **kwargs):
-            self.args = kwargs
+            self.__args = kwargs
+
+        def get_args(self):
+            return self.__args
     return TestKwargs()
 
 
