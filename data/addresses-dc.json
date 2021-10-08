@@ -1,0 +1,1828 @@
+[
+    {
+        "address1": "1745 T Street Southeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20020",
+        "coordinates": {
+            "lat": 38.867033,
+            "lng": -76.979235
+        }
+    },
+    {
+        "address1": "81 Seaton Place Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20001",
+        "coordinates": {
+            "lat": 38.9149499,
+            "lng": -77.01170259999999
+        }
+    },
+    {
+        "address1": "802 Madison Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20011",
+        "coordinates": {
+            "lat": 38.9582381,
+            "lng": -77.0244287
+        }
+    },
+    {
+        "address1": "2811 Battery Place Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20016",
+        "coordinates": {
+            "lat": 38.9256252,
+            "lng": -77.0982646
+        }
+    },
+    {
+        "address1": "1508 Massachusetts Avenue Southeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20003",
+        "coordinates": {
+            "lat": 38.887255,
+            "lng": -76.98318499999999
+        }
+    },
+    {
+        "address1": "7 Underwood Place Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20012",
+        "coordinates": {
+            "lat": 38.969351,
+            "lng": -77.009722
+        }
+    },
+    {
+        "address1": "1427 South Carolina Avenue Southeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20003",
+        "coordinates": {
+            "lat": 38.886615,
+            "lng": -76.9845349
+        }
+    },
+    {
+        "address1": "1608 Gales Street Northeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20002",
+        "coordinates": {
+            "lat": 38.8985542,
+            "lng": -76.9813444
+        }
+    },
+    {
+        "address1": "110 Seaton Place Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20001",
+        "coordinates": {
+            "lat": 38.9146701,
+            "lng": -77.01264680000001
+        }
+    },
+    {
+        "address1": "22 Gallatin Street Northeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20011",
+        "coordinates": {
+            "lat": 38.9526368,
+            "lng": -77.0080993
+        }
+    },
+    {
+        "address1": "4840 Reservoir Road Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20007",
+        "coordinates": {
+            "lat": 38.9158933,
+            "lng": -77.0962873
+        }
+    },
+    {
+        "address1": "5722 8th Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20011",
+        "coordinates": {
+            "lat": 38.959305,
+            "lng": -77.024463
+        }
+    },
+    {
+        "address1": "3500 Blanchard Drive Southwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20032",
+        "coordinates": {
+            "lat": 38.8388931,
+            "lng": -77.02011139999999
+        }
+    },
+    {
+        "address1": "615 Q Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20001",
+        "coordinates": {
+            "lat": 38.9113118,
+            "lng": -77.0206808
+        }
+    },
+    {
+        "address1": "736 Sicard Street Southeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20003",
+        "coordinates": {
+            "lat": 38.8729038,
+            "lng": -76.9949528
+        }
+    },
+    {
+        "address1": "817 25th Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20037",
+        "coordinates": {
+            "lat": 38.900077,
+            "lng": -77.053066
+        }
+    },
+    {
+        "address1": "2552 Massachusetts Avenue Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20008",
+        "coordinates": {
+            "lat": 38.9165459,
+            "lng": -77.057323
+        }
+    },
+    {
+        "address1": "3179 18th Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20010",
+        "coordinates": {
+            "lat": 38.9312712,
+            "lng": -77.0412983
+        }
+    },
+    {
+        "address1": "3194 Bladensburg Road Northeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20018",
+        "coordinates": {
+            "lat": 38.930136,
+            "lng": -76.95929799999999
+        }
+    },
+    {
+        "address1": "1309 Columbia Road Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20009",
+        "coordinates": {
+            "lat": 38.9275945,
+            "lng": -77.0307141
+        }
+    },
+    {
+        "address1": "4709 Blagden Terrace Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20011",
+        "coordinates": {
+            "lat": 38.9481213,
+            "lng": -77.0401892
+        }
+    },
+    {
+        "address1": "1328 Tuckerman Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20011",
+        "coordinates": {
+            "lat": 38.9673595,
+            "lng": -77.03106919999999
+        }
+    },
+    {
+        "address1": "827 10th Street Northeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20002",
+        "coordinates": {
+            "lat": 38.901021,
+            "lng": -76.992391
+        }
+    },
+    {
+        "address1": "1405 Monroe Street Northeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20017",
+        "coordinates": {
+            "lat": 38.93258,
+            "lng": -76.98579699999999
+        }
+    },
+    {
+        "address1": "1010 M Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20001",
+        "coordinates": {
+            "lat": 38.9054822,
+            "lng": -77.0265494
+        }
+    },
+    {
+        "address1": "509 Franklin Street Northeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20017",
+        "coordinates": {
+            "lat": 38.9255849,
+            "lng": -76.9990895
+        }
+    },
+    {
+        "address1": "1644 New Jersey Avenue Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20001",
+        "coordinates": {
+            "lat": 38.91233,
+            "lng": -77.017736
+        }
+    },
+    {
+        "address1": "832 51st Street Northeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20019",
+        "coordinates": {
+            "lat": 38.9008832,
+            "lng": -76.9273381
+        }
+    },
+    {
+        "address1": "3298 Chestnut Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20015",
+        "coordinates": {
+            "lat": 38.979577,
+            "lng": -77.061088
+        }
+    },
+    {
+        "address1": "3138 P Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20007",
+        "coordinates": {
+            "lat": 38.9091118,
+            "lng": -77.0629963
+        }
+    },
+    {
+        "address1": "1157 1st Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20001",
+        "coordinates": {
+            "lat": 38.90538280000001,
+            "lng": -77.0121662
+        }
+    },
+    {
+        "address1": "449 15th Street Northeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20002",
+        "coordinates": {
+            "lat": 38.896241,
+            "lng": -76.983372
+        }
+    },
+    {
+        "address1": "904 Shepherd Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20011",
+        "coordinates": {
+            "lat": 38.9396331,
+            "lng": -77.0252273
+        }
+    },
+    {
+        "address1": "643 Farragut Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20011",
+        "coordinates": {
+            "lat": 38.951281,
+            "lng": -77.021523
+        }
+    },
+    {
+        "address1": "335 C Street Southeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20003",
+        "coordinates": {
+            "lat": 38.8858796,
+            "lng": -77.00075350000002
+        }
+    },
+    {
+        "address1": "2716 30th Street Southeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20020",
+        "coordinates": {
+            "lat": 38.855798,
+            "lng": -76.96482499999999
+        }
+    },
+    {
+        "address1": "1819 Q Street Southeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20020",
+        "coordinates": {
+            "lat": 38.870406,
+            "lng": -76.978219
+        }
+    },
+    {
+        "address1": "1734 Tamarack Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20012",
+        "coordinates": {
+            "lat": 38.993375,
+            "lng": -77.04060299999999
+        }
+    },
+    {
+        "address1": "1318 35th Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20007",
+        "coordinates": {
+            "lat": 38.90724700000001,
+            "lng": -77.0690174
+        }
+    },
+    {
+        "address1": "58 Rice Street Southwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20032",
+        "coordinates": {
+            "lat": 38.83841899999999,
+            "lng": -77.0113105
+        }
+    },
+    {
+        "address1": "2507 R Street Southeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20020",
+        "coordinates": {
+            "lat": 38.869211,
+            "lng": -76.970202
+        }
+    },
+    {
+        "address1": "1900 West Virginia Avenue Northeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20002",
+        "coordinates": {
+            "lat": 38.9114897,
+            "lng": -76.9847941
+        }
+    },
+    {
+        "address1": "422 C Street Northeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20002",
+        "coordinates": {
+            "lat": 38.8942029,
+            "lng": -76.99988809999999
+        }
+    },
+    {
+        "address1": "1600 20th Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20009",
+        "coordinates": {
+            "lat": 38.9113128,
+            "lng": -77.0451932
+        }
+    },
+    {
+        "address1": "316 20th Street Northeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20002",
+        "coordinates": {
+            "lat": 38.8939527,
+            "lng": -76.97642739999999
+        }
+    },
+    {
+        "address1": "1520 H Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20006",
+        "coordinates": {
+            "lat": 38.90021429999999,
+            "lng": -77.0351541
+        }
+    },
+    {
+        "address1": "4603 Grant Street Northeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20019",
+        "coordinates": {
+            "lat": 38.8983173,
+            "lng": -76.9364561
+        }
+    },
+    {
+        "address1": "23 Florida Avenue Northeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20002",
+        "coordinates": {
+            "lat": 38.910125,
+            "lng": -77.00808099999999
+        }
+    },
+    {
+        "address1": "831 21st Street Northeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20002",
+        "coordinates": {
+            "lat": 38.9011079,
+            "lng": -76.974034
+        }
+    },
+    {
+        "address1": "1559 Alabama Avenue Southeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20032",
+        "coordinates": {
+            "lat": 38.8467679,
+            "lng": -76.98076200000001
+        }
+    },
+    {
+        "address1": "125 13th Street Northeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20002",
+        "coordinates": {
+            "lat": 38.891265,
+            "lng": -76.988068
+        }
+    },
+    {
+        "address1": "2577 Rhode Island Avenue Northeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20018",
+        "coordinates": {
+            "lat": 38.931902,
+            "lng": -76.969579
+        }
+    },
+    {
+        "address1": "3517 S Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20007",
+        "coordinates": {
+            "lat": 38.914807,
+            "lng": -77.070229
+        }
+    },
+    {
+        "address1": "3811 W Street Southeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20020",
+        "coordinates": {
+            "lat": 38.8629369,
+            "lng": -76.9515086
+        }
+    },
+    {
+        "address1": "1340 5th Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20001",
+        "coordinates": {
+            "lat": 38.907549,
+            "lng": -77.018924
+        }
+    },
+    {
+        "address1": "1656 Newton Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20010",
+        "coordinates": {
+            "lat": 38.933985,
+            "lng": -77.03866099999999
+        }
+    },
+    {
+        "address1": "3500 15th Street Northeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20017",
+        "coordinates": {
+            "lat": 38.93311000000001,
+            "lng": -76.98485699999999
+        }
+    },
+    {
+        "address1": "5000 V Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20007",
+        "coordinates": {
+            "lat": 38.917076,
+            "lng": -77.09743399999999
+        }
+    },
+    {
+        "address1": "1318 4th Street Southwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20024",
+        "coordinates": {
+            "lat": 38.8742671,
+            "lng": -77.0175514
+        }
+    },
+    {
+        "address1": "1516 Buchanan Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20011",
+        "coordinates": {
+            "lat": 38.945858,
+            "lng": -77.03528399999999
+        }
+    },
+    {
+        "address1": "Career Avenue",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20032",
+        "coordinates": {
+            "lat": 38.816936,
+            "lng": -77.0118251
+        }
+    },
+    {
+        "address1": "1317 Allison Street Northeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20017",
+        "coordinates": {
+            "lat": 38.9450474,
+            "lng": -76.9877206
+        }
+    },
+    {
+        "address1": "421 Madison Street Northeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20011",
+        "coordinates": {
+            "lat": 38.9590441,
+            "lng": -76.9999168
+        }
+    },
+    {
+        "address1": "5108 Bass Place Southeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20019",
+        "coordinates": {
+            "lat": 38.8858279,
+            "lng": -76.927776
+        }
+    },
+    {
+        "address1": "4511 43rd Place Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20016",
+        "coordinates": {
+            "lat": 38.948523,
+            "lng": -77.084721
+        }
+    },
+    {
+        "address1": "4510 Eastern Avenue Northeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20018",
+        "coordinates": {
+            "lat": 38.944641,
+            "lng": -76.976466
+        }
+    },
+    {
+        "address1": "417 R Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20001",
+        "coordinates": {
+            "lat": 38.91284,
+            "lng": -77.016831
+        }
+    },
+    {
+        "address1": "618 Ava Circle Northeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20017",
+        "coordinates": {
+            "lat": 38.949649,
+            "lng": -76.997648
+        }
+    },
+    {
+        "address1": "5609 Colorado Avenue Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20011",
+        "coordinates": {
+            "lat": 38.9577067,
+            "lng": -77.0316656
+        }
+    },
+    {
+        "address1": "4001 19th Place Northeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20018",
+        "coordinates": {
+            "lat": 38.938598,
+            "lng": -76.97696599999999
+        }
+    },
+    {
+        "address1": "1001 6th Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20001",
+        "coordinates": {
+            "lat": 38.9025758,
+            "lng": -77.01990350000001
+        }
+    },
+    {
+        "address1": "353 O Street Southwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20024",
+        "coordinates": {
+            "lat": 38.8729749,
+            "lng": -77.0166729
+        }
+    },
+    {
+        "address1": "1816 U Place Southeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20020",
+        "coordinates": {
+            "lat": 38.866586,
+            "lng": -76.978285
+        }
+    },
+    {
+        "address1": "519 Roxboro Place Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20011",
+        "coordinates": {
+            "lat": 38.9656982,
+            "lng": -77.0208081
+        }
+    },
+    {
+        "address1": "3728 9th Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20010",
+        "coordinates": {
+            "lat": 38.936736,
+            "lng": -77.02556
+        }
+    },
+    {
+        "address1": "601 Farragut Place Northeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20017",
+        "coordinates": {
+            "lat": 38.951089,
+            "lng": -76.997855
+        }
+    },
+    {
+        "address1": "1420 12th Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20005",
+        "coordinates": {
+            "lat": 38.909211,
+            "lng": -77.02838299999999
+        }
+    },
+    {
+        "address1": "905 C Street Northeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20002",
+        "coordinates": {
+            "lat": 38.893361,
+            "lng": -76.993438
+        }
+    },
+    {
+        "address1": "3553 Brandywine Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20008",
+        "coordinates": {
+            "lat": 38.94996099999999,
+            "lng": -77.068802
+        }
+    },
+    {
+        "address1": "238 Brookley Avenue Southwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20373",
+        "coordinates": {
+            "lat": 38.8517465,
+            "lng": -77.0078748
+        }
+    },
+    {
+        "address1": "1010 10th Street Northeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20002",
+        "coordinates": {
+            "lat": 38.902992,
+            "lng": -76.992882
+        }
+    },
+    {
+        "address1": "4401 Burlington Place Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20016",
+        "coordinates": {
+            "lat": 38.950554,
+            "lng": -77.0864351
+        }
+    },
+    {
+        "address1": "1126 Oates Street Northeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20002",
+        "coordinates": {
+            "lat": 38.90606,
+            "lng": -76.9891839
+        }
+    },
+    {
+        "address1": "5124 E Street Southeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20019",
+        "coordinates": {
+            "lat": 38.8821732,
+            "lng": -76.9280246
+        }
+    },
+    {
+        "address1": "1303 Kearny Street Northeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20017",
+        "coordinates": {
+            "lat": 38.9304786,
+            "lng": -76.9882106
+        }
+    },
+    {
+        "address1": "1310 Riggs Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20009",
+        "coordinates": {
+            "lat": 38.913148,
+            "lng": -77.030147
+        }
+    },
+    {
+        "address1": "2262 Hall Place Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20007",
+        "coordinates": {
+            "lat": 38.9199438,
+            "lng": -77.0720597
+        }
+    },
+    {
+        "address1": "4000 Albemarle Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20016",
+        "coordinates": {
+            "lat": 38.9476685,
+            "lng": -77.0790659
+        }
+    },
+    {
+        "address1": "215 9th Street Northeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20002",
+        "coordinates": {
+            "lat": 38.892406,
+            "lng": -76.993409
+        }
+    },
+    {
+        "address1": "1011 Irving Street Northeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20017",
+        "coordinates": {
+            "lat": 38.9283094,
+            "lng": -76.991838
+        }
+    },
+    {
+        "address1": "321 Kentucky Avenue Southeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20003",
+        "coordinates": {
+            "lat": 38.884752,
+            "lng": -76.986463
+        }
+    },
+    {
+        "address1": "3014 R Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20007",
+        "coordinates": {
+            "lat": 38.9126262,
+            "lng": -77.0598354
+        }
+    },
+    {
+        "address1": "4341 Ponds Street Northeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20019",
+        "coordinates": {
+            "lat": 38.9118268,
+            "lng": -76.9391389
+        }
+    },
+    {
+        "address1": "702 Farragut Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20011",
+        "coordinates": {
+            "lat": 38.9508047,
+            "lng": -77.0223382
+        }
+    },
+    {
+        "address1": "1333 Farragut Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20011",
+        "coordinates": {
+            "lat": 38.951333,
+            "lng": -77.0321869
+        }
+    },
+    {
+        "address1": "1920 Bladensburg Road Northeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20002",
+        "coordinates": {
+            "lat": 38.9164261,
+            "lng": -76.97376539999999
+        }
+    },
+    {
+        "address1": "6419 8th Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20012",
+        "coordinates": {
+            "lat": 38.968037,
+            "lng": -77.02396399999999
+        }
+    },
+    {
+        "address1": "1256 Talbert Street Southeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20020",
+        "coordinates": {
+            "lat": 38.8617636,
+            "lng": -76.99095559999999
+        }
+    },
+    {
+        "address1": "1318 22nd Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20037",
+        "coordinates": {
+            "lat": 38.9078486,
+            "lng": -77.0490562
+        }
+    },
+    {
+        "address1": "2032 4th Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20001",
+        "coordinates": {
+            "lat": 38.9176282,
+            "lng": -77.0178092
+        }
+    },
+    {
+        "address1": "7003 9th Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20012",
+        "coordinates": {
+            "lat": 38.9749667,
+            "lng": -77.0253871
+        }
+    },
+    {
+        "address1": "5619 Clay Place Northeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20019",
+        "coordinates": {
+            "lat": 38.8939512,
+            "lng": -76.92005739999999
+        }
+    },
+    {
+        "address1": "2521 Naylor Road Southeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20020",
+        "coordinates": {
+            "lat": 38.8675662,
+            "lng": -76.97067489999999
+        }
+    },
+    {
+        "address1": "2713 Mitscher Road",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20373",
+        "coordinates": {
+            "lat": 38.85952229999999,
+            "lng": -77.00599009999999
+        }
+    },
+    {
+        "address1": "233 Ingraham Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20011",
+        "coordinates": {
+            "lat": 38.954755,
+            "lng": -77.014912
+        }
+    },
+    {
+        "address1": "2201 Ontario Road Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20009",
+        "coordinates": {
+            "lat": 38.919441,
+            "lng": -77.03914999999999
+        }
+    },
+    {
+        "address1": "6611 5th Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20012",
+        "coordinates": {
+            "lat": 38.970804,
+            "lng": -77.019513
+        }
+    },
+    {
+        "address1": "760 11th Street Southeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20003",
+        "coordinates": {
+            "lat": 38.879695,
+            "lng": -76.99121
+        }
+    },
+    {
+        "address1": "3138 Banneker Drive Northeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20018",
+        "coordinates": {
+            "lat": 38.92471099999999,
+            "lng": -76.96210769999999
+        }
+    },
+    {
+        "address1": "1811 1st Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20001",
+        "coordinates": {
+            "lat": 38.9145119,
+            "lng": -77.011917
+        }
+    },
+    {
+        "address1": "664 Irving Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20010",
+        "coordinates": {
+            "lat": 38.928737,
+            "lng": -77.022661
+        }
+    },
+    {
+        "address1": "1 Logan Circle Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20005",
+        "coordinates": {
+            "lat": 38.9091489,
+            "lng": -77.0302896
+        }
+    },
+    {
+        "address1": "4672 A Street Southeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20019",
+        "coordinates": {
+            "lat": 38.88839900000001,
+            "lng": -76.934015
+        }
+    },
+    {
+        "address1": "407 Morse Street Northeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20002",
+        "coordinates": {
+            "lat": 38.9075323,
+            "lng": -76.9998128
+        }
+    },
+    {
+        "address1": "2927 Martin Luther King Junior Avenue Southeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20020",
+        "coordinates": {
+            "lat": 38.845443,
+            "lng": -76.9975165
+        }
+    },
+    {
+        "address1": "3111 West Place Southeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20020",
+        "coordinates": {
+            "lat": 38.863464,
+            "lng": -76.96216199999999
+        }
+    },
+    {
+        "address1": "235 17th Street Southeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20003",
+        "coordinates": {
+            "lat": 38.886815,
+            "lng": -76.981088
+        }
+    },
+    {
+        "address1": "3325 Dix Street Northeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20019",
+        "coordinates": {
+            "lat": 38.8945796,
+            "lng": -76.95866029999999
+        }
+    },
+    {
+        "address1": "1263 Evarts Street Northeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20018",
+        "coordinates": {
+            "lat": 38.924278,
+            "lng": -76.988248
+        }
+    },
+    {
+        "address1": "1734 Corcoran Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20009",
+        "coordinates": {
+            "lat": 38.911684,
+            "lng": -77.03983699999999
+        }
+    },
+    {
+        "address1": "1729 Frankford Street Southeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20020",
+        "coordinates": {
+            "lat": 38.855963,
+            "lng": -76.979539
+        }
+    },
+    {
+        "address1": "7060 Eastern Avenue",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20012",
+        "coordinates": {
+            "lat": 38.977426,
+            "lng": -77.01809999999999
+        }
+    },
+    {
+        "address1": "722 13th Street Northeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20002",
+        "coordinates": {
+            "lat": 38.899741,
+            "lng": -76.98857799999999
+        }
+    },
+    {
+        "address1": "8157 East Beach Drive Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20012",
+        "coordinates": {
+            "lat": 38.991249,
+            "lng": -77.0435339
+        }
+    },
+    {
+        "address1": "1421 Floral Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20012",
+        "coordinates": {
+            "lat": 38.9788736,
+            "lng": -77.03436099999999
+        }
+    },
+    {
+        "address1": "4339 Benning Road Northeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20019",
+        "coordinates": {
+            "lat": 38.8917663,
+            "lng": -76.93973129999999
+        }
+    },
+    {
+        "address1": "712 Parkside Place Northeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20019",
+        "coordinates": {
+            "lat": 38.90056149999999,
+            "lng": -76.94897189999999
+        }
+    },
+    {
+        "address1": "5458 30th Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20015",
+        "coordinates": {
+            "lat": 38.962854,
+            "lng": -77.060583
+        }
+    },
+    {
+        "address1": "2850 Davenport Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20008",
+        "coordinates": {
+            "lat": 38.951757,
+            "lng": -77.058368
+        }
+    },
+    {
+        "address1": "4130 Legation Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20015",
+        "coordinates": {
+            "lat": 38.9619069,
+            "lng": -77.08174199999999
+        }
+    },
+    {
+        "address1": "1641 Kramer Street Northeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20002",
+        "coordinates": {
+            "lat": 38.897659,
+            "lng": -76.980705
+        }
+    },
+    {
+        "address1": "2829 31st Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20008",
+        "coordinates": {
+            "lat": 38.9273118,
+            "lng": -77.0609791
+        }
+    },
+    {
+        "address1": "513 10th Street Southeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20003",
+        "coordinates": {
+            "lat": 38.8822501,
+            "lng": -76.9926471
+        }
+    },
+    {
+        "address1": "4201 Georgia Avenue Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20011",
+        "coordinates": {
+            "lat": 38.942041,
+            "lng": -77.02531499999999
+        }
+    },
+    {
+        "address1": "5575 South Dakota Avenue Northeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20011",
+        "coordinates": {
+            "lat": 38.9565087,
+            "lng": -77.0017809
+        }
+    },
+    {
+        "address1": "5109 39th Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20016",
+        "coordinates": {
+            "lat": 38.956043,
+            "lng": -77.07687419999999
+        }
+    },
+    {
+        "address1": "1820 22nd Street Southeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20020",
+        "coordinates": {
+            "lat": 38.867461,
+            "lng": -76.97468599999999
+        }
+    },
+    {
+        "address1": "627 Emerson Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20011",
+        "coordinates": {
+            "lat": 38.950225,
+            "lng": -77.0212169
+        }
+    },
+    {
+        "address1": "1710 Massachusetts Avenue Southeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20003",
+        "coordinates": {
+            "lat": 38.886104,
+            "lng": -76.98016799999999
+        }
+    },
+    {
+        "address1": "1711 8th Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20001",
+        "coordinates": {
+            "lat": 38.9136509,
+            "lng": -77.022629
+        }
+    },
+    {
+        "address1": "3538 Albemarle Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20008",
+        "coordinates": {
+            "lat": 38.947617,
+            "lng": -77.06859399999999
+        }
+    },
+    {
+        "address1": "3373 Runnymede Place Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20015",
+        "coordinates": {
+            "lat": 38.970694,
+            "lng": -77.07053119999999
+        }
+    },
+    {
+        "address1": "1402 North Capitol Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20002",
+        "coordinates": {
+            "lat": 38.908785,
+            "lng": -77.00945999999999
+        }
+    },
+    {
+        "address1": "833 50th Place Northeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20019",
+        "coordinates": {
+            "lat": 38.90093299999999,
+            "lng": -76.9279239
+        }
+    },
+    {
+        "address1": "18 Hamilton Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20011",
+        "coordinates": {
+            "lat": 38.95312,
+            "lng": -77.0096949
+        }
+    },
+    {
+        "address1": "3607 R Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20007",
+        "coordinates": {
+            "lat": 38.913859,
+            "lng": -77.0715419
+        }
+    },
+    {
+        "address1": "836 Lamont Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20010",
+        "coordinates": {
+            "lat": 38.9306567,
+            "lng": -77.0261289
+        }
+    },
+    {
+        "address1": "3708 Fort Lincoln Drive Northeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20018",
+        "coordinates": {
+            "lat": 38.922628,
+            "lng": -76.9529694
+        }
+    },
+    {
+        "address1": "5156 South Dakota Avenue Northeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20017",
+        "coordinates": {
+            "lat": 38.951731,
+            "lng": -76.996095
+        }
+    },
+    {
+        "address1": "2330 39th Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20007",
+        "coordinates": {
+            "lat": 38.92017,
+            "lng": -77.07734099999999
+        }
+    },
+    {
+        "address1": "1908 Newton Street Northeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20018",
+        "coordinates": {
+            "lat": 38.9343024,
+            "lng": -76.97761179999999
+        }
+    },
+    {
+        "address1": "4700 10th Street Northeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20017",
+        "coordinates": {
+            "lat": 38.946402,
+            "lng": -76.99293999999999
+        }
+    },
+    {
+        "address1": "2803 6th Street Northeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20017",
+        "coordinates": {
+            "lat": 38.925779,
+            "lng": -76.9980719
+        }
+    },
+    {
+        "address1": "921 5th Street Southeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20003",
+        "coordinates": {
+            "lat": 38.8787625,
+            "lng": -76.9997611
+        }
+    },
+    {
+        "address1": "1720 D Street Northeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20002",
+        "coordinates": {
+            "lat": 38.895013,
+            "lng": -76.97994
+        }
+    },
+    {
+        "address1": "1627 Connecticut Avenue Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20009",
+        "coordinates": {
+            "lat": 38.9120258,
+            "lng": -77.04440380000001
+        }
+    },
+    {
+        "address1": "1707 6th Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20001",
+        "coordinates": {
+            "lat": 38.913609,
+            "lng": -77.01963099999999
+        }
+    },
+    {
+        "address1": "7700 Morningside Drive Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20012",
+        "coordinates": {
+            "lat": 38.983386,
+            "lng": -77.03213699999999
+        }
+    },
+    {
+        "address1": "4506 Eads Place Northeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20019",
+        "coordinates": {
+            "lat": 38.8962239,
+            "lng": -76.937296
+        }
+    },
+    {
+        "address1": "4300 Kansas Avenue Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20011",
+        "coordinates": {
+            "lat": 38.943678,
+            "lng": -77.0248809
+        }
+    },
+    {
+        "address1": "4822 Piney Branch Road Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20011",
+        "coordinates": {
+            "lat": 38.949121,
+            "lng": -77.03550899999999
+        }
+    },
+    {
+        "address1": "1514 16th Street Southeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20020",
+        "coordinates": {
+            "lat": 38.8708699,
+            "lng": -76.981956
+        }
+    },
+    {
+        "address1": "4418 15th Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20011",
+        "coordinates": {
+            "lat": 38.944698,
+            "lng": -77.03482319999999
+        }
+    },
+    {
+        "address1": "1345 G Street Southeast",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20003",
+        "coordinates": {
+            "lat": 38.8810733,
+            "lng": -76.9861335
+        }
+    },
+    {
+        "address1": "1333 Kenyon Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20010",
+        "coordinates": {
+            "lat": 38.930001,
+            "lng": -77.0309709
+        }
+    },
+    {
+        "address1": "1380 Quincy Street Northwest",
+        "address2": "",
+        "city": "Washington",
+        "state": "DC",
+        "postalCode": "20011",
+        "coordinates": {
+            "lat": 38.9376132,
+            "lng": -77.032111
+        }
+    }
+]
