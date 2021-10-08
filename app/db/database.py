@@ -1,7 +1,7 @@
 import sys
+import logging as log
 
 import jaydebeapi
-import logging as log
 
 
 class Database:
@@ -29,13 +29,13 @@ class Database:
             log.error(e)
             sys.exit(1)
         finally:
-            log.debug('Connection opened successfully.')
+            log.info('Connection opened successfully.')
 
     def close_connection(self):
         if self.conn:
             self.conn.close()
             self.conn = None
-            log.debug('Database connection closed.')
+            log.info('Database connection closed.')
 
     def run_query(self, query):
         try:
