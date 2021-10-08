@@ -21,6 +21,7 @@ def main(_args):
     producer = DriverLocationProducer(buffer_size=args.buffer_size,
                                       max_threads=args.max_threads,
                                       data_dir=args.data_dir,
+                                      delay=args.delay,
                                       no_api_key=args.no_api_key)
     producer.start()
     producer.join()

@@ -4,6 +4,7 @@ from app.common.constants import\
     KINESIS_DEFAULT_DELAY,\
     KINESIS_DEFAULT_STREAM_NAME,\
     KINESIS_DEFAULT_RECORDS_PER_REQUEST,\
+    PRODUCER_DEFAULT_DELAY,\
     PRODUCER_DEFAULT_MAX_THREADS,\
     PRODUCER_DEFAULT_BUFFER_SIZE
 
@@ -21,11 +22,13 @@ class KinesisConsumerArgParser:
                                   default=KINESIS_DEFAULT_DELAY)
         self._parser.add_argument('-v', '--verbose', action='store_true', help='same as --log VERBOSE')
         self._parser.add_argument('--producer-max-threads', type=int, default=PRODUCER_DEFAULT_MAX_THREADS,
-                                  help='maximum number of threads in thread pool (default 10)')
+                                  help='producer maximum number of threads in thread pool (default 10)')
         self._parser.add_argument('--producer-buffer-size', type=int, default=PRODUCER_DEFAULT_BUFFER_SIZE,
-                                  help='buffer size for driver locations (default 2000).')
+                                  help='producer buffer size for driver locations (default 2000).')
         self._parser.add_argument('--producer-no-api-key', action='store_true',
                                   help='if there is no key, there needs to be points files present for every delivery')
+        self._parser.add_argument('--producer-delay', type=float, default=PRODUCER_DEFAULT_DELAY,
+                                  help='producer delay, in seconds, for each location into buffer (default 0.01)')
         self._args = self._parser.parse_args(args)
 
     def get_args(self):

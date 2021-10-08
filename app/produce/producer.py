@@ -1,3 +1,4 @@
+import time
 import logging as log
 
 from queue import Queue
@@ -10,6 +11,7 @@ from app.produce.domain import Driver
 from app.produce.domain import Delivery
 from app.produce.domain import DriverLocation
 from app.data.deliveries import Deliveries
+from app.common.constants import PRODUCER_DEFAULT_DELAY
 from app.common.constants import PRODUCER_DEFAULT_BUFFER_SIZE
 from app.common.constants import PRODUCER_DEFAULT_MAX_THREADS
 from app.common.constants import GEO_DEFAULT_DATA_DIR
@@ -81,13 +83,15 @@ class DriverLocationProducer:
                  buffer_size: int = PRODUCER_DEFAULT_BUFFER_SIZE,
                  max_threads: int = PRODUCER_DEFAULT_MAX_THREADS,
                  data_dir: str = GEO_DEFAULT_DATA_DIR,
+                 delay: float = PRODUCER_DEFAULT_DELAY,
                  no_api_key=False):
         self._delivery_manager = DeliveryManager()
         self._location_buffer = Queue(maxsize=buffer_size)
-        self._max_threads = max_threads
+        self._geo = Geo(no_api_key=no_api_key, data_dir=data_dir)
         self._producer_thread = None
         self._lock = Lock()
-        self._geo = Geo(no_api_key=no_api_key, data_dir=data_dir)
+        self._max_threads = max_threads
+        self._delay = delay
 
     def _process_delivery(self, delivery: Delivery, driver_id):
         driver = self._delivery_manager.get_driver(driver_id)
@@ -97,6 +101,8 @@ class DriverLocationProducer:
             location = DriverLocation(delivery_id=delivery.id, driver_id=driver_id,
                                       lat=point['lat'], lng=point['lng'])
             self._location_buffer.put(location)
+            if self._delay:
+                time.sleep(self._delay)
 
         self._delivery_manager.complete_driver_delivery(driver_id)
         log.info(f"Driver: {driver_id}, Delivery: {delivery.id}, Points: {len(plan.points)}")
