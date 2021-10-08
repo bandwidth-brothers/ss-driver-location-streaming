@@ -1,11 +1,8 @@
 import csv
 import json
-import sys
 import uuid
 import random
-import argparse
 
-from argparse import RawTextHelpFormatter
 from app.config import Config
 from app.db.database import Database
 from app.data.users import User
@@ -136,7 +133,8 @@ class DataGenerator:
         self.db.conn.commit()
         self.db.close_connection()
 
-    def _create_user(self, curs, user_role: str) -> uuid.UUID:
+    @staticmethod
+    def _create_user(curs, user_role: str) -> uuid.UUID:
         user = UserGenerator.generate_user(user_role)
         curs.execute('INSERT INTO user (id, user_role, password, email, enabled, confirmed, account_non_expired, '
                      '                  account_non_locked, credentials_non_expired) '
@@ -145,43 +143,53 @@ class DataGenerator:
                       user.account_non_expired, user.account_non_locked, user.credentials_non_expired))
         return user.id
 
-    def _create_owner(self, curs, name) -> uuid.UUID:
-        owner_id = self._create_user(curs, User.Role.EMPLOYEE)
+    @classmethod
+    def _create_owner(cls, curs, name) -> uuid.UUID:
+        owner_id = cls._create_user(curs, User.Role.EMPLOYEE)
         curs.execute('INSERT INTO owner (id, first_name, last_name) VALUES (UNHEX(?), ?, ?)',
                      (owner_id.hex, name['first'], name['last']))
         return owner_id
 
-    def _create_address(self, curs, address) -> int:
+    @classmethod
+    def _create_address(cls, curs, address) -> int:
         curs.execute('INSERT INTO address (line1, city, state, zip) VALUES (?, ?, ?, ?)',
                      (address['address1'], address['city'], address['state'], address['postalCode']))
-        return self._get_last_insert_id(curs, 'address')
+        return cls._get_last_insert_id(curs, 'address')
 
-    def _get_last_insert_id(self, curs, table: str):
+    @staticmethod
+    def _get_last_insert_id(curs, table: str):
         curs.execute(f"SELECT MAX(id) FROM `{table}`")
         last_id = curs.fetchone()[0]
         return last_id if last_id is not None else 1
 
-    def _get_ids(self, curs, query, transform=lambda res: res):
+    @staticmethod
+    def _get_ids(curs, query, transform=lambda res: res):
         curs.execute(query)
         results = curs.fetchall()
         return list(map(lambda result: transform(result[0]), results))
 
-    def _get_owner_ids(self, curs):
-        return self._get_ids(curs, 'SELECT HEX(id) FROM owner')
+    @classmethod
+    def _get_owner_ids(cls, curs):
+        return cls._get_ids(curs, 'SELECT HEX(id) FROM owner')
 
-    def _get_restaurant_ids(self, curs):
-        return self._get_ids(curs, 'SELECT id FROM restaurant')
+    @classmethod
+    def _get_restaurant_ids(cls, curs):
+        return cls._get_ids(curs, 'SELECT id FROM restaurant')
 
-    def _get_customer_ids(self, curs):
-        return self._get_ids(curs, 'SELECT HEX(id) FROM customer')
+    @classmethod
+    def _get_customer_ids(cls, curs):
+        return cls._get_ids(curs, 'SELECT HEX(id) FROM customer')
 
-    def _get_order_ids(self, curs):
-        return self._get_ids(curs, 'SELECT id FROM `order`')
+    @classmethod
+    def _get_order_ids(cls, curs):
+        return cls._get_ids(curs, 'SELECT id FROM `order`')
 
-    def _get_driver_ids(self, curs):
-        return self._get_ids(curs, 'SELECT HEX(id) FROM driver')
+    @classmethod
+    def _get_driver_ids(cls, curs):
+        return cls._get_ids(curs, 'SELECT HEX(id) FROM driver')
 
-    def _get_address_id_by_order_id(self, curs, order_id):
+    @staticmethod
+    def _get_address_id_by_order_id(curs, order_id):
         curs.execute('SELECT c.address_id FROM `order` o '
                      'JOIN customer c ON o.customer_id = c.id '
                      f"WHERE o.id = {order_id}")
