@@ -5,6 +5,19 @@ from app.produce.domain import DriverLocation
 from app.consume.kinesis import KinesisDriverLocationConsumer
 
 
+def test_kinesis_consumer_sets_producer_properties(monkeypatch, test_kwargs):
+    monkeypatch.setattr('app.consume.kinesis.DriverLocationProducer', test_kwargs)
+    KinesisDriverLocationConsumer(producer_max_threads=1,
+                                  producer_buffer_size=2,
+                                  producer_delay=0.5,
+                                  producer_no_api_key=True)
+    kwargs = test_kwargs.get_args()
+    assert kwargs == {'max_threads': 1,
+                      'buffer_size': 2,
+                      'delay': 0.5,
+                      'no_api_key': True}
+
+
 def _get_driver_locations() -> Iterable[DriverLocation]:
     return iter([
         DriverLocation(delivery_id=1, driver_id='1', lat='-33.33', lng='122.22'),

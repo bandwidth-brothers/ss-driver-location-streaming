@@ -3,6 +3,7 @@ import logging as log
 
 from argparse import RawTextHelpFormatter
 from app.common.constants import GEO_DEFAULT_DATA_DIR
+from app.common.constants import PRODUCER_DEFAULT_DELAY
 from app.common.constants import PRODUCER_DEFAULT_BUFFER_SIZE
 from app.common.constants import PRODUCER_DEFAULT_MAX_THREADS
 
@@ -40,7 +41,9 @@ examples:
         self._parser.add_argument('--make-maps', action='store_true',
                                   help='make static maps from points files')
         self._parser.add_argument('--data-dir', type=str, default=GEO_DEFAULT_DATA_DIR,
-                                  help='the directory for points files and static maps (default ./tmp)')
+                                  help='directory for points files and static maps (default ./tmp)')
+        self._parser.add_argument('--delay', type=float, default=PRODUCER_DEFAULT_DELAY,
+                                  help='delay, in seconds, for each location into buffer (default 0.01)')
         self._args = self._parser.parse_args(args)
 
     def get_args(self):

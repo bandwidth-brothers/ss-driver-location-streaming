@@ -8,6 +8,7 @@ from app.common.json_encoder import DriverLocationJsonEncoder
 from app.common.constants import KINESIS_DEFAULT_DELAY
 from app.common.constants import KINESIS_DEFAULT_STREAM_NAME
 from app.common.constants import KINESIS_DEFAULT_RECORDS_PER_REQUEST
+from app.common.constants import PRODUCER_DEFAULT_DELAY
 from app.produce.producer import PRODUCER_DEFAULT_MAX_THREADS
 from app.produce.producer import PRODUCER_DEFAULT_BUFFER_SIZE
 
@@ -20,6 +21,7 @@ class KinesisDriverLocationConsumer:
                  delay=KINESIS_DEFAULT_DELAY,
                  producer_max_threads=PRODUCER_DEFAULT_MAX_THREADS,
                  producer_buffer_size=PRODUCER_DEFAULT_BUFFER_SIZE,
+                 producer_delay=PRODUCER_DEFAULT_DELAY,
                  producer_no_api_key=False):
         self._client = boto3.client('kinesis')
         self._delay = delay
@@ -27,6 +29,7 @@ class KinesisDriverLocationConsumer:
         self._records_per_request = records_per_request
         self._producer = DriverLocationProducer(buffer_size=producer_buffer_size,
                                                 max_threads=producer_max_threads,
+                                                delay=producer_delay,
                                                 no_api_key=producer_no_api_key)
 
     def stream_locations_to_kinesis(self):
