@@ -114,12 +114,16 @@ mysql> show tables;
 > and want them re-run, you will need to delete the volumes and run `docker-compose up --build`.
 > 
 >     $ docker-compose down
+>
+> and want them re-run, you will need to delete the volumes and run `docker-compose` up again.
+> 
 >     $ docker volume ls
 >     local     ss-driver-location-streaming_mysql_config
 >     local     ss-driver-location-streaming_mysql_data
 >     $ docker volume rm ss-driver-location-streaming_mysql_config
 >     $ docker volume rm ss-driver-location-streaming_mysql_data
 >     $ docker-compose up --build
+
 
 #### Shutdown MySQL Container
 
