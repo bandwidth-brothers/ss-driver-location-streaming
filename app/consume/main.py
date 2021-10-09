@@ -17,5 +17,6 @@ def main(_args):
                                   delay=args.delay,
                                   producer_buffer_size=args.producer_buffer_size,
                                   producer_max_threads=args.producer_max_threads,
+                                  producer_delay=args.producer_delay,
                                   producer_no_api_key=args.producer_no_api_key) \
         .stream_locations_to_kinesis()
