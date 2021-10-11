@@ -52,11 +52,3 @@ class Database:
             print(e)
         finally:
             self.close_connection()
-
-    def save(self, query, args):
-        try:
-            self.open_connection()
-            with self.conn.cursor() as curs:
-                curs.execute(query, args)
-        finally:
-            self.close_connection()

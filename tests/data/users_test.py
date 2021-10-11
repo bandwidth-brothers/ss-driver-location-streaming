@@ -19,9 +19,9 @@ def _assert_password_len(password: str):
 
 def test_user_generator_password():
     # hash result is 60 characters
-    password = UserGenerator.generate_password(10)
+    password = UserGenerator.generate_password(password_len=10)
     _assert_password_len(password)
-    password = UserGenerator.generate_password(20)
+    password = UserGenerator.generate_password(password_len=20)
     _assert_password_len(password)
 
 
@@ -33,12 +33,13 @@ def _assert_is_email(email: str):
 
 
 def test_user_generator_email():
-    email = UserGenerator.generate_email(20, 25)
+    email = UserGenerator.generate_email(min_len=20, max_len=25)
     _assert_is_email(email)
 
 
 def test_user_generator_user():
     user = UserGenerator.generate_user(User.Role.ADMIN)
+
     assert isinstance(user.id, uuid.UUID)
     assert len(user.id.bytes) == len(uuid.uuid4().bytes)
     assert user.user_role == User.Role.ADMIN
