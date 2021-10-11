@@ -190,10 +190,10 @@ They are only for development and should be used in production.
 ###  Adding Initial Data
 
 To run the producer or consumer programs, there needs to be deliveries in the database. Deliveries
-can be added using the `app.data.dbdata` module.
+can be added using the `app.data` module.
 
 ```shell
-(.venv) $ python -m app.data.dbdata --drivers 2 --custs 10  --orders 10
+(.venv) $ python -m app.data --drivers 2 --custs 10  --orders 10
 ```
 
 Deliveries are dependent on there also being customers, restaurants and orders. Those
@@ -290,8 +290,8 @@ equivalent to `apply` and `destroy`, respectively. You can also use all the othe
 
 * `./tf.sh init` - Initialize Terraform project. This should be called before any of
                    the following commands
-* `./tf.sh up` - Create infrastructure (type 'yes' when prompted). Same as `terraform applu
-* `./tf.sh down` - Destroy infrastructure (type 'yes' when prompted)
+* `./tf.sh up` - Create infrastructure (type 'yes' when prompted). Same as `terraform apply`
+* `./tf.sh down` - Destroy infrastructure (type 'yes' when prompted). Same as `terraform destroy`
 * `./tf.sh plan` - Plan infrastructure
 
 #### Run Kinesis Consumer
@@ -302,7 +302,7 @@ The consumer application will consume the data from the driver location producer
 then stream it to Kinesis. The consumer can be run with the following Python program
 
 ```shell
-(.venv) $ python -m app.consume [--help]
+(.venv) $ python -m app.consume.kinesis [--help]
 ```
 
 The following options are available for the program:
@@ -310,8 +310,12 @@ The following options are available for the program:
 * `-n`, `--stream-name` - name of the Kinesis stream
 * `-l`, `--log` - log level (default `INFO`)
 * `-r`, `--records-per-request` - number of records to send for each Kinesis request (default 100)
-* `-d`, `--delay` - delay (in seconds) between Kinesis requests (default 0.3)
+* `-d`, `--delay` - delay (in seconds) between Kinesis requests (default 0.2)
 * `-v`, `--verbose` - same as `--log VERBOSE`
+* `--producer-max-threads` - max threads for producer thread pool
+* `--producer-buffer-size` - max size of internal queue
+* `--producer-no-api-key` - if there is no Google Maps API key, points files must be present
+* `--producer-delay` - producer delay, in seconds, for each location into buffer (default 0.0)
 
 #### View data streamed to Kinesis
 
