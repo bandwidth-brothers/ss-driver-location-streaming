@@ -4,6 +4,7 @@ import math
 import googlemaps
 import logging as log
 
+from typing import Iterable
 from datetime import datetime
 from googlemaps.maps import StaticMapMarker
 from googlemaps.exceptions import Timeout, TransportError, ApiError
@@ -25,7 +26,9 @@ class TravelPlan:
 
 
 class Geo:
-    def __init__(self, meters_per_ping=GEO_DEFAULT_METERS_PER_PING, no_api_key=False, data_dir=GEO_DEFAULT_DATA_DIR):
+    def __init__(self,
+                 meters_per_ping=GEO_DEFAULT_METERS_PER_PING,
+                 no_api_key=False, data_dir=GEO_DEFAULT_DATA_DIR):
         config = Config()
         self.api_key = config.api_key
         self.meters_per_ping = meters_per_ping
@@ -168,8 +171,9 @@ class Geo:
         if len(files) == 0:
             log.info(f"There are no points files in {self._points_dir}. No maps will be created.")
             return
-        for points_file in files:
-            plan = self._get_plan_from_file(f"{self._points_dir}/{points_file}")
+
+        def _get_map_args_from_points_file(_points_file):
+            plan = self._get_plan_from_file(f"{self._points_dir}/{_points_file}")
             points = list(map(lambda p: (p['lat'], p['lng']), plan.points))
 
             # filter points evenly to be less than GEO_MAX_MARKERS
@@ -177,11 +181,12 @@ class Geo:
                 index_steps = int(math.ceil(len(points) / GEO_MAX_MARKERS))
                 points = points[::index_steps]
             mid = int(len(points) / 2)
-            center_marker = points[mid]
+            return {
+                'markers': StaticMapMarker(locations=points, size='tiny', color='red'),
+                'center_marker': points[mid],
+                'zoom_level': self._get_zoom_level(plan.distance)}
 
-            markers = StaticMapMarker(locations=points, size='tiny', color='red')
-
-            # noinspection PyTypeChecker
+        for points_file in files:
             fields = points_file.split("-")
             driver_id = fields[0]
             delivery_id = fields[1]
@@ -190,15 +195,19 @@ class Geo:
                 log.info(f"{map_file} already exists. Will not create a new one.")
                 continue
 
+            markers, center_marker, zoom_level = _get_map_args_from_points_file(points_file).values()
+
             try:
                 with open(map_file, 'wb') as f:
-                    zoom_level = self._get_zoom_level(plan.distance)
-                    for chunk in self.gmaps.static_map(size=(1000, 1000),
-                                                       zoom=zoom_level,
-                                                       center=center_marker,
-                                                       markers=[markers],
-                                                       format='png'):
-                        f.write(chunk)
+                    chunks: Iterable = self.gmaps.static_map(
+                        size=(1000, 1000),
+                        zoom=zoom_level,
+                        center=center_marker,
+                        markers=[markers],
+                        format='png')
+                    if chunks:
+                        for chunk in chunks:
+                            f.write(chunk)
                     log.info(f"{map_file} created.")
             except (Timeout, TransportError, ApiError) as ex:
                 log.error(f"Could not create {map_file}: {ex}")

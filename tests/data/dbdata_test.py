@@ -27,14 +27,13 @@ def test_data_generator_generate_restaurants():
 def test_data_generator_generate_customers():
     generator = DataGenerator()
     generator.delete_all()
+
     generator.generate_customers(2)
 
     cust_count = _get_row_count('customer')
     assert cust_count == 2
-
     user_count = _get_row_count('user')
     assert user_count == 2
-
     addr_count = _get_row_count('address')
     assert addr_count == 2
 
@@ -44,14 +43,13 @@ def test_data_generator_generate_customers():
 def test_data_generator_generate_drivers():
     generator = DataGenerator()
     generator.delete_all()
+
     generator.generate_drivers(2)
 
     cust_count = _get_row_count('driver')
     assert cust_count == 2
-
     user_count = _get_row_count('user')
     assert user_count == 2
-
     addr_count = _get_row_count('address')
     assert addr_count == 2
 
@@ -61,6 +59,7 @@ def test_data_generator_generate_drivers():
 def test_data_generator_generate_orders():
     generator = DataGenerator()
     generator.delete_all()
+
     generator.generate_restaurants()
     generator.generate_drivers(1)
     generator.generate_customers(2)
@@ -75,6 +74,7 @@ def test_data_generator_generate_orders():
 def test_data_generator_generate_deliveries():
     generator = DataGenerator()
     generator.delete_all()
+
     generator.generate_restaurants()
     generator.generate_drivers(1)
     generator.generate_customers(2)

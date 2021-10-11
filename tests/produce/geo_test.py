@@ -1,6 +1,11 @@
+import os
+import shutil
+
 import pytest
+import googlemaps
 
 from os import environ
+from shutil import copyfile
 from app.produce.geo import Geo, TravelPlan
 from tests.produce.common import _get_drivers_list
 
@@ -38,3 +43,29 @@ def test_geo_with_bad_api_key(caplog):
 
     log_msg = caplog.records[0].message
     assert 'Invalid API key' in log_msg
+
+
+def test_geo_make_maps(func_args):
+    os.makedirs('tmp/tests/geo/points', exist_ok=True)
+    os.makedirs('tmp/tests/geo/maps', exist_ok=True)
+    copyfile('tests/files/points/1-1-points.txt', 'tmp/tests/geo/points/1-1-.points.txt')
+
+    geo = Geo(no_api_key=True, data_dir='tmp/tests/geo')
+    geo.gmaps = googlemaps.Client
+    og_static_map = googlemaps.Client
+    geo.gmaps.static_map = func_args
+
+    geo.make_maps()
+    assert os.path.exists('tmp/tests/geo/maps/1-1-map.png')
+
+    kwargs = func_args.get_kwargs()
+    center_marker = kwargs['center']
+    assert center_marker == ('38.954233250796946', '-77.01154208081533')
+
+    markers = kwargs['markers']
+    # see StaticMapMarker source code
+    locations = markers[0].params[2].split('|')
+    assert len(locations) == 10
+
+    shutil.rmtree('tmp/tests/geo')
+    googlemaps.Client.static_map = og_static_map
