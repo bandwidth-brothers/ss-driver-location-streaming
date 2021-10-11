@@ -23,7 +23,7 @@ class KinesisDriverLocationConsumer:
                  producer_buffer_size=PRODUCER_DEFAULT_BUFFER_SIZE,
                  producer_delay=PRODUCER_DEFAULT_DELAY,
                  producer_no_api_key=False):
-        self._client = boto3.client('kinesis')
+        self._kinesis = boto3.client('kinesis')
         self._delay = delay
         self._stream_name = stream_name
         self._records_per_request = records_per_request
@@ -63,7 +63,7 @@ class KinesisDriverLocationConsumer:
                 'Data': json_str.encode('utf-8'),
                 'PartitionKey': f"partitionKey-{i}"
             })
-        response = self._client.put_records(StreamName=self._stream_name, Records=records)
+        response = self._kinesis.put_records(StreamName=self._stream_name, Records=records)
         self._log_response(response)
 
     @staticmethod
