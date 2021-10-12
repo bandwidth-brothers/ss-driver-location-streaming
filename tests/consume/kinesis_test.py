@@ -59,6 +59,16 @@ def test_stream_locations_to_kinesis_request_count(monkeypatch, call_count):
     assert call_count.get_count() == 4
 
 
+def test_stream_locations_to_kinesis_no_locations(monkeypatch, call_count):
+    monkeypatch.setattr('app.consume.kinesis.DriverLocationProducer.get_driver_locations', lambda _self: [])
+    monkeypatch.setattr('app.consume.kinesis.KinesisDriverLocationConsumer._send_locations', call_count)
+
+    consumer = KinesisDriverLocationConsumer(delay=0, records_per_request=2, producer_no_api_key=True)
+    consumer.stream_locations_to_kinesis()
+
+    assert call_count.get_count() == 0
+
+
 @pytest.fixture
 def records_collector():
     class RecordsCollector:
