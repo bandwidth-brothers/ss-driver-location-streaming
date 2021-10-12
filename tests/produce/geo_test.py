@@ -20,15 +20,16 @@ def test_geo_get_points_from_file():
     assert len(plan.points) == 10
 
 
-def test_geo_exit_when_no_api_key(caplog):
-    Geo(no_api_key=True)
+def test_geo_return_when_no_api_key(caplog):
+    environ.pop('GOOGLE_API_KEY')
+    geo = Geo(no_api_key=True)
 
     log_msg = caplog.records[0].message
     assert 'Will not be able to make API calls' in log_msg
+    assert hasattr(geo, 'gmaps') is False
 
 
 def test_geo_exit_when_no_api_key_environment_variable(caplog):
-    environ.pop('GOOGLE_API_KEY')
     with pytest.raises(SystemExit):
         Geo()
 
