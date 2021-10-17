@@ -26,9 +26,6 @@ examples:
     python -m app.produce --max-threads 5 --buffer-size 3000
     python -m app.produce --make-maps --data-dir ./tmp""")
 
-        self._parser.add_argument('--print-all', action='store_true', help='print all locations')
-        self._parser.add_argument('--csv', type=str, help='save the location data to a csv file')
-        self._parser.add_argument('--json', type=str, help='save the location data to a json file')
         self._parser.add_argument('--log', type=str, default=log.INFO,
                                   help='the log level (VERBOSE, DEBUG, INFO ←, WARN, ERROR)')
         self._parser.add_argument('-v', '--verbose', action='store_true', help='same as --log VERBOSE')

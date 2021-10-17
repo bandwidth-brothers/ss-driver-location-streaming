@@ -1,0 +1,20 @@
+FROM docker.io/bitnami/spark:3
+
+USER root
+
+ENV SPARK_MODE=master
+ENV SPARK_RPC_AUTHENTICATION_ENABLED=no
+ENV SPARK_RPC_ENCRYPTION_ENABLED=no
+ENV SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+ENV SPARK_SSL_ENABLED=no
+
+ENV VIRTUAL_ENV=/opt/bitnami/spark/python/.venv
+RUN python -m venv "$VIRTUAL_ENV"
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+
+COPY ./ ./work
+RUN pip install -r ./work/requirements.txt
+
+EXPOSE 8080
+EXPOSE 8888
+EXPOSE 7077

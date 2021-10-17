@@ -11,8 +11,8 @@ fi
 WORKDIR="./terraform"
 
 case "$CMD" in
-  "up" | "UP") terraform -chdir="$WORKDIR" apply;;
-  "down" | "DOWN") terraform -chdir="$WORKDIR" destroy;;
+  "up" | "UP") shift; terraform -chdir="$WORKDIR" apply $*;;
+  "down" | "DOWN") shift; terraform -chdir="$WORKDIR" destroy $*;;
   *) terraform -chdir="$WORKDIR" $*
   ;;
 esac
