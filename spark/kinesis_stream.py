@@ -1,7 +1,9 @@
 import os
 import sys
 import json
+import traceback
 
+from datetime import datetime
 from pyspark import SparkContext
 from pyspark.sql import Row
 from pyspark.sql import SparkSession
@@ -14,11 +16,11 @@ def get_master():
     if len(sys.argv) == 2:
         return sys.argv[1]
     else:
-        return "local[2]"
+        return "local[4]"
 
 
 sc = SparkContext(get_master(), appName="DriverLocationApp")
-ssc = StreamingContext(sc, 3)
+ssc = StreamingContext(sc, 5)
 
 kinesis = KinesisUtils.createStream(
     ssc,
@@ -36,6 +38,11 @@ schema = StructType([
     StructField("driver_id", StringType()),
     StructField("lat", StringType()),
     StructField("lng", StringType())])
+
+stsUserAccessKey = os.environ['STS_USER_ACCESS_KEY']
+stsUserSecretKey = os.environ['STS_USER_SECRET_KEY']
+ecsSparkRoleArn = os.environ['ECS_SPARK_ROLE_ARN']
+s3BucketName = os.environ['S3_BUCKET_NAME']
 
 
 def get_spark_session_instance(sparkConf):
@@ -57,14 +64,30 @@ def dict_to_row(dct):
 def process(time, rdd):
     print(f"========== {time} ==========")
     try:
-        spark = get_spark_session_instance(rdd.context.getConf())
-        row_rdd = rdd.map(lambda data: json.loads(data)) \
-            .map(dict_to_row)
+        if not rdd.isEmpty():
+            spark = get_spark_session_instance(rdd.context.getConf())
+            row_rdd = rdd.map(lambda data: json.loads(data)) \
+                .map(dict_to_row)
 
-        location_df = spark.createDataFrame(row_rdd, schema)
-        location_df.show()
+            location_df = spark.createDataFrame(row_rdd, schema)
+            location_df.show()
+            try:
+                location_df \
+                    .coalesce(1) \
+                    .write.format('csv') \
+                    .option('fs.s3a.access.key', stsUserAccessKey) \
+                    .option('fs.s3a.secret.key', stsUserSecretKey) \
+                    .option('header', True) \
+                    .save(f"s3a://{s3BucketName}/geolocation/{str(datetime.now()).replace(' ', '-')}-locations.csv", mode='overwrite')
+                print("S3 file saved")
+            except Exception as s3_ex:
+                print("Could not save S3 file")
+                print(traceback.format_exc())
+        else:
+            print("                RDD Empty                ")
     except Exception as ex:
         print(ex)
+    print("=========================================")
 
 
 kinesis.foreachRDD(process)

@@ -1,5 +1,13 @@
 # Smoothstack Scrumptious Driver Location Streaming
 
+## Documents
+
+* [TODOs](./TODO.md)
+* [Terraform Infrastructure](./terraform/README.md)
+
+## Table of Contents
+
+* [TL;DR;](#tldr-run-application)
 * [Setup Python Virtual Environment](#setup-python-virtual-environment)
     * [UNIX](#unix)
     * [Windows](#windows)
@@ -25,6 +33,10 @@
 * [Testing](#testing)
     * [Test Setup](#test-setup)
     * [Run Tests](#run-tests)
+    
+
+## TL;DR; Run Application
+
 
 
 ## Setup Python Virtual Environment

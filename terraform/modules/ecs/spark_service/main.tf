@@ -27,6 +27,9 @@ resource "aws_ecs_task_definition" "spark_task" {
       name      = "spark-master"
       image     = var.spark_docker_image
       essential = true
+      environment : concat(var.spark_container_env_vars,
+        tolist([{ name : "ECS_SPARK_ROLE_ARN", value : aws_iam_role.task_role.arn }])
+      )
       portMappings = [
         {
           containerPort = 8080
@@ -70,11 +73,6 @@ resource "aws_iam_role" "task_execution_role" {
       }
     ]
   })
-}
-
-resource "aws_iam_role_policy_attachment" "execution_policy_attach" {
-  role       = aws_iam_role.task_execution_role.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
 resource "aws_iam_role" "task_role" {
@@ -127,7 +125,8 @@ resource "aws_iam_policy" "spark_kinesis_access_policy" {
           "logs:PutLogEvents",
           "cloudwatch:GetMetricData",
           "cloudwatch:PutMetricData",
-          "cloudwatch:CreateLogStream"
+          "cloudwatch:CreateLogStream",
+          "sts:*"
         ]
         "Resource" : "*"
       }
@@ -135,7 +134,21 @@ resource "aws_iam_policy" "spark_kinesis_access_policy" {
   })
 }
 
+# Policy for ECS Agent to talk to ECS
+resource "aws_iam_role_policy_attachment" "execution_policy_attach" {
+  role       = aws_iam_role.task_execution_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+}
+
+# Policy for Spark container to talk to Kinesis
 resource "aws_iam_role_policy_attachment" "spark_kinesis_access_policy_attach" {
   role       = aws_iam_role.task_role.name
   policy_arn = aws_iam_policy.spark_kinesis_access_policy.arn
+}
+
+# Policy Spark to talk to S3
+# TODO: create stricter policy
+resource "aws_iam_role_policy_attachment" "s3_policy_attach" {
+  role       = aws_iam_role.task_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
 }

@@ -12,12 +12,13 @@ variable "aws_region" {
   description = "aws region"
 }
 
-variable "ec2_instance_type" {
+variable "spark_docker_image" {
   type        = string
-  description = "type of ec2 instance"
+  description = "the spark docker image to run on ecs"
 }
 
-variable "spark_docker_image" {
-  type = string
-  description = "the spark docker image to run on ecs"
+variable "spark_container_env_vars" {
+  type        = list(map(string))
+  default     = []
+  description = "environment variables for the spark container"
 }

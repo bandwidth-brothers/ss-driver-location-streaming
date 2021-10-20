@@ -1,6 +1,4 @@
-FROM docker.io/bitnami/spark:3
-
-USER root
+FROM docker.io/bitnami/spark:3.1.2
 
 ENV SPARK_MODE=master
 ENV SPARK_RPC_AUTHENTICATION_ENABLED=no

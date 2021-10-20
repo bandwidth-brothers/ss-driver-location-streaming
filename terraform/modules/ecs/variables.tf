@@ -3,6 +3,7 @@
 variable "aws_region" {
   type    = string
   default = "us-west-2"
+  description = "aws region for the ecs cluster"
 }
 
 variable "key_name" {
@@ -14,18 +15,28 @@ variable "ec2_instance_type" {
   description = "type of ec2 instance"
 }
 
-variable "vpc_id" {}
+variable "vpc_id" {
+  type = string
+  description = "id of the VPC"
+}
 
-variable "vpc_default_security_group_id" {}
+variable "vpc_default_security_group_id" {
+  type = string
+  description = "id of the default security group"
+}
 
-variable "vpc_zone_identifier" {}
+variable "vpc_zone_identifier" {
+  type = list(string)
+  description = "zone identifier for ASG (list of public/private subnet)"
+}
 
 variable "spark_docker_image" {
-  type = string
+  type        = string
   description = "the spark docker image to run on ecs"
 }
 
-variable "tags" {
-  default     = {}
-  description = "tags for ecs cluster resources"
+variable "spark_container_env_vars" {
+  type        = list(map(string))
+  default     = []
+  description = "environment variables for the spark container"
 }
