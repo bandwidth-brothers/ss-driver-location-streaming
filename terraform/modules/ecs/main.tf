@@ -67,7 +67,6 @@ module "spark_service" {
   source                   = "./spark_service"
   aws_region               = var.aws_region
   cluster_id               = module.ecs.ecs_cluster_id
-  ec2_instance_type        = var.ec2_instance_type
   spark_docker_image       = var.spark_docker_image
   spark_container_env_vars = var.spark_container_env_vars
   tags                     = local.tags

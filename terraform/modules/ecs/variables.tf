@@ -40,3 +40,8 @@ variable "spark_container_env_vars" {
   default     = []
   description = "environment variables for the spark container"
 }
+
+variable "tags" {
+  default = {}
+  description = "tags for ecs cluster resources"
+}

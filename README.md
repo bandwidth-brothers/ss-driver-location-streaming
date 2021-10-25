@@ -7,7 +7,6 @@
 
 ## Table of Contents
 
-* [TL;DR;](#tldr-run-application)
 * [Setup Python Virtual Environment](#setup-python-virtual-environment)
     * [UNIX](#unix)
     * [Windows](#windows)
@@ -33,10 +32,6 @@
 * [Testing](#testing)
     * [Test Setup](#test-setup)
     * [Run Tests](#run-tests)
-    
-
-## TL;DR; Run Application
-
 
 
 ## Setup Python Virtual Environment
@@ -240,7 +235,7 @@ $ ./tf.sh down -var-file='dev.tfvars'
 * First make sure the [Python virtual environment is set up](#setup-python-virtual-environment).
 * Environment variables should be set up for:
     * `GOOGLE_API_KEY`
-* See [Production](#production) if running in production.
+* See [Production Setup](#production-setup) if running in production.
 
 ###  Adding Initial Data
 

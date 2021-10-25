@@ -63,6 +63,7 @@ module "spark_ecs" {
     { name : "STS_USER_SECRET_KEY", value : module.spark_sts_user.spark_sts_user_secret_key }
   ])
 
+  tags       = local.tags
   depends_on = [module.s3_bucket, module.spark_sts_user]
 }
 

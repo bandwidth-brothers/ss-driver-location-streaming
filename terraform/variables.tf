@@ -12,7 +12,7 @@ variable "kinesis_shard_count" {
 
 variable "spark_docker_image" {
   type        = string
-  description = "the spark docker image to run on ecs"
+  description = "the spark docker image to run on ecs (conflicts with ecr_repo_name)"
 }
 
 variable "key_name" {
