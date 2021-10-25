@@ -1,5 +1,12 @@
 # Smoothstack Scrumptious Driver Location Streaming
 
+## Documents
+
+* [TODOs](./TODO.md)
+* [Terraform Infrastructure](./terraform/README.md)
+
+## Table of Contents
+
 * [Setup Python Virtual Environment](#setup-python-virtual-environment)
     * [UNIX](#unix)
     * [Windows](#windows)
@@ -228,7 +235,7 @@ $ ./tf.sh down -var-file='dev.tfvars'
 * First make sure the [Python virtual environment is set up](#setup-python-virtual-environment).
 * Environment variables should be set up for:
     * `GOOGLE_API_KEY`
-* See [Production](#production) if running in production.
+* See [Production Setup](#production-setup) if running in production.
 
 ###  Adding Initial Data
 
