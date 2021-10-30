@@ -269,6 +269,8 @@ CREATE TABLE IF NOT EXISTS `delivery` (
   `estimated_delivery_time` TIMESTAMP NULL,
   `delivery_status` VARCHAR(255) NULL,
   `actual_delivery_time` TIMESTAMP NULL,
+  `picked_up_at` TIMESTAMP NULL,
+  `driver_compensation` FLOAT NULL DEFAULT 0.00,
   `order_id` BIGINT(8) NOT NULL,
   PRIMARY KEY (`id`, `order_id`),
   INDEX `fk_delivery_address1_idx` (`address_id` ASC),

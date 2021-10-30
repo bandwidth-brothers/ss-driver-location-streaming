@@ -1,8 +1,8 @@
 
 
 variable "aws_region" {
-  type    = string
-  default = "us-west-2"
+  type        = string
+  default     = "us-west-2"
   description = "aws region for the ecs cluster"
 }
 
@@ -16,17 +16,17 @@ variable "ec2_instance_type" {
 }
 
 variable "vpc_id" {
-  type = string
+  type        = string
   description = "id of the VPC"
 }
 
 variable "vpc_default_security_group_id" {
-  type = string
+  type        = string
   description = "id of the default security group"
 }
 
 variable "vpc_zone_identifier" {
-  type = list(string)
+  type        = list(string)
   description = "zone identifier for ASG (list of public/private subnet)"
 }
 
@@ -42,6 +42,6 @@ variable "spark_container_env_vars" {
 }
 
 variable "tags" {
-  default = {}
+  default     = {}
   description = "tags for ecs cluster resources"
 }

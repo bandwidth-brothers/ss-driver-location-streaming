@@ -5,6 +5,7 @@ import boto3
 import argparse
 import logging as log
 
+from datetime import datetime
 from app.produce.producer import DriverLocationProducer
 from app.common.json_encoder import DriverLocationJsonEncoder
 from app.common.constants import KINESIS_DEFAULT_DELAY

@@ -11,7 +11,7 @@ resource "aws_iam_user" "spark_sts_credentials_user" {
 }
 
 resource "aws_iam_user_group_membership" "admin_group_membership" {
-  user = aws_iam_user.spark_sts_credentials_user.name
+  user   = aws_iam_user.spark_sts_credentials_user.name
   groups = [data.aws_iam_group.admin_group.group_name]
 }
 

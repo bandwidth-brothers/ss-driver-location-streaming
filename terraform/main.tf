@@ -79,11 +79,23 @@ module "s3_bucket" {
   tags        = local.tags
 }
 
+module "mysql_rds" {
+  source                 = "./modules/rds"
+  enabled                = var.rds_enabled
+  db_name                = var.rds_db_name
+  db_username            = var.rds_username
+  db_password            = var.rds_password
+  db_publicly_accessible = var.rds_publicly_accessible
+  vpc_id                 = module.vpc.vpc_id
+  db_subnet_ids          = var.rds_publicly_accessible ? module.vpc.public_subnets : module.vpc.private_subnets
+  tags                   = local.tags
+}
+
 module "lambda" {
   source               = "./modules/lambda"
-  enabled              = var.with_lambda_consumer
-  aws_region           = var.aws_region
   lambda_function_name = "DriverLocationConsumerFunction"
+  enabled              = var.lambda_enabled
+  aws_region           = var.aws_region
   kinesis_stream_arn   = module.kinesis.stream_arn
   tags                 = local.tags
 }
