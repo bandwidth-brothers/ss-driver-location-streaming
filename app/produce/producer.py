@@ -1,4 +1,5 @@
 import time
+import datetime
 import logging as log
 
 from queue import Queue
@@ -93,13 +94,20 @@ class DriverLocationProducer:
         self._max_threads = max_threads
         self._delay = delay
 
+    def _get_timestamp(self, increment):
+        now = datetime.datetime.now()
+        return now + datetime.timedelta(0, increment * 3)
+
     def _process_delivery(self, delivery: Delivery, driver_id):
         driver = self._delivery_manager.get_driver(driver_id)
         plan = self._geo.get_points(driver, delivery)
+        points = plan.points
 
-        for point in plan.points:
+        Deliveries.set_delivery_picked_up_at(delivery.id, self._get_timestamp(0))
+        for i in range(len(points)):
+            point = points[i]
             location = DriverLocation(delivery_id=delivery.id, driver_id=driver_id,
-                                      lat=point['lat'], lng=point['lng'])
+                                      lat=point['lat'], lng=point['lng'], timestamp=self._get_timestamp(i))
             self._location_buffer.put(location)
             if self._delay:
                 time.sleep(self._delay)

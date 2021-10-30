@@ -127,9 +127,9 @@ class DataGenerator:
             for order_id in order_ids:
                 address_id = self._get_address_id_by_order_id(curs, order_id)
                 driver_id = random.choice(driver_ids)
-                curs.execute('INSERT INTO delivery (address_id, driver_id, order_id) '
-                             'VALUES (?, UNHEX(?), ?)',
-                             (address_id, driver_id, order_id))
+                curs.execute('INSERT INTO delivery (address_id, driver_id, order_id, driver_compensation) '
+                             'VALUES (?, UNHEX(?), ?, ?)',
+                             (address_id, driver_id, order_id, round(random.uniform(10.0, 25.0), 2)))
         self.db.conn.commit()
         self.db.close_connection()
 

@@ -49,6 +49,18 @@ class Database:
                 cur.close()
                 return records
         except jaydebeapi.DatabaseError as e:
-            print(e)
+            log.error(e)
+            raise e
+        finally:
+            self.close_connection()
+
+    def update(self, query, args):
+        try:
+            self.open_connection()
+            with self.conn.cursor() as cur:
+                cur.execute(query, args)
+        except jaydebeapi.DatabaseError as e:
+            log.error(e)
+            raise e
         finally:
             self.close_connection()

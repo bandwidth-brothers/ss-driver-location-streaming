@@ -31,8 +31,33 @@ variable "s3_bucket_name" {
   description = "name of the s3 bucket to load location data"
 }
 
-variable "with_lambda_consumer" {
+variable "lambda_enabled" {
   type        = bool
   default     = true
   description = "whether to include lambda consumer"
+}
+
+variable "rds_username" {
+  type        = string
+  description = "username for the rds instance"
+}
+
+variable "rds_password" {
+  type        = string
+  description = "password for the rds instance"
+}
+
+variable "rds_publicly_accessible" {
+  type        = bool
+  description = "whether the rds instance is publicly available"
+}
+
+variable "rds_db_name" {
+  type        = string
+  description = "name of the database in the rds instance"
+}
+
+variable "rds_enabled" {
+  type = bool
+  description = "whether to create the rds instance"
 }

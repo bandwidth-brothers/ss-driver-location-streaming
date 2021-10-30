@@ -1,6 +1,7 @@
 import json
 import random
 
+from datetime import datetime
 from functools import reduce
 from app.config import Config
 from app.db.database import Database
@@ -57,3 +58,15 @@ class Deliveries:
         with open('data/driver-start-locations.json') as f:
             addresses = json.load(f, cls=Deliveries.AddressJsonDecoder)
         return addresses
+
+    @staticmethod
+    def set_delivery_picked_up_at(delivery_id: int, timestamp: datetime):
+        """"
+        Set the delivery picked_up_at field in the database
+
+        :param delivery_id: the id of the delivery
+        :param timestamp: the time the delivery was picked up at
+        :raises jaydebeapi.DatabaseError: if there is a database related problem
+        """
+        db = Database(Config())
+        db.update('UPDATE delivery SET picked_up_at = ? WHERE id = ?', (timestamp.isoformat(), delivery_id))

@@ -8,6 +8,7 @@ from pyspark import SparkContext
 from pyspark.sql import Row
 from pyspark.sql import SparkSession
 from pyspark.sql.types import *
+from pyspark.sql.functions import to_date, col
 from pyspark.streaming import StreamingContext
 from pyspark.streaming.kinesis import KinesisUtils, InitialPositionInStream
 
@@ -37,7 +38,8 @@ schema = StructType([
     StructField("delivery_id", IntegerType()),
     StructField("driver_id", StringType()),
     StructField("lat", StringType()),
-    StructField("lng", StringType())])
+    StructField("lng", StringType()),
+    StructField("timestamp", TimestampType())])
 
 stsUserAccessKey = os.environ['STS_USER_ACCESS_KEY']
 stsUserSecretKey = os.environ['STS_USER_SECRET_KEY']
@@ -54,11 +56,31 @@ def get_spark_session_instance(sparkConf):
     return globals()["sparkSessionSingletonInstance"]
 
 
+def get_datetime(timestamp_str):
+    return datetime.strptime(timestamp_str, "%Y-%m-%dT%H:%M:%S.%f")
+
+
 def dict_to_row(dct):
     return Row(delivery_id=dct['delivery_id'],
                driver_id=dct['driver_id'],
                lat=dct['lat'],
-               lng=dct['lng'])
+               lng=dct['lng'],
+               timestamp=get_datetime(dct['timestamp']))
+
+
+def write_to_s3(df, bucket_path, format='csv'):
+    try:
+        df \
+            .coalesce(1) \
+            .write.format(format) \
+            .option('fs.s3a.access.key', stsUserAccessKey) \
+            .option('fs.s3a.secret.key', stsUserSecretKey) \
+            .option('header', True) \
+            .save(f"s3a://{s3BucketName}/{bucket_path}", mode='overwrite')
+        print("S3 file saved")
+    except Exception as s3_ex:
+        print("Could not save S3 file")
+        print(traceback.format_exc())
 
 
 def process(time, rdd):
@@ -71,18 +93,22 @@ def process(time, rdd):
 
             location_df = spark.createDataFrame(row_rdd, schema)
             location_df.show()
-            try:
-                location_df \
-                    .coalesce(1) \
-                    .write.format('csv') \
-                    .option('fs.s3a.access.key', stsUserAccessKey) \
-                    .option('fs.s3a.secret.key', stsUserSecretKey) \
-                    .option('header', True) \
-                    .save(f"s3a://{s3BucketName}/geolocation/{str(datetime.now()).replace(' ', '-')}-locations.csv", mode='overwrite')
-                print("S3 file saved")
-            except Exception as s3_ex:
-                print("Could not save S3 file")
-                print(traceback.format_exc())
+
+            # write original data
+            write_to_s3(location_df, f"driver-location/{str(datetime.now()).replace(' ', '-')}-pings.parquet",
+                        format='parquet')
+
+            # transform data
+            location_df = location_df \
+                .withColumn('date', to_date(col('timestamp'), 'yyyy-MM-dd')) \
+                .groupBy('driver_id', 'date') \
+                .count() \
+                .withColumnRenamed('count', 'total_pings')
+            location_df.show()
+
+            # write transformed data
+            write_to_s3(location_df, f"driver-location-totals/{str(datetime.now()).replace(' ', '-')}-totals.csv",
+                        format='csv')
         else:
             print("                RDD Empty                ")
     except Exception as ex:

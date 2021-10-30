@@ -19,3 +19,7 @@ output "spark_sts_user_secret_key" {
 output "ecs_spark_role_arn" {
   value = module.spark_ecs.spark_task_role_arn
 }
+
+output "rds_endpoint" {
+  value = module.mysql_rds.db_endpoint
+}

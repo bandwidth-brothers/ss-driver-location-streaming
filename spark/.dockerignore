@@ -1,3 +1,4 @@
 .dockerignore
 docker-compose.yaml
 Dockerfile
+buildandpush.sh
