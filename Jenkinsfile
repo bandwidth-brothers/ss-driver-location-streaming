@@ -1,6 +1,6 @@
 #!/usr/bin/groovy
 pipeline {
-    agent any
+    agent { docker { image 'python:3.9-alpine' } }
     stages {
         stage('Checkout') {
             steps {
@@ -18,6 +18,11 @@ pipeline {
 //                         "  -Dsonar.login=${SONARQUBE_TOKEN}"
 //             }
 //         }
+        stage('InstallDependencies') {
+            steps {
+                sh 'pip install -r requirements.txt'
+            }
+        }
         stage('Test') {
             steps {
                 sh './runtests.sh'
