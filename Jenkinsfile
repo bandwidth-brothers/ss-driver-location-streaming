@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git url: 'https://github.com/psamsotha-ss/ss-driver-location-streaming.git', branch: 'cidi-jenkins'
+                git url: 'https://github.com/psamsotha-ss/ss-driver-location-streaming.git', branch: 'cicd-jenkins'
             }
         }
 //         stage('SonarQube Analysis') {
@@ -21,7 +21,6 @@ pipeline {
         stage('Test') {
             steps {
                 sh './runtests.sh'
-                junit 'target/surefire-reports/*.xml'
             }
         }
 //         stage('Build') {
