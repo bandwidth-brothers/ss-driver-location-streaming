@@ -18,11 +18,11 @@ pipeline {
 //                         "  -Dsonar.login=${SONARQUBE_TOKEN}"
 //             }
 //         }
-        stage('InstallDependencies') {
-            steps {
-                sh 'pip install -r requirements.txt'
-            }
-        }
+//         stage('InstallDependencies') {
+//             steps {
+//                 sh 'pip install -r requirements.txt'
+//             }
+//         }
         stage('Test') {
             steps {
                 sh './runtests.sh'
