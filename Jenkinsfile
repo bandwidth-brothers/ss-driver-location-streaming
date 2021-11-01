@@ -23,7 +23,11 @@ pipeline {
 //                 sh 'pip install -r requirements.txt'
 //             }
 //         }
+
         stage('Test') {
+            environment {
+                AWS_DEFAULT_REGION = 'us-west-2'
+            }
             steps {
                 sh './runtests.sh'
             }
