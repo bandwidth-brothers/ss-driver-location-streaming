@@ -75,6 +75,7 @@ def test_delivery_manager_get_multiple_deliveries_from_driver_without_complete(m
 
 def test_driver_location_producer_get_driver_locations(monkeypatch, caplog):
     monkeypatch.setattr('app.produce.producer.Deliveries.get_driver_deliveries', _get_drivers_list)
+    monkeypatch.setattr('app.produce.producer.Deliveries.set_delivery_picked_up_at', lambda a, b: None)
     caplog.set_level(logging.INFO)
 
     producer = DriverLocationProducer(no_api_key=True, data_dir='tests/files')

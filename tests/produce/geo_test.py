@@ -21,7 +21,8 @@ def test_geo_get_points_from_file():
 
 
 def test_geo_return_when_no_api_key(caplog):
-    environ.pop('GOOGLE_API_KEY')
+    if os.getenv('GOOGLE_API_KEY'):
+        environ.pop('GOOGLE_API_KEY')
     geo = Geo(no_api_key=True)
 
     log_msg = caplog.records[0].message
