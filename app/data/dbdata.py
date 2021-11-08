@@ -48,11 +48,13 @@ class DataGenerator:
         self.db.conn.jconn.setAutoCommit(False)
         with self.db.conn.cursor() as curs:
             for i in range(count):
+                address = random.choice(self.addresses)
+                name = random.choice(self.names)
                 user_id = self._create_user(curs, User.Role.CUSTOMER)
-                address_id = self._create_address(curs, self.addresses[i])
+                address_id = self._create_address(curs, address)
                 curs.execute('INSERT INTO customer (id, address_id, first_name, last_name, phone, loyalty_points) '
                              'VALUES(UNHEX(?), ?, ?, ?, ?, ?)',
-                             (user_id.hex, address_id, self.names[i]['first'], self.names[i]['last'], '202-555-1234', 10))
+                             (user_id.hex, address_id, name['first'], name['last'], '202-555-1234', 10))
         self.db.conn.commit()
         self.db.close_connection()
 
@@ -100,17 +102,15 @@ class DataGenerator:
         if count < 1:
             return
 
-        addresses = list(reversed(self.addresses))
-        names = list(reversed(self.names))
-
         self.db.open_connection()
         self.db.conn.jconn.setAutoCommit(False)
         with self.db.conn.cursor() as curs:
             for i in range(count):
-                address_id = self._create_address(curs, addresses[i])
+                address = random.choice(self.addresses)
+                address_id = self._create_address(curs, address)
                 driver_id = self._create_user(curs, User.Role.DRIVER)
                 license_num = uuid.uuid4().hex.replace('-', '')[0:10]
-                name = names[i]
+                name = random.choice(self.names)
                 curs.execute('INSERT INTO driver (id, address_id, first_name, last_name, phone, license_num, status) '
                              'VALUES (UNHEX(?), ?, ?, ?, ?, ?, ?)',
                              (driver_id.hex, address_id, name['first'], name['last'], '202-555-1234', license_num, 'ACTIVE'))
