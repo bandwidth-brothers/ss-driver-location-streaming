@@ -25,6 +25,9 @@ pipeline {
         }
 
         stage('Push-Docker-Image') {
+            environment {
+                AWS_DEFAULT_REGION = 'us-west-2'
+            }
             steps {
                 script {
                     docker.withRegistry('https://557623108041.dkr.ecr.us-west-2.amazonaws.com', 'ecr:us-west-2:aws_creds') {
