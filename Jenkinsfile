@@ -1,6 +1,5 @@
 #!/usr/bin/groovy
 pipeline {
-    agent { docker { image 'psamsotha/scrumptious-python-testing' } }
     stages {
         stage('Checkout') {
             steps {
