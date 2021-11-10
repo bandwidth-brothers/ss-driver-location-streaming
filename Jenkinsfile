@@ -19,13 +19,13 @@ pipeline {
         }
 
         stage('Build-Docker-Image') {
-            step {
+            steps {
                 sh 'docker build ss-driver-location-producer -f Dockerfile .'
             }
         }
 
         stage('Push-Docker-Image') {
-            step {
+            steps {
                 docker.withRegistry('https://557623108041.dkr.ecr.us-west-2.amazonaws.com', 'ecr:us-west-2:aws_creds') {
                     docker.image('ss-driver-location-producer').push()
                 }
