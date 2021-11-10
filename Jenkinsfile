@@ -20,7 +20,7 @@ pipeline {
 
         stage('Build-Docker-Image') {
             steps {
-                sh 'docker build ss-driver-location-producer -f Dockerfile .'
+                sh 'docker build --tag ss-driver-location-producer -f Dockerfile .'
             }
         }
 
