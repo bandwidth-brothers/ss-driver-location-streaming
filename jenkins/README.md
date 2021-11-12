@@ -12,6 +12,6 @@ The following plugins need to be installed
 
 ## Credentials
 
-* `aws_cred` - create Jenkins global AWS credentials
+* `aws_creds` - create Jenkins global AWS credentials
 * `GitHubWebhook` - go to user/Configure and add API token for webhook
 * `IAM Role` - create an IAM role for CloudFormation to create resources.
