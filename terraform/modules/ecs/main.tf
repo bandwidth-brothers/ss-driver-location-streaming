@@ -16,7 +16,7 @@ terraform {
 
 
 locals {
-  name               = "complete-ecs"
+  name               = "scrumptious-cluster"
   environment        = "dev"
   ec2_resources_name = "${local.name}-${local.environment}"
 
@@ -63,14 +63,14 @@ resource "aws_ecs_capacity_provider" "prov1" {
 }
 
 # Spark ECS Service
-module "spark_service" {
-  source                   = "./spark_service"
-  aws_region               = var.aws_region
-  cluster_id               = module.ecs.ecs_cluster_id
-  spark_docker_image       = var.spark_docker_image
-  spark_container_env_vars = var.spark_container_env_vars
-  tags                     = local.tags
-}
+#module "spark_service" {
+#  source                   = "./spark_service"
+#  aws_region               = var.aws_region
+#  cluster_id               = module.ecs.ecs_cluster_id
+#  spark_docker_image       = var.spark_docker_image
+#  spark_container_env_vars = var.spark_container_env_vars
+#  tags                     = local.tags
+#}
 
 
 # Autoscaling Group

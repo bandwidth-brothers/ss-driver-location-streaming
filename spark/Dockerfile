@@ -15,6 +15,9 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 COPY ./ ./work
 RUN pip install -r ./work/requirements.txt
 
+# Spark UI
 EXPOSE 8080
+# Jupyter Notebook
 EXPOSE 8888
+# Spark
 EXPOSE 7077

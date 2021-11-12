@@ -1,0 +1,69 @@
+#!/usr/bin/groovy
+pipeline {
+    agent any
+
+    parameters {
+        string(name: 'STACK_NAME', defaultValue: 'driver-location-spark', description: 'Enter the CloudFormation stack name')
+        string(name: 'TEMPLATE_NAME', defaultValue: 'spark/cloudformation/ecs-spark-task-template.yaml', description: 'Enter the path to the stack template file.')
+        credentials(name: 'CFN_CREDENTIALS_ID', defaultValue: 'arn:aws:iam::557623108041:role/DevJenkinsCloudFormationExecutionRole', description: 'AWS account role', required: true)
+        choice(
+            name: 'REGION',
+            choices: [
+                ' ',
+                'us-west-2',
+                'us-east-1',
+                'us-east-2'
+            ],
+            description: 'AWS account region',
+            defaultValue: 'us-west-2'
+        )
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git url: 'https://github.com/psamsotha-ss/ss-driver-location-streaming.git', branch: 'cicd-jenkins'
+            }
+        }
+
+        stage('Build-Docker-Image') {
+            when {
+                changeset './spark/**'
+            }
+            steps {
+                sh 'docker build --tag ss-spark-kinesis-streaming ./spark'
+            }
+        }
+
+        stage('Push-Docker-Image') {
+            when {
+                changeset './spark/**'
+            }
+            environment {
+                AWS_DEFAULT_REGION = 'us-west-2'
+            }
+            steps {
+                script {
+                    docker.withRegistry('https://557623108041.dkr.ecr.us-west-2.amazonaws.com', 'ecr:us-west-2:aws_creds') {
+                        docker.image('ss-spark-kinesis-streaming').push()
+                    }
+                }
+            }
+        }
+
+        stage('Deploy-Cloudformation-Stack') {
+            when {
+                changeset './spark/**'
+            }
+            steps {
+                withCredentials([[
+                    $class 'AmazonWebServicesCredentialsBinding',
+                    credentialsId: "${CFN_CREDENTIALS_ID}",
+                    accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                    secretKeyVariable: 'AWS_SECRET_ACCESS_KEY' ]]) {
+                        sh "spark/cloudformation/deploy-stack.sh ${STACK_NAME} ${TEMPLATE_NAME} ${REGION}"
+                }
+            }
+        }
+    }
+}

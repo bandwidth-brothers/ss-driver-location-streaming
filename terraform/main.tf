@@ -59,18 +59,21 @@ module "spark_ecs" {
   spark_container_env_vars = tolist([
     { name : "S3_BUCKET_DNS", value : module.s3_bucket.s3_bucket_domain_name },
     { name : "S3_BUCKET_NAME", value : module.s3_bucket.s3_bucket_name },
-    { name : "STS_USER_ACCESS_KEY", value : module.spark_sts_user.spark_sts_user_access_key },
-    { name : "STS_USER_SECRET_KEY", value : module.spark_sts_user.spark_sts_user_secret_key }
+#    { name : "STS_USER_ACCESS_KEY", value : module.spark_sts_user.spark_sts_user_access_key },
+#    { name : "STS_USER_SECRET_KEY", value : module.spark_sts_user.spark_sts_user_secret_key }
   ])
 
   tags       = local.tags
-  depends_on = [module.s3_bucket, module.spark_sts_user]
+  depends_on = [
+    module.s3_bucket,
+    # module.spark_sts_user
+  ]
 }
 
-module "spark_sts_user" {
-  source = "./modules/iam"
-  tags   = local.tags
-}
+#module "spark_sts_user" {
+#  source = "./modules/iam"
+#  tags   = local.tags
+#}
 
 module "s3_bucket" {
   source      = "./modules/s3"
