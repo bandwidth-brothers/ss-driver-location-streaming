@@ -18,7 +18,7 @@ pipeline {
 
         stage('Build-Docker-Image') {
             when {
-                changeset './spark/**'
+                changeset 'spark/**'
             }
             steps {
                 sh 'docker build --tag ss-spark-kinesis-streaming ./spark'
@@ -27,7 +27,7 @@ pipeline {
 
         stage('Push-Docker-Image') {
             when {
-                changeset './spark/**'
+                changeset 'spark/**'
             }
             environment {
                 AWS_DEFAULT_REGION = 'us-west-2'
@@ -43,7 +43,7 @@ pipeline {
 
         stage('Deploy-Cloudformation-Stack') {
             when {
-                changeset './spark/**'
+                changeset 'spark/**'
             }
             steps {
                 withCredentials([[
