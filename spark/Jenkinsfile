@@ -55,5 +55,14 @@ pipeline {
                 }
             }
         }
+
+        stage('Cleanup-Image') {
+            when {
+                changeset 'spark/**'
+            }
+            steps {
+                sh 'docker rmi -f ss-spark-kinesis-streaming'
+            }
+        }
     }
 }
