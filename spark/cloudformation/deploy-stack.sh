@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Please ensure that you have the correct AWS credentials configured
+# Please ensure that you have the correct AWS credentials configured.
 # Enter the name of the stack, the parameters file name, the template name, then changeset condition, and finally the region name.
 
 if [ $# -ne 3 ]; then
