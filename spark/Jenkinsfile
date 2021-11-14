@@ -45,12 +45,13 @@ pipeline {
             when {
                 changeset 'spark/**'
             }
+
             steps {
                 withCredentials([[
-                    $class: 'AmazonWebServicesCredentialsBinding',
-                    credentialsId: "${CFN_CREDENTIALS_ID}",
-                    accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-                    secretKeyVariable: 'AWS_SECRET_ACCESS_KEY' ]]) {
+                    $class: 'UsernamePasswordMultiBinding',
+                    credentialsId: "aws_user_pass",
+                    usernameVariable: 'AWS_ACCESS_KEY_ID',
+                    passwordVariable: 'AWS_SECRET_ACCESS_KEY' ]]) {
                         sh "spark/cloudformation/deploy-stack.sh ${STACK_NAME} ${TEMPLATE_NAME} ${REGION}"
                 }
             }
