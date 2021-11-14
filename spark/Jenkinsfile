@@ -62,7 +62,7 @@ pipeline {
                 changeset 'spark/**'
             }
             steps {
-                sh 'docker rmi -f ss-spark-kinesis-streaming'
+                sh 'docker system prune -f'
             }
         }
     }
