@@ -45,6 +45,7 @@ pipeline {
             when {
                 changeset 'spark/**'
             }
+            agent { docker { image 'amazon/aws-cli' }}
 
             steps {
                 withCredentials([[
