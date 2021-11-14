@@ -49,11 +49,13 @@ pipeline {
 
             steps {
                 withCredentials([[
-                    $class: 'UsernamePasswordMultiBinding',
-                    credentialsId: "aws_user_pass",
-                    usernameVariable: 'AWS_ACCESS_KEY_ID',
-                    passwordVariable: 'AWS_SECRET_ACCESS_KEY' ]]) {
+                        $class: 'UsernamePasswordMultiBinding',
+                        credentialsId: "aws_user_pass",
+                        usernameVariable: 'AWS_ACCESS_KEY_ID',
+                        passwordVariable: 'AWS_SECRET_ACCESS_KEY' ]]) {
+                    docker.image('amazon/aws-cli:latest').inside('--entrypoint "" -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY') {
                         sh "spark/cloudformation/deploy-stack.sh ${STACK_NAME} ${TEMPLATE_NAME} ${REGION}"
+                    }
                 }
             }
         }
