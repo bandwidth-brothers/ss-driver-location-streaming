@@ -9,13 +9,13 @@ if [ $# -ne 4 ]; then
 else
     STACK_NAME=$1
     PARAMETERS_FILE_NAME=$2
-    TEMPLATE_NAME=$3
+    TEMPLATE_FILE=$3
     # CHANGESET_MODE=$4
     REGION=$4
 fi
 
-if [[ $TEMPLATE_NAME != *.yaml ]]; then
-    echo "CloudFormation template $TEMPLATE_NAME does not exist. Make sure the extension is *.yaml and not (*.yml)"
+if [[ $TEMPLATE_FILE != *.yaml ]]; then
+    echo "CloudFormation template $TEMPLATE_FILE does not exist. Make sure the extension is *.yaml and not (*.yml)"
     exit 0
 fi
 
@@ -26,7 +26,7 @@ fi
 
 aws cloudformation deploy \
     --stack-name "$STACK_NAME" \
-    --template-file spark/cloudformation/"$TEMPLATE_NAME" \
+    --template-file "$TEMPLATE_FILE" \
     --capabilities CAPABILITY_NAMED_IAM \
     --parameter-overrides file://"$PARAMETERS_FILE_NAME" \
     --region "$REGION"
