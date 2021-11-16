@@ -28,7 +28,7 @@ aws cloudformation deploy \
     --stack-name "$STACK_NAME" \
     --template-file spark/cloudformation/"$TEMPLATE_NAME" \
     --capabilities CAPABILITY_NAMED_IAM \
-    --parameter-overrides file://parameters/"$PARAMETERS_FILE_NAME" \
+    --parameter-overrides file://"$PARAMETERS_FILE_NAME" \
     --region "$REGION"
 
 #if [[ $CHANGESET_MODE == "true" ]] || [[ $CHANGESET_MODE == "True" ]]; then
