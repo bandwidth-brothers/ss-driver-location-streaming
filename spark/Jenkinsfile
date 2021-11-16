@@ -3,8 +3,9 @@ pipeline {
     agent any
 
     parameters {
-        string(name: 'STACK_NAME', defaultValue: 'driver-location-spark', description: 'Enter the CloudFormation stack name')
-        string(name: 'TEMPLATE_NAME', defaultValue: 'spark/cloudformation/ecs-spark-task-template.yaml', description: 'Enter the path to the stack template file.')
+        string(name: 'STACK_NAME', defaultValue: 'DriverLocationSpark', description: 'Enter the CloudFormation stack name')
+        string(name: 'TEMPLATE_NAME', defaultValue: 'spark/cloudformation/ecs-spark-task-template.yaml', description: 'Enter the path to the stack template file')
+        string(name: 'PARAMETERS_FILE', defaultValue: 'spark/cloudformation/stack-parameters.json', description: 'Enter path to parameters file')
         string(name: 'REGION', defaultValue: 'us-west-2', description: 'AWS account region')
         credentials(name: 'CFN_CREDENTIALS_ID', defaultValue: 'arn:aws:iam::557623108041:role/DevJenkinsCloudFormationExecutionRole', description: 'AWS account role', required: true)
     }
@@ -17,18 +18,18 @@ pipeline {
 //         }
 //
 //         stage('Build-Docker-Image') {
-//             when {
-//                 changeset 'spark/**'
-//             }
+// //             when {
+// //                 changeset 'spark/**'
+// //             }
 //             steps {
 //                 sh 'docker build --tag ss-spark-kinesis-streaming ./spark'
 //             }
 //         }
 //
 //         stage('Push-Docker-Image') {
-//             when {
-//                 changeset 'spark/**'
-//             }
+// //             when {
+// //                 changeset 'spark/**'
+// //             }
 //             environment {
 //                 AWS_DEFAULT_REGION = 'us-west-2'
 //             }
@@ -45,7 +46,6 @@ pipeline {
 //             when {
 //                 changeset 'spark/**'
 //             }
-            agent { docker { image 'amazon/aws-cli' }}
 
             steps {
                 withCredentials([[
@@ -54,8 +54,8 @@ pipeline {
                         usernameVariable: 'AWS_ACCESS_KEY_ID',
                         passwordVariable: 'AWS_SECRET_ACCESS_KEY' ]]) {
                     script {
-                        docker.image('amazon/aws-cli:latest').inside('--entrypoint "" -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY') {
-                            sh "spark/cloudformation/deploy-stack.sh ${STACK_NAME} ${TEMPLATE_NAME} ${REGION}"
+                        docker.image('amazon/aws-cli:latest').inside("--entrypoint=\"\" -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY") {
+                            sh "spark/cloudformation/deploy-stack.sh ${STACK_NAME} ${PARAMETERS_FILE} ${TEMPLATE_NAME} ${REGION}"
                         }
                     }
                 }

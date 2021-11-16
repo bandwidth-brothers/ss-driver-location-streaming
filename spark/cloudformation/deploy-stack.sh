@@ -3,15 +3,15 @@
 # Please ensure that you have the correct AWS credentials configured
 # Enter the name of the stack, the parameters file name, the template name, then changeset condition, and finally the region name.
 
-if [ $# -ne 3 ]; then
+if [ $# -ne 4 ]; then
     echo "Enter stack name, parameters file name, template file name to create, set changeset value (true or false), and enter region name. "
     exit 0
 else
     STACK_NAME=$1
-    # PARAMETERS_FILE_NAME=$2
-    TEMPLATE_NAME=$2
+    PARAMETERS_FILE_NAME=$2
+    TEMPLATE_NAME=$3
     # CHANGESET_MODE=$4
-    REGION=$3
+    REGION=$4
 fi
 
 if [[ $TEMPLATE_NAME != *.yaml ]]; then
@@ -26,8 +26,9 @@ fi
 
 aws cloudformation deploy \
     --stack-name "$STACK_NAME" \
-    --template-file cloudformation/"$TEMPLATE_NAME" \
+    --template-file spark/cloudformation/"$TEMPLATE_NAME" \
     --capabilities CAPABILITY_NAMED_IAM \
+    --parameter-overrides file://parameters/"$PARAMETERS_FILE_NAME" \
     --region "$REGION"
 
 #if [[ $CHANGESET_MODE == "true" ]] || [[ $CHANGESET_MODE == "True" ]]; then
