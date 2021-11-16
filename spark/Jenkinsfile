@@ -11,11 +11,11 @@ pipeline {
     }
 
     stages {
-//         stage('Checkout') {
-//             steps {
-//                 git url: 'https://github.com/psamsotha-ss/ss-driver-location-streaming.git', branch: 'cicd-jenkins'
-//             }
-//         }
+        stage('Checkout') {
+            steps {
+                git url: 'https://github.com/psamsotha-ss/ss-driver-location-streaming.git', branch: 'cicd-jenkins'
+            }
+        }
 //
 //         stage('Build-Docker-Image') {
 // //             when {
