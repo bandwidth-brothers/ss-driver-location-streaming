@@ -39,7 +39,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry("https://${AWS_ACCOUNT}.dkr.ecr.us-west-2.amazonaws.com", 'ecr:us-west-2:aws_creds') {
-                        docker.image("{DOCKER_IMAGE_NAME}").push()
+                        docker.image("${DOCKER_IMAGE_NAME}").push()
                     }
                 }
             }
@@ -69,7 +69,7 @@ pipeline {
                 changeset 'spark/**'
             }
             steps {
-                sh "docker rmi -f {DOCKER_IMAGE_NAME}"
+                sh "docker rmi -f ${DOCKER_IMAGE_NAME}"
             }
         }
     }
