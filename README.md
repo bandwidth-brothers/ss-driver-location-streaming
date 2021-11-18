@@ -2,10 +2,11 @@
 
 ## Documents
 
-* [TODOs](./TODO.md)
-* [Terraform Infrastructure](./terraform/README.md)
+* [Scripts](./scripts/README.md)
+* [Terraform](./terraform/README.md)
 * [Jenkins](./jenkins/README.md)
 * [Spark](./spark/README.md)
+* [TODOs](./TODO.md)
 
 ## Table of Contents
 
@@ -75,7 +76,7 @@ for required environment variables.
 MySQL database is run in a Docker container. You should have [Docker][docker] installed on your development machine.
 
 ```shell
-$ docker-compose up
+$ scripts/mysql.sh up
 ```
 
 ### Check the connection
@@ -124,9 +125,9 @@ mysql> show tables;
 
 >**NOTE:** With this `docker-compose` setup, persistent volumes will be setup to save data.
 > The SQL init scripts will only be run one time. If you make any changes to the scripts
-> and want them re-run, you will need to delete the volumes and run `docker-compose up --build`.
+> and want them re-run, you will need to delete the volumes and run `scripts/mysql.sh up --build`.
 > 
->     $ docker-compose down
+>     $ scripts/mysql.sh down
 >
 > and want them re-run, you will need to delete the volumes and run `docker-compose` up again.
 > 
@@ -142,7 +143,7 @@ mysql> show tables;
 
 ```shell
 # CTRL-C out of the running container then run
-$ docker-compose down
+$ scripts/mysql.sh down
 ```
 
 ## Production Setup
@@ -165,7 +166,7 @@ They are only for development and should not be used in production.
 
 ### Spark Docker on ECS
 
-Spark is run as a Docker container and is deployed to ECS. The infrastructure is deployed with Terraform.
+Spark is run as a Docker container and is deployed to ECS. The infrastructure is deployed with Terraform and CloudFormation.
 The following are steps to build the Docker image:
 
 1. `cd` to `./spark` directory
@@ -415,7 +416,7 @@ To use H2, the tests require two environment variables, `ENV_FILE` and `CLASSPAT
 * `ENV_FILE` - the `.env` file used for environment variables.
 * `CLASSPATH` - the Java classpath to find classes required for the JVM
 
-The [`./runtests.sh`](/runtests.sh) file sets these environment variables.
+The [`./runtests.sh`](/scripts/runtests.sh) file sets these environment variables.
 Individual tests or test directories may be passed to the `runtests.sh` script.
 The default is run all tests in the `tests/` directory.
 

@@ -4,17 +4,17 @@ DEFAULT_IMAGE="psamsotha/jenkins-docker:latest"
 CMD="$1"
 
 printHelp() {
-  echo "Usage: ./jenkins.sh [docker, tf] [subcommand] [args, options]"
-  echo "  docker [build, push] [--name IMAGE_NAME]"
+  echo "Usage: jenkins.sh [docker, tf] [subcommand] [args, options]"
+  echo "  docker [build, push] [--tag IMAGE_TAG]"
   echo "  tf [up, down, any-tf-command] [args, options]"
 }
 
 getDockerImageName() {
-  if "$1" == "--name"; then
+  if "$1" == "--tag"; then
     if [ -z "$2" ]; then
       return "$2"
     else
-      echo "--name must have an argument." && exit 1
+      echo "--tag must have an argument." && exit 1
     fi
   else
     return "$DEFAULT_IMAGE"
