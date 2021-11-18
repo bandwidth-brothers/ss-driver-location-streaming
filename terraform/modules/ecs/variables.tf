@@ -30,10 +30,10 @@ variable "vpc_zone_identifier" {
   description = "zone identifier for ASG (list of public/private subnet)"
 }
 
-variable "spark_docker_image" {
-  type        = string
-  description = "the spark docker image to run on ecs"
-}
+#variable "spark_docker_image" {
+#  type        = string
+#  description = "the spark docker image to run on ecs"
+#}
 
 variable "spark_container_env_vars" {
   type        = list(map(string))

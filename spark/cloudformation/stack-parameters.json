@@ -1,3 +1,4 @@
 [
-  "DockerImage=557623108041.dkr.ecr.us-west-2.amazonaws.com/ss-spark-kinesis-streaming"
+  "DockerImage=557623108041.dkr.ecr.us-west-2.amazonaws.com/ss-spark-kinesis-streaming",
+  "S3BucketName=psamsotha-ss-locations"
 ]

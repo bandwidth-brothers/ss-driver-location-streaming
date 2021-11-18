@@ -4,11 +4,9 @@ Parameters:
   DockerImage:
     Type: String
     Description: driver location producer Docker image
-    Default: 557623108041.dkr.ecr.us-west-2.amazonaws.com/ss-spark-kinesis-streaming
   S3BucketName:
     Type: String
     Description: S3 bucket to load driver location data
-    Default: psamsotha-ss-locations
   AwsDefaultRegion:
     Type: String
     Default: us-west-2

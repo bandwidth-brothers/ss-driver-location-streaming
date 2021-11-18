@@ -52,28 +52,30 @@ module "spark_ecs" {
   aws_region                    = var.aws_region
   ec2_instance_type             = var.ec2_instance_type
   key_name                      = var.key_name
-  spark_docker_image            = var.spark_docker_image
+#  spark_docker_image            = var.spark_docker_image
   vpc_id                        = module.vpc.vpc_id
   vpc_zone_identifier           = module.vpc.public_subnets
   vpc_default_security_group_id = module.vpc.default_security_group_id
   spark_container_env_vars = tolist([
     { name : "S3_BUCKET_DNS", value : module.s3_bucket.s3_bucket_domain_name },
-    { name : "S3_BUCKET_NAME", value : module.s3_bucket.s3_bucket_name },
-#    { name : "STS_USER_ACCESS_KEY", value : module.spark_sts_user.spark_sts_user_access_key },
-#    { name : "STS_USER_SECRET_KEY", value : module.spark_sts_user.spark_sts_user_secret_key }
+    { name : "S3_BUCKET_NAME", value : module.s3_bucket.s3_bucket_name }
   ])
 
   tags       = local.tags
   depends_on = [
-    module.s3_bucket,
-    # module.spark_sts_user
+    module.s3_bucket
   ]
 }
 
-#module "spark_sts_user" {
-#  source = "./modules/iam"
-#  tags   = local.tags
-#}
+module "spark_cfn_stack" {
+  source = "./modules/spark"
+  awslogs_region = var.aws_region
+  ecs_cluster_name = var.spark_ecs_cluster_name
+  spark_cfn_docker_image = var.spark_cfn_docker_image
+  spark_cfn_s3_bucket_name = var.spark_cfn_s3_bucket_name
+
+  depends_on = [module.spark_ecs]
+}
 
 module "s3_bucket" {
   source      = "./modules/s3"
