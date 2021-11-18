@@ -4,6 +4,8 @@
 
 * [TODOs](./TODO.md)
 * [Terraform Infrastructure](./terraform/README.md)
+* [Jenkins](./jenkins/README.md)
+* [Spark](./spark/README.md)
 
 ## Table of Contents
 
