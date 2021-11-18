@@ -10,11 +10,6 @@ variable "kinesis_shard_count" {
   description = "number of shards for Kinesis"
 }
 
-variable "spark_docker_image" {
-  type        = string
-  description = "the spark docker image to run on ecs (conflicts with ecr_repo_name)"
-}
-
 variable "key_name" {
   type        = string
   description = "name of the keypair for ec2 ssh access"
@@ -60,4 +55,23 @@ variable "rds_db_name" {
 variable "rds_enabled" {
   type = bool
   description = "whether to create the rds instance"
+}
+
+variable "spark_cfn_stack_name" {
+  type = string
+  default = "DriverLocationSpark"
+}
+
+variable "spark_cfn_docker_image" {
+  type = string
+}
+
+variable "spark_cfn_s3_bucket_name" {
+  type = string
+  description = "S3 bucket for Spark to load data"
+}
+
+variable "spark_ecs_cluster_name" {
+  type = string
+  description = "ECS cluster to put Spark"
 }

@@ -45,4 +45,4 @@ def test_set_delivery_picked_up_at():
 
     result = db.run_query('SELECT id, picked_up_at FROM delivery LIMIT 1')[0]
     db_timestamp = datetime.strptime(result[1], "%Y-%m-%d %H:%M:%S.%f")
-    assert db_timestamp == timestamp
+    assert db_timestamp.replace(microsecond=0) == timestamp.replace(microsecond=0)

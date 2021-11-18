@@ -1,0 +1,11 @@
+FROM python:3.9.7-buster
+
+RUN apt-get update && apt-get install -y openjdk-11-jre
+
+ENV JAVA_HOME=/usr/lib/jvm/openjdk-11-jdk
+ENV PATH=$PATH:$JAVA_HOME/bin
+
+WORKDIR /work
+COPY requirements.txt /work/requirements.txt
+
+RUN pip install --no-cache -r requirements.txt

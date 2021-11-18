@@ -10,13 +10,13 @@
 * [./modules/lambda](./modules/lambda/README.md)
 * [./modules/rds](./modules/rds/README.md)
 * [./modules/s3](./modules/s3/README.md)
+* [./modules/spark](./modules/spark/README.md)
 * [terraform-aws-modules/vpc/aws](https://registry.terraform.io/modules/terraform-aws-modules/vpc/aws/latest)
 
 ## Variables
 
 * `aws_region` - AWS region for the ECS cluster
 * `kinesis_shard_count` - number of shards for Kinesis
-* `spark_docker_image` - fully qualified name of Spark Docker image
 * `key_name` - name of key pair for EC2 SSH access
 * `ec2_instance_type` - type of EC2 container instance
 * `s3_bucket_name` - name of the s3 bucket to load location data
@@ -26,6 +26,10 @@
 * `rds_password` - mysql database password
 * `rds_publicly_accessible` - whether the RDS instance is publicly available
 * `rds_db_name` - name of the database in the rds instance
+* `spark_cfn_stack_name` - name of the CloudFormation stack
+* `spark_cfn_docker_image` - Docker image to be used for task
+* `spark_cfn_s3_bucket_name` - S3 bucket for Spark to load data
+* `spark_ecs_cluster_name` - ECS cluster to put Spark
 
 ## Outputs
 

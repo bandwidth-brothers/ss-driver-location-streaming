@@ -17,3 +17,4 @@ services:
       - '7077:7077'
     volumes:
       - .:/opt/bitnami/spark/work
+    command: ["./work/runstream.sh"]
