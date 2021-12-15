@@ -11,3 +11,4 @@ class Config:
         self.db_url = environ.get('DATABASE_URL')
         self.db_driver = environ.get('DATABASE_DRIVER')
         self.db_jarfile = environ.get('DATABASE_JARFILE')
+        self.failover_queue_url = environ.get('FAILOVER_QUEUE_URL')

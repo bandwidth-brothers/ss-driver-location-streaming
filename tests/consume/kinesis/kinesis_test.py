@@ -4,8 +4,8 @@ import pytest
 from typing import Iterable
 from datetime import datetime
 from app.produce.domain import DriverLocation
-from app.consume.kinesis import main
-from app.consume.kinesis import KinesisDriverLocationConsumer
+from app.consume.kinesis.kinesis import main
+from app.consume.kinesis.kinesis import KinesisDriverLocationConsumer
 
 
 def test_kinesis_consumer_sets_producer_properties(monkeypatch, ctor_args):
@@ -50,6 +50,7 @@ class MockDriverLocationProducer:
 
 
 def test_stream_locations_to_kinesis_request_count(monkeypatch, call_count):
+    call_count.set_return_value({'status': 'SUCCESS', 'records': 1})
     monkeypatch.setattr('app.consume.kinesis.DriverLocationProducer', MockDriverLocationProducer)
     monkeypatch.setattr('app.consume.kinesis.KinesisDriverLocationConsumer._send_locations', call_count)
 

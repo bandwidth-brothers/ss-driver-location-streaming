@@ -60,6 +60,10 @@ resource "aws_instance" "jenkins" {
   subnet_id              = module.vpc.public_subnets[0]
   vpc_security_group_ids = [aws_security_group.jenkins_sg.id]
 
+  root_block_device {
+    volume_size = 16
+  }
+
   tags = {
     Name = "Scrumptious Jenkins"
   }

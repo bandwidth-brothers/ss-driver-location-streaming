@@ -39,7 +39,7 @@ variable "vpc_security_group_ids" {
 }
 
 variable "db_subnet_ids" {
-  type = list(string)
+  type        = list(string)
   description = "list of subnet ids to put the database"
 }
 

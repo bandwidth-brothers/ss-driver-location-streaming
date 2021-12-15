@@ -16,7 +16,7 @@ resource "aws_db_instance" "mysql" {
 }
 
 resource "aws_db_subnet_group" "rds_subnet_group" {
-  name = "scrumptious-rds-subnet-group"
+  name       = "scrumptious-rds-subnet-group"
   subnet_ids = var.db_subnet_ids
 
   tags = {

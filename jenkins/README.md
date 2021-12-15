@@ -7,6 +7,7 @@
   
 * [Pipelines](#pipelines)
     * [Driver Location Spark Pipeline](#driver-location-spark-pipeline)
+    * [Driver Location Kinesis Retry Pipeline](#driver-location-kinesis-retry-pipeline)
     
 
 ## Requirements to run Pipelines
@@ -52,6 +53,19 @@ run `docker-compose up`.
 ## Pipelines
 
 ### Driver Location Spark Pipeline
+
+#### Pipeline Parameters
+
+* `STACK_NAME` - name of the CloudFormation stack used to deploy Spark
+* `TEMPLATE_FILE` - CloudFormation template file used to deploy stack
+* `PARAMETERS_FILE` - properties file used to override CloudFormation parameters
+* `REGION` - AWS region where stack is deployed
+* `GITHUB_ACCOUNT` - GitHub account of repository for this project (parameterized to use in development)
+* `GIT_BRANCH` - Git branch of repository (parameterized for use in development)
+* `DOCKER_IMAGE_NAME` - Docker image name to be pushed to ECR
+* `AWS_ACCOUNT` - AWS account id (parameterized to push to different ECR repos)
+
+### Driver Location Kinesis Retry Pipeline
 
 #### Pipeline Parameters
 

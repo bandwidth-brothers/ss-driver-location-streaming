@@ -3,58 +3,50 @@ Description: "Create Spark master node container on ECS"
 Parameters:
   DockerImage:
     Type: String
-    Description: driver location producer Docker image
-  S3BucketName:
-    Type: String
-    Description: S3 bucket to load driver location data
+    Description: driver location Kinesis retry Docker image
   AwsDefaultRegion:
     Type: String
     Default: us-west-2
     Description: AWS region to be used with Boto3
-  FailureQueue
   EcsClusterName:
     Type: String
     Description: name of the ECS cluster to put the task
     Default: scrumptious-cluster
+  FailoverQueueUrl:
+    Type: String
+    Description: URL for the SQS failover queue
 Resources:
-  DriverLocationProducerTask:
+  DriverLocationKinesisRetryTask:
     Type: AWS::ECS::TaskDefinition
     Properties:
-      Cpu: "512"
-      Memory: "2048"
-      Family: DriverLocationStreaming
+      Cpu: "256"
+      Memory: "512"
+      Family: DriverLocationKinesisFailover
       ExecutionRoleArn: !GetAtt TaskExecutionRole.Arn
       TaskRoleArn: !GetAtt TaskRole.Arn
       ContainerDefinitions:
         - Name: spark-streaming
           Image: !Ref DockerImage
-          Command: ["./work/runstream.sh"]
           Essential: True
           Environment:
-            - Name: STS_USER_ACCESS_KEY
-              Value: !Ref SparkAwsUserAccessKey
-            - Name: STS_USER_SECRET_KEY
-              Value: !GetAtt SparkAwsUserAccessKey.SecretAccessKey
-            - Name: ECS_SPARK_ROLE_ARN
-              Value: !GetAtt TaskRole.Arn
-            - Name: S3_BUCKET_NAME
-              Value: !Ref S3BucketName
+            - Name: FAILOVER_QUEUE_URL
+              Value: !Ref FailoverQueueUrl
           LogConfiguration:
             LogDriver: awslogs
             Options:
               awslogs-region: !Ref AwsDefaultRegion
-              awslogs-group: ScrumptiousSparkEcsContainer
+              awslogs-group: ScrumptiousDriverLocationKinesisFailover
               awslogs-stream-prefix: ss-scrumptious
       Tags:
         - Key: Project
           Value: Scrumptious
     DependsOn: CloudWatchLogGroup
-  DriverLocationProducerService:
+  DriverLocationKinesisRetryService:
     Type: AWS::ECS::Service
     Properties:
       ServiceName: scrumptious-spark-service
       Cluster: !Ref EcsClusterName
-      TaskDefinition: !Ref DriverLocationProducerTask
+      TaskDefinition: !Ref DriverLocationKinesisRetryTask
       DesiredCount: 1
       DeploymentConfiguration:
         MaximumPercent: 100
@@ -99,23 +91,13 @@ Resources:
             Statement:
               - Effect: Allow
                 Action:
-                  - "kinesis:DescribeStream"
-                  - "kinesis:DescribeStreamSummary"
-                  - "kinesis:GetRecords"
-                  - "kinesis:GetShardIterator"
-                  - "kinesis:ListShards"
-                  - "kinesis:ListStreams"
-                  - "kinesis:SubscribeToShard"
-                  - "dynamodb:DescribeTable"
-                  - "dynamodb:CreateTable"
-                  - "dynamodb:Scan"
-                  - "dynamodb:GetItem"
-                  - "dynamodb:BatchGetItem"
-                  - "dynamodb:Query"
-                  - "dynamodb:PutItem"
-                  - "dynamodb:UpdateItem"
-                  - "dynamodb:DeleteItem"
-                  - "dynamodb:BatchWriteItem"
+                  - "sqs:ChangeMessageVisibility"
+                  - "sqs:DeleteMessage"
+                  - "sqs:GetQueueUrl"
+                  - "sqs:GetQueueAttributes"
+                  - "sqs:ListQueues"
+                  - "sqs:ReceiveMessage"
+                  - "sqs:SendMessage"
                   - "logs:CreateLogStream"
                   - "logs:PutLogEvents"
                   - "cloudwatch:GetMetricData"
@@ -130,30 +112,5 @@ Resources:
   CloudWatchLogGroup:
     Type: AWS::Logs::LogGroup
     Properties:
-      LogGroupName: ScrumptiousSparkEcsContainer
+      LogGroupName: ScrumptiousDriverLocationKinesisFailover
       RetentionInDays: 1
-
-  SparkAwsUser:
-    Type: AWS::IAM::User
-    Properties:
-      UserName: SparkDriverLocationUser
-      Path: /scrumptious-spark/
-      Groups:
-        - Administrators
-      Policies:
-        - PolicyName: ScrumptiousSparkS3Access
-          PolicyDocument:
-            Version: 2012-10-17
-            Statement:
-              - Effect: Allow
-                Action:
-                  - "s3:*"
-                Resource: "*"
-      Tags:
-        - Key: Project
-          Value: Scrumptious
-  SparkAwsUserAccessKey:
-    Type: AWS::IAM::AccessKey
-    Properties:
-      UserName: SparkDriverLocationUser
-    DependsOn: SparkAwsUser

@@ -4,16 +4,23 @@ import time
 import boto3
 import argparse
 import logging as log
+import botocore.exceptions
 
-from datetime import datetime
-from app.produce.producer import DriverLocationProducer
-from app.common.json_encoder import DriverLocationJsonEncoder
+from enum import Enum
+from app.config import Config
+from app.consume.kinesis.failure import IFailureHandler
+from app.consume.kinesis.failure import FileFailureHandler
+from app.consume.kinesis.failure import SqsQueueFailureHandler
 from app.common.constants import KINESIS_DEFAULT_DELAY
 from app.common.constants import KINESIS_DEFAULT_STREAM_NAME
+from app.common.constants import KINESIS_DEFAULT_FAILURE_DIR
 from app.common.constants import KINESIS_DEFAULT_RECORDS_PER_REQUEST
 from app.common.constants import PRODUCER_DEFAULT_DELAY
+from app.produce.domain import DriverLocation
+from app.produce.producer import DriverLocationProducer
 from app.produce.producer import PRODUCER_DEFAULT_MAX_THREADS
 from app.produce.producer import PRODUCER_DEFAULT_BUFFER_SIZE
+from app.common.json_encoder import DriverLocationJsonEncoder
 
 
 class KinesisDriverLocationConsumer:
@@ -25,11 +32,13 @@ class KinesisDriverLocationConsumer:
                  producer_max_threads=PRODUCER_DEFAULT_MAX_THREADS,
                  producer_buffer_size=PRODUCER_DEFAULT_BUFFER_SIZE,
                  producer_delay=PRODUCER_DEFAULT_DELAY,
-                 producer_no_api_key=False):
+                 producer_no_api_key=False,
+                 failure_handler: IFailureHandler = None):
         self._kinesis = boto3.client('kinesis')
         self._delay = delay
         self._stream_name = stream_name
         self._records_per_request = records_per_request
+        self._failure_handler = failure_handler
         self._producer = DriverLocationProducer(buffer_size=producer_buffer_size,
                                                 max_threads=producer_max_threads,
                                                 delay=producer_delay,
@@ -39,26 +48,37 @@ class KinesisDriverLocationConsumer:
         self._producer.start()
         self._producer.join()
 
-        request_count = 0
+        success_count = 0
+        failed_count = 0
         total_locations = 0
         locations = []
+
+        def _increment_counts(_result):
+            nonlocal success_count
+            nonlocal failed_count
+            if result['status'] == 'SUCCESS':
+                success_count += _result['records']
+            else:
+                failed_count += _result['records']
+
         for location in self._producer.get_driver_locations():
             locations.append(location)
             total_locations += 1
             if len(locations) == self._records_per_request:
-                self._send_locations(locations)
-                request_count += 1
+                result = self._send_locations(locations)
+                _increment_counts(result)
                 locations.clear()
                 time.sleep(self._delay)
         # send remaining locations
         if locations:
-            self._send_locations(locations)
-            request_count += 1
+            result = self._send_locations(locations)
+            _increment_counts(result)
 
-        log.info(f"Total Requests: {request_count}")
+        log.info(f"Total Records Success: {success_count}")
+        log.info(f"Total Records Failed: {failed_count}")
         log.info(f"Total Locations: {total_locations}")
 
-    def _send_locations(self, locations):
+    def _send_locations(self, locations: list[DriverLocation]):
         records = []
         for i in range(len(locations)):
             json_str = json.dumps(locations[i], cls=DriverLocationJsonEncoder)
@@ -66,8 +86,15 @@ class KinesisDriverLocationConsumer:
                 'Data': json_str.encode('utf-8'),
                 'PartitionKey': f"partitionKey-{i}"
             })
-        response = self._kinesis.put_records(StreamName=self._stream_name, Records=records)
-        self._log_response(response)
+        try:
+            response = self._kinesis.put_records(StreamName=self._stream_name, Records=records)
+            self._log_response(response)
+            return {'status': 'SUCCESS', 'records': len(records)}
+        except botocore.exceptions.ClientError as c_ex:
+            log.info(f"Could not send records to Kinesis: {len(records)} records")
+            log.debug(c_ex)
+            self._failure_handler.handle_failure(locations)
+            return {'status': 'FAILED', 'records': len(records)}
 
     @staticmethod
     def _log_response(response):
@@ -97,6 +124,10 @@ class KinesisConsumerArgParser:
         self._parser.add_argument('-d', '--delay', type=float, help='delay for each request to Kinesis (default 0.2)',
                                   default=KINESIS_DEFAULT_DELAY)
         self._parser.add_argument('-v', '--verbose', action='store_true', help='same as --log VERBOSE')
+        self._parser.add_argument('--failure-handler', type=str, choices=['sqs', 'file'], default='file',
+                                  help='failure handler when location streaming fails')
+        self._parser.add_argument('--failure-dir', type=str, default=KINESIS_DEFAULT_FAILURE_DIR,
+                                  help='directory to send locations on streaming failure')
         self._parser.add_argument('--producer-max-threads', type=int, default=PRODUCER_DEFAULT_MAX_THREADS,
                                   help='producer maximum number of threads in thread pool (default 10)')
         self._parser.add_argument('--producer-buffer-size', type=int, default=PRODUCER_DEFAULT_BUFFER_SIZE,
@@ -119,13 +150,27 @@ def main(_args):
     else:
         log.basicConfig(level=args.log)
 
+    failure_handler_arg = args.failure_handler
+    if failure_handler_arg == 'file':
+        failure_handler = FileFailureHandler(directory=args.failure_dir)
+    elif failure_handler_arg == 'sqs':
+        config = Config()
+        if config.failover_queue_url is None:
+            log.error('FAILURE_QUEUE_URL environment variable is not set.')
+            sys.exit(1)
+        failure_handler = SqsQueueFailureHandler(queue_url=config.failover_queue_url)
+    else:
+        log.error(f"{failure_handler_arg} is not a valid failure handler.")
+        sys.exit(1)
+
     consumer = KinesisDriverLocationConsumer(stream_name=args.stream_name,
                                              records_per_request=args.records_per_request,
                                              delay=args.delay,
                                              producer_buffer_size=args.producer_buffer_size,
                                              producer_max_threads=args.producer_max_threads,
                                              producer_delay=args.producer_delay,
-                                             producer_no_api_key=args.producer_no_api_key)
+                                             producer_no_api_key=args.producer_no_api_key,
+                                             failure_handler=failure_handler)
     consumer.stream_locations_to_kinesis()
 
 
