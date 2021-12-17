@@ -11,7 +11,6 @@ Parameters:
     Type: String
     Default: us-west-2
     Description: AWS region to be used with Boto3
-  FailureQueue
   EcsClusterName:
     Type: String
     Description: name of the ECS cluster to put the task

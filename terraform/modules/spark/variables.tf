@@ -1,4 +1,10 @@
 
+variable "enabled" {
+  type        = bool
+  default     = true
+  description = "whether spark is enabled"
+}
+
 variable "spark_cfn_stack_name" {
   type    = string
   default = "DriverLocationSpark"

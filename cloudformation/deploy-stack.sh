@@ -10,7 +10,6 @@ else
     STACK_NAME=$1
     PARAMETERS_FILE_NAME=$2
     TEMPLATE_FILE=$3
-    # CHANGESET_MODE=$4
     REGION=$4
 fi
 

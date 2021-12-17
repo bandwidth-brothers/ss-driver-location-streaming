@@ -103,6 +103,12 @@ variable "rds_enabled" {
   description = "whether to create the rds instance"
 }
 
+variable "spark_enabled" {
+  type        = bool
+  default     = true
+  description = "whether spark is enabled"
+}
+
 variable "spark_cfn_stack_name" {
   type    = string
   default = "DriverLocationSpark"

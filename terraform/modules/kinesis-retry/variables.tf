@@ -10,6 +10,11 @@ variable "kinesis_retry_cfn_docker_image" {
   description = "Docker image to use for ECS task"
 }
 
+variable "failover_queue_url" {
+  type = string
+  description = "failover SQS queue url"
+}
+
 variable "ecs_cluster_name" {
   type        = string
   description = "name of the ECS cluster"

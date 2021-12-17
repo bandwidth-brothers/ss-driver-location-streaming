@@ -3,7 +3,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 3.59.0"
+      version = ">= 3.59.0"
     }
   }
 
@@ -48,13 +48,6 @@ module "kinesis" {
   tags        = local.tags
 }
 
-module "kinesis_retry" {
-  source                         = "./modules/kinesis-retry"
-  awslogs_region                 = var.aws_region
-  ecs_cluster_name               = var.ecs_cluster_name
-  kinesis_retry_cfn_docker_image = var.kinesis_retry_cfn_docker_image
-}
-
 module "ecs_cluster" {
   source            = "./modules/ecs"
   aws_region        = var.aws_region
@@ -70,12 +63,21 @@ module "ecs_cluster" {
 
 module "spark_cfn_stack" {
   source                   = "./modules/spark"
+  enabled                  = var.spark_enabled
   awslogs_region           = var.aws_region
-  ecs_cluster_name         = var.ecs_cluster_name
+  ecs_cluster_name         = module.ecs_cluster.cluster_name
   spark_cfn_docker_image   = var.spark_cfn_docker_image
   spark_cfn_s3_bucket_name = var.spark_cfn_s3_bucket_name
 
   depends_on = [module.ecs_cluster, module.s3_bucket]
+}
+
+module "kinesis_retry" {
+  source                         = "./modules/kinesis-retry"
+  awslogs_region                 = var.aws_region
+  ecs_cluster_name               = module.ecs_cluster.cluster_name
+  kinesis_retry_cfn_docker_image = var.kinesis_retry_cfn_docker_image
+  failover_queue_url             = module.sqs.failover_queue_url
 }
 
 module "s3_bucket" {

@@ -1,6 +1,7 @@
 
 resource "aws_cloudformation_stack" "spark_stack" {
-  name = var.spark_cfn_stack_name
+  count = var.enabled ? 1 : 0
+  name  = var.spark_cfn_stack_name
   parameters = {
     DockerImage      = var.spark_cfn_docker_image
     S3BucketName     = var.spark_cfn_s3_bucket_name

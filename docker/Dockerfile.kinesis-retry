@@ -8,4 +8,4 @@ RUN pip install --no-cache -r requirements.txt
 COPY ./app ./app
 ENV PYTHONPATH="${PYTHONPATH}:${PWD}"
 
-CMD ["python", "-m", "app.consume.kinesis.retry", "--failure-handler", "sqs"]
+CMD ["python", "-m", "app.consume.kinesis.retry"]

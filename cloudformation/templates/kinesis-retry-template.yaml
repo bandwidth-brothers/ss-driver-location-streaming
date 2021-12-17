@@ -25,12 +25,14 @@ Resources:
       ExecutionRoleArn: !GetAtt TaskExecutionRole.Arn
       TaskRoleArn: !GetAtt TaskRole.Arn
       ContainerDefinitions:
-        - Name: spark-streaming
+        - Name: driver-location-kinesis-retry
           Image: !Ref DockerImage
           Essential: True
           Environment:
             - Name: FAILOVER_QUEUE_URL
               Value: !Ref FailoverQueueUrl
+            - Name: AWS_DEFAULT_REGION
+              Value: !Ref AwsDefaultRegion
           LogConfiguration:
             LogDriver: awslogs
             Options:

@@ -3,13 +3,13 @@ pipeline {
     agent any
 
     parameters {
-        string(name: 'STACK_NAME', defaultValue: 'DriverLocationSpark', description: 'Enter the CloudFormation stack name')
+        string(name: 'STACK_NAME', defaultValue: 'DriverLocationKinesisRetry', description: 'Enter the CloudFormation stack name')
         string(name: 'TEMPLATE_FILE', defaultValue: 'cloudformation/templates/kinesis-retry-template.yaml', description: 'Enter the path to the stack template file')
         string(name: 'PARAMETERS_FILE', defaultValue: 'cloudformation/parameters/kinesis-retry-parameters.json', description: 'Enter path to parameters file')
         string(name: 'REGION', defaultValue: 'us-west-2', description: 'AWS account region')
         string(name: 'GITHUB_ACCOUNT', defaultValue: 'bandwidth-brothers', description: 'Enter the GitHub account of the repository')
         string(name: 'GIT_BRANCH', defaultValue: 'develop', description: 'Enter the Git branch of the repository')
-        string(name: 'DOCKER_IMAGE_NAME', defaultValue: 'ss-spark-kinesis-streaming', description: 'Enter the Docker image name')
+        string(name: 'DOCKER_IMAGE_NAME', defaultValue: 'ss-driver-location-kinesis-retry', description: 'Enter the Docker image name')
         string(name: 'AWS_ACCOUNT', description: "Enter the AWS account number (used for ECR URL)")
     }
 
@@ -22,7 +22,7 @@ pipeline {
 
         stage('Build-Docker-Image') {
             steps {
-                sh "docker build --tag ${DOCKER_IMAGE_NAME} ./spark"
+                sh "docker build --tag ${DOCKER_IMAGE_NAME} -f docker/Dockerfile.kinesis-retry ."
             }
         }
 
