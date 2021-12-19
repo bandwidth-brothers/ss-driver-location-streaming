@@ -7,6 +7,7 @@
 
 ## Variables
 
+* `enabled` - whether Spark is enabled
 * `spark_cfn_stack_name` - name of the CloudFormation stack
 * `spark_cfn_docker_image` - Docker image to be used for task
 * `spark_cfn_s3_bucket_name` - S3 bucket for Spark to load data

@@ -40,10 +40,15 @@ def ctor_args():
 def call_count():
     class CallCount(object):
         _count = 0
+        _return_value = None
 
         def __call__(self, *args, **kwargs):
             self._count += 1
+            return self._return_value
 
         def get_count(self):
             return self._count
+
+        def set_return_value(self, return_value):
+            self._return_value = return_value
     return CallCount()

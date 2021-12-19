@@ -2,10 +2,6 @@
 
 terraform {
   required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 3.59.0"
-    }
     template = {
       source = "hashicorp/template"
     }
@@ -61,17 +57,6 @@ resource "aws_ecs_capacity_provider" "prov1" {
     auto_scaling_group_arn = module.asg.autoscaling_group_arn
   }
 }
-
-# Spark ECS Service
-#module "spark_service" {
-#  source                   = "./spark_service"
-#  aws_region               = var.aws_region
-#  cluster_id               = module.ecs.ecs_cluster_id
-#  spark_docker_image       = var.spark_docker_image
-#  spark_container_env_vars = var.spark_container_env_vars
-#  tags                     = local.tags
-#}
-
 
 # Autoscaling Group
 data "aws_ami" "amazon_linux_ecs" {

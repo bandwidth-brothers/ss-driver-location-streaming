@@ -14,7 +14,7 @@ pipeline {
                 AWS_DEFAULT_REGION = 'us-west-2'
             }
             steps {
-                sh './runtests.sh'
+                sh 'scripts/runtests.sh'
             }
         }
 

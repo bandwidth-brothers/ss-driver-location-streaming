@@ -3,7 +3,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 3.59.0"
+      version = ">= 3.59.0"
     }
   }
 
@@ -42,39 +42,42 @@ module "vpc" {
 module "kinesis" {
   source      = "./modules/kinesis"
   stream_name = "DriverLocationStream"
+  enabled     = var.kinesis_enabled
   aws_region  = var.aws_region
   shard_count = var.kinesis_shard_count
   tags        = local.tags
 }
 
-module "spark_ecs" {
-  source                        = "./modules/ecs"
-  aws_region                    = var.aws_region
-  ec2_instance_type             = var.ec2_instance_type
-  key_name                      = var.key_name
-#  spark_docker_image            = var.spark_docker_image
+module "ecs_cluster" {
+  source            = "./modules/ecs"
+  aws_region        = var.aws_region
+  ec2_instance_type = var.ec2_instance_type
+  key_name          = var.key_name
+  #  spark_docker_image            = var.spark_docker_image
   vpc_id                        = module.vpc.vpc_id
   vpc_zone_identifier           = module.vpc.public_subnets
   vpc_default_security_group_id = module.vpc.default_security_group_id
-  spark_container_env_vars = tolist([
-    { name : "S3_BUCKET_DNS", value : module.s3_bucket.s3_bucket_domain_name },
-    { name : "S3_BUCKET_NAME", value : module.s3_bucket.s3_bucket_name }
-  ])
 
-  tags       = local.tags
-  depends_on = [
-    module.s3_bucket
-  ]
+  tags = local.tags
 }
 
 module "spark_cfn_stack" {
-  source = "./modules/spark"
-  awslogs_region = var.aws_region
-  ecs_cluster_name = var.spark_ecs_cluster_name
-  spark_cfn_docker_image = var.spark_cfn_docker_image
+  source                   = "./modules/spark"
+  enabled                  = var.spark_enabled
+  awslogs_region           = var.aws_region
+  ecs_cluster_name         = module.ecs_cluster.cluster_name
+  spark_cfn_docker_image   = var.spark_cfn_docker_image
   spark_cfn_s3_bucket_name = var.spark_cfn_s3_bucket_name
 
-  depends_on = [module.spark_ecs]
+  depends_on = [module.ecs_cluster, module.s3_bucket]
+}
+
+module "kinesis_retry" {
+  source                         = "./modules/kinesis-retry"
+  awslogs_region                 = var.aws_region
+  ecs_cluster_name               = module.ecs_cluster.cluster_name
+  kinesis_retry_cfn_docker_image = var.kinesis_retry_cfn_docker_image
+  failover_queue_url             = module.sqs.failover_queue_url
 }
 
 module "s3_bucket" {
@@ -94,6 +97,15 @@ module "mysql_rds" {
   vpc_id                 = module.vpc.vpc_id
   db_subnet_ids          = var.rds_publicly_accessible ? module.vpc.public_subnets : module.vpc.private_subnets
   tags                   = local.tags
+}
+
+module "sqs" {
+  source = "./modules/sqs"
+}
+
+module "dynamodb" {
+  source  = "./modules/dynamodb"
+  enabled = var.dynamodb_enabled
 }
 
 module "lambda" {

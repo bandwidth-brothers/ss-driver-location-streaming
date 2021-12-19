@@ -4,10 +4,56 @@ variable "aws_region" {
   description = "AWS region for the Kinesis stream and Lambda"
 }
 
+variable "ecs_cluster_name" {
+  type        = string
+  description = "ECS cluster to put Spark"
+}
+
+variable "dynamodb_enabled" {
+  type        = bool
+  default     = true
+  description = "whether dynamodb failure table is enabled"
+}
+
+variable "dynamodb_table_name" {
+  type        = string
+  default     = "DriverLocationFailover"
+  description = "name of dynamodb table"
+}
+
+variable "dynamodb_read_capacity" {
+  type        = number
+  default     = 5
+  description = "read capacity units for table"
+}
+
+variable "dynamodb_write_capacity" {
+  type        = number
+  default     = 5
+  description = "write capacity units for table"
+}
+
 variable "kinesis_shard_count" {
   type        = number
   default     = 3
   description = "number of shards for Kinesis"
+}
+
+variable "kinesis_enabled" {
+  type        = bool
+  default     = true
+  description = "whether to enable the Kinesis stream"
+}
+
+variable "kinesis_retry_cfn_stack_name" {
+  type        = string
+  default     = "DriverLocationKinesisRetry"
+  description = "name of the Cloudformation stack"
+}
+
+variable "kinesis_retry_cfn_docker_image" {
+  type        = string
+  description = "Docker image to use for ECS task"
 }
 
 variable "key_name" {
@@ -53,12 +99,18 @@ variable "rds_db_name" {
 }
 
 variable "rds_enabled" {
-  type = bool
+  type        = bool
   description = "whether to create the rds instance"
 }
 
+variable "spark_enabled" {
+  type        = bool
+  default     = true
+  description = "whether spark is enabled"
+}
+
 variable "spark_cfn_stack_name" {
-  type = string
+  type    = string
   default = "DriverLocationSpark"
 }
 
@@ -67,11 +119,12 @@ variable "spark_cfn_docker_image" {
 }
 
 variable "spark_cfn_s3_bucket_name" {
-  type = string
+  type        = string
   description = "S3 bucket for Spark to load data"
 }
 
-variable "spark_ecs_cluster_name" {
-  type = string
-  description = "ECS cluster to put Spark"
+variable "sqs_queue_name" {
+  type        = string
+  default     = "driver-location-failover-queue"
+  description = "name of the SQS queue"
 }

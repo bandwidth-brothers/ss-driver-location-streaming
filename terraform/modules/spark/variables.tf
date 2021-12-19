@@ -1,6 +1,12 @@
 
+variable "enabled" {
+  type        = bool
+  default     = true
+  description = "whether spark is enabled"
+}
+
 variable "spark_cfn_stack_name" {
-  type = string
+  type    = string
   default = "DriverLocationSpark"
 }
 
@@ -9,17 +15,17 @@ variable "spark_cfn_docker_image" {
 }
 
 variable "spark_cfn_s3_bucket_name" {
-  type = string
+  type        = string
   description = "S3 bucket for Spark to load data"
 }
 
 variable "ecs_cluster_name" {
-  type = string
+  type        = string
   description = "ECS cluster to put Spark"
 }
 
 variable "awslogs_region" {
-  type = string
+  type        = string
   description = "AWS region for awslogs"
 }
 

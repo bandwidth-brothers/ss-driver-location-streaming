@@ -19,31 +19,9 @@ if [[ $TEMPLATE_FILE != *.yaml ]]; then
     exit 0
 fi
 
-#if [[ "parameters/"$PARAMETERS_FILE_NAME != *.properties ]]; then
-#    echo "CloudFormation parameters $PARAMETERS_FILE_NAME does not exist"
-#    exit 0
-#fi
-
 aws cloudformation deploy \
     --stack-name "$STACK_NAME" \
     --template-file "$TEMPLATE_FILE" \
     --capabilities CAPABILITY_NAMED_IAM \
     --parameter-overrides file://"$PARAMETERS_FILE_NAME" \
     --region "$REGION"
-
-#if [[ $CHANGESET_MODE == "true" ]] || [[ $CHANGESET_MODE == "True" ]]; then
-#    aws cloudformation deploy \
-#    --stack-name "$STACK_NAME" \
-#    --template-file cloudformation/"$TEMPLATE_NAME" \
-#    --parameter-overrides file://parameters/"$PARAMETERS_FILE_NAME" \
-#    --capabilities CAPABILITY_NAMED_IAM \
-#    --region "$REGION"
-#else
-#    aws cloudformation deploy \
-#    --stack-name "$STACK_NAME" \
-#    --template-file cloudformation/"$TEMPLATE_NAME" \
-#    --parameter-overrides file://parameters/"$PARAMETERS_FILE_NAME" \
-#    --capabilities CAPABILITY_NAMED_IAM \
-#    --region "$REGION" \
-#    --no-execute-changeset
-#fi

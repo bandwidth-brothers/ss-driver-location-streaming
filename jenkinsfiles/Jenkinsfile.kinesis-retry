@@ -1,0 +1,74 @@
+#!/usr/bin/groovy
+pipeline {
+    agent any
+
+    parameters {
+        string(name: 'STACK_NAME', defaultValue: 'DriverLocationKinesisRetry', description: 'Enter the CloudFormation stack name')
+        string(name: 'TEMPLATE_FILE', defaultValue: 'cloudformation/templates/kinesis-retry-template.yaml', description: 'Enter the path to the stack template file')
+        string(name: 'PARAMETERS_FILE', defaultValue: 'cloudformation/parameters/kinesis-retry-parameters.json', description: 'Enter path to parameters file')
+        string(name: 'REGION', defaultValue: 'us-west-2', description: 'AWS account region')
+        string(name: 'GITHUB_ACCOUNT', defaultValue: 'bandwidth-brothers', description: 'Enter the GitHub account of the repository')
+        string(name: 'GIT_BRANCH', defaultValue: 'develop', description: 'Enter the Git branch of the repository')
+        string(name: 'DOCKER_IMAGE_NAME', defaultValue: 'ss-driver-location-kinesis-retry', description: 'Enter the Docker image name')
+        string(name: 'AWS_ACCOUNT', description: "Enter the AWS account number (used for ECR URL)")
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git url: "https://github.com/${GITHUB_ACCOUNT}/ss-driver-location-streaming.git", branch: "${GIT_BRANCH}"
+            }
+        }
+
+        stage('Test') {
+            agent { docker { image 'psamsotha/scrumptious-python-testing' } }
+            environment {
+                AWS_DEFAULT_REGION = 'us-west-2'
+            }
+            steps {
+                sh 'scripts/runtests.sh'
+            }
+        }
+
+        stage('Build-Docker-Image') {
+            steps {
+                sh "docker build --tag ${DOCKER_IMAGE_NAME} -f docker/Dockerfile.kinesis-retry ."
+            }
+        }
+
+        stage('Push-Docker-Image') {
+            environment {
+                AWS_DEFAULT_REGION = 'us-west-2'
+            }
+            steps {
+                script {
+                    docker.withRegistry("https://${AWS_ACCOUNT}.dkr.ecr.us-west-2.amazonaws.com", 'ecr:us-west-2:aws_creds') {
+                        docker.image("${DOCKER_IMAGE_NAME}").push()
+                    }
+                }
+            }
+        }
+
+        stage('Deploy-Cloudformation-Stack') {
+            steps {
+                withCredentials([[
+                        $class: 'UsernamePasswordMultiBinding',
+                        credentialsId: "aws_user_pass",
+                        usernameVariable: 'AWS_ACCESS_KEY_ID',
+                        passwordVariable: 'AWS_SECRET_ACCESS_KEY' ]]) {
+                    script {
+                        docker.image('amazon/aws-cli:latest').inside("--entrypoint=\"\" -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY") {
+                            sh "cloudformation/deploy-stack.sh ${STACK_NAME} ${PARAMETERS_FILE} ${TEMPLATE_FILE} ${REGION}"
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Cleanup-Image') {
+            steps {
+                sh "docker rmi -f ${DOCKER_IMAGE_NAME}"
+            }
+        }
+    }
+}
