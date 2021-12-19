@@ -20,6 +20,16 @@ pipeline {
             }
         }
 
+        stage('Test') {
+            agent { docker { image 'psamsotha/scrumptious-python-testing' } }
+            environment {
+                AWS_DEFAULT_REGION = 'us-west-2'
+            }
+            steps {
+                sh 'scripts/runtests.sh'
+            }
+        }
+
         stage('Build-Docker-Image') {
             steps {
                 sh "docker build --tag ${DOCKER_IMAGE_NAME} -f docker/Dockerfile.kinesis-retry ."

@@ -18,11 +18,6 @@ def _assert_location(location_data, expected_location: DriverLocation):
 TEST_DIR = "./tmp/tests/kinesis/failure"
 
 
-def test_file_failure_handler_handle_failure_date_dir_created():
-    FileFailureHandler(directory=TEST_DIR)
-    assert os.path.isdir(f"{TEST_DIR}/{date.today()}")
-
-
 def test_file_failure_handler_handle_failure_data_saved():
     locations = [
         DriverLocation(1, 2, '38.95468295847049', '-76.9926861397328', datetime.now()),

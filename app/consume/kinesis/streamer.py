@@ -3,6 +3,7 @@ import logging as log
 import botocore.exceptions
 
 from enum import Enum
+from typing import Iterable
 from app.produce.domain import DriverLocation
 from app.common.json_encoder import DriverLocationJsonEncoder
 from app.consume.kinesis.failure import IFailureHandler
