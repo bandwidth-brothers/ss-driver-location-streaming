@@ -7,9 +7,21 @@ resource "aws_cloudformation_stack" "spark_stack" {
     S3BucketName     = var.spark_cfn_s3_bucket_name
     AwsDefaultRegion = var.awslogs_region
     EcsClusterName   = var.ecs_cluster_name
+    OgPingsFailoverQueueUrl = aws_sqs_queue.og_pings_failure_queue[0].url
+    TransformedPingsFailureQueueUrl = aws_sqs_queue.transformed_pings_failure_queue[0].url
   }
 
   template_body = file("../spark/cloudformation/ecs-spark-task-template.yaml")
   capabilities  = ["CAPABILITY_NAMED_IAM"]
   on_failure    = "DELETE"
+}
+
+resource "aws_sqs_queue" "og_pings_failure_queue" {
+  count = var.enabled ? 1 : 0
+  name = var.sqs_og_pings_queue_name
+}
+
+resource "aws_sqs_queue" "transformed_pings_failure_queue" {
+  count = var.enabled ? 1 : 0
+  name = var.sqs_transformed_pings_queue_name
 }

@@ -15,6 +15,12 @@ Parameters:
     Type: String
     Description: name of the ECS cluster to put the task
     Default: scrumptious-cluster
+  OgPingsFailoverQueueUrl:
+    Type: String
+    Description: URL for SQS original pings failover queue
+  TransformedPingsFailoverQueueUrl:
+    Type: String
+    Description: URL for SQS transformed pings failover queue
 Resources:
   DriverLocationProducerTask:
     Type: AWS::ECS::TaskDefinition
@@ -38,6 +44,10 @@ Resources:
               Value: !GetAtt TaskRole.Arn
             - Name: S3_BUCKET_NAME
               Value: !Ref S3BucketName
+            - Name: OG_PINGS_FAILOVER_QUEUE_URL
+              Value: !Ref OgPingsFailoverQueueUrl
+            - Name: TRANSFORMED_PINGS_FAILOVER_QUEUE_URL
+              Value: !Ref TransformedPingsFailoverQueueUrl
           LogConfiguration:
             LogDriver: awslogs
             Options:
