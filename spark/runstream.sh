@@ -15,4 +15,4 @@ fi
 
 "${SPARK_HOME}/bin/spark-submit" \
   --packages "org.apache.spark:spark-streaming-kinesis-asl_2.12:3.1.2" $MASTER_ARG \
-  "${SPARK_HOME}/work/kinesis_stream.py" $2
+  "${SPARK_HOME}/work/app/kinesis_stream.py" $2

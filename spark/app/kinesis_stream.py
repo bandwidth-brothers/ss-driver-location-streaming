@@ -2,10 +2,10 @@ import os
 import sys
 import json
 import traceback
+import logging as log
 
 from datetime import datetime
 from pyspark import SparkContext
-from pyspark.sql import Row
 from pyspark.sql import SparkSession
 from pyspark.sql.types import *
 from pyspark.sql.functions import to_date, col
@@ -68,19 +68,22 @@ def dict_to_row(dct):
                timestamp=get_datetime(dct['timestamp']))
 
 
-def write_to_s3(df, bucket_path, format='csv'):
-    try:
-        df \
-            .coalesce(1) \
-            .write.format(format) \
-            .option('fs.s3a.access.key', stsUserAccessKey) \
-            .option('fs.s3a.secret.key', stsUserSecretKey) \
-            .option('header', True) \
-            .save(f"s3a://{s3BucketName}/{bucket_path}", mode='overwrite')
-        print("S3 file saved")
-    except Exception as s3_ex:
-        print("Could not save S3 file")
-        print(traceback.format_exc())
+def write_to_s3(df, bucket_path, _format='csv'):
+    df \
+        .coalesce(1) \
+        .write.format(_format) \
+        .option('fs.s3a.access.key', stsUserAccessKey) \
+        .option('fs.s3a.secret.key', stsUserSecretKey) \
+        .option('header', True) \
+        .save(f"s3a://{s3BucketName}/{bucket_path}", mode='overwrite')
+    print("S3 file saved")
+
+
+def write_to_local_file(df, file_name):
+    df \
+        .coalesce(1) \
+        .write \
+        .parquet(path=file_name)
 
 
 def process(time, rdd):
@@ -94,9 +97,16 @@ def process(time, rdd):
             location_df = spark.createDataFrame(row_rdd, schema)
             location_df.show()
 
-            # write original data
-            write_to_s3(location_df, f"driver-location/{str(datetime.now()).replace(' ', '-')}-pings.parquet",
-                        format='parquet')
+            file_name = f"driver-locations/{str(datetime.now()).replace(' ', '-')}-pings.parquet"
+            try:
+                # write original data
+                write_to_s3(location_df, file_name, _format='parquet')
+                log.info(f"Location files sent to {s3BucketName}/{file_name}")
+            except Exception:
+                traceback.print_exc()
+                log.info(f"{file_name} could not be saved to S3.")
+                write_to_local_file(location_df, file_name)
+                log.info(f"{s3BucketName}/{file_name} saved to local file.")
 
             # transform data
             location_df = location_df \
@@ -107,8 +117,15 @@ def process(time, rdd):
             location_df.show()
 
             # write transformed data
-            write_to_s3(location_df, f"driver-location-totals/{str(datetime.now()).replace(' ', '-')}-totals.csv",
-                        format='csv')
+            file_name = f"driver-location-totals/{str(datetime.now()).replace(' ', '-')}-totals.csv"
+            try:
+                write_to_s3(location_df, file_name, _format='csv')
+                log.info(f"Transformed location files sent to {s3BucketName}/{file_name}")
+            except Exception:
+                traceback.print_exc()
+                log.info(f"{s3BucketName}/{file_name} could not be saved to S3.")
+                write_to_local_file(location_df, file_name)
+                log.info(f"{s3BucketName}/{file_name} saved to local file.")
         else:
             print("                RDD Empty                ")
     except Exception as ex:

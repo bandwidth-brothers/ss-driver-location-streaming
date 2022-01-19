@@ -29,3 +29,15 @@ variable "awslogs_region" {
   description = "AWS region for awslogs"
 }
 
+variable "sqs_og_pings_queue_name" {
+  type = string
+  default = "SparkDriverLocationOgPingsFailure"
+  description = "name of the SQS queue used for Spark original pings failure"
+}
+
+variable "sqs_transformed_pings_queue_name" {
+  type = string
+  default = "SparkDriverLocationTransformedPingsFailure"
+  description = "name of the SQS queue used for Spark transformed pings failure"
+}
+
