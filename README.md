@@ -2,10 +2,11 @@
 
 ## Documents
 
-* [Scripts](./scripts/README.md)
-* [Terraform](./terraform/README.md)
-* [Jenkins](./jenkins/README.md)
-* [Spark](./spark/README.md)
+* [Scripts (helper scripts)](./scripts/README.md)
+* [Terraform (infrastructure)](./terraform/README.md)
+* [Jenkins (CI/CD)](./jenkins/README.md)
+* [Spark (streaming)](./spark/README.md)
+* [Liquibase (database management)](./liquibase/README.md)
 * [TODOs](./TODO.md)
 
 ## Table of Contents
