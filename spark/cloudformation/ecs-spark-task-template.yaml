@@ -22,7 +22,7 @@ Parameters:
     Type: String
     Description: URL for SQS transformed pings failover queue
 Resources:
-  DriverLocationProducerTask:
+  DriverLocationSparkTask:
     Type: AWS::ECS::TaskDefinition
     Properties:
       Cpu: "512"
@@ -35,6 +35,11 @@ Resources:
           Image: !Ref DockerImage
           Command: ["./work/runstream.sh"]
           Essential: True
+          portMappings:
+            - containerPort: 8888
+              hostPort: 8888
+            - containerPort: 7777
+              hostPort: 7777
           Environment:
             - Name: STS_USER_ACCESS_KEY
               Value: !Ref SparkAwsUserAccessKey
@@ -58,12 +63,12 @@ Resources:
         - Key: Project
           Value: Scrumptious
     DependsOn: CloudWatchLogGroup
-  DriverLocationProducerService:
+  DriverLocationSparkService:
     Type: AWS::ECS::Service
     Properties:
-      ServiceName: scrumptious-spark-service
+      ServiceName: driver-location-spark-service
       Cluster: !Ref EcsClusterName
-      TaskDefinition: !Ref DriverLocationProducerTask
+      TaskDefinition: !Ref DriverLocationSparkTask
       DesiredCount: 1
       DeploymentConfiguration:
         MaximumPercent: 100
@@ -75,7 +80,7 @@ Resources:
   TaskExecutionRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: DriverLocationProducerExecutionTaskRole
+      RoleName: DriverLocationSparkExecutionTaskRole
       AssumeRolePolicyDocument:
         Version: 2012-10-17
         Statement:
@@ -92,7 +97,7 @@ Resources:
   TaskRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: DriverLocationProducerTaskRole
+      RoleName: DriverLocationSparkTaskRole
       AssumeRolePolicyDocument:
         Version: 2012-10-17
         Statement:

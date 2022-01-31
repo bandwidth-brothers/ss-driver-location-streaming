@@ -1,9 +1,14 @@
 import os
+import abc
+import random
 import sys
 import math
+import traceback
+
 import googlemaps
 import logging as log
 
+from abc import abstractmethod
 from typing import Iterable
 from datetime import datetime
 from googlemaps.maps import StaticMapMarker
@@ -47,7 +52,10 @@ class Geo:
             sys.exit(0)
         try:
             self.gmaps = googlemaps.Client(key=self.api_key)
-        except ValueError as e:
+            log.info('Google maps client created.')
+        except Exception as e:
+            log.error('Could not create Google Maps client')
+            traceback.print_exc()
             log.error(e)
             sys.exit(0)
 
@@ -121,9 +129,14 @@ class Geo:
         :param delivery: the delivery
         :return: the travel plan
         """
-        directions = self.gmaps.directions(str(driver.current_location),
-                                           str(delivery.address),
-                                           mode='driving', departure_time=datetime.now())
+        try:
+            directions = self.gmaps.directions(str(driver.current_location),
+                                               str(delivery.address),
+                                               mode='driving', departure_time=datetime.now())
+        except Exception as ex:
+            log.error(f"Could not retrieve directions for {delivery}")
+            traceback.print_exc()
+            return
         steps = directions[0]['legs'][0]['steps']
         distance = directions[0]['legs'][0]['distance']['value']
         points = []

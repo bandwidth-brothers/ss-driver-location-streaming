@@ -11,7 +11,7 @@ variable "kinesis_retry_cfn_docker_image" {
 }
 
 variable "failover_queue_url" {
-  type = string
+  type        = string
   description = "failover SQS queue url"
 }
 
