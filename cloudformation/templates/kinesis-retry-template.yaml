@@ -46,7 +46,7 @@ Resources:
   DriverLocationKinesisRetryService:
     Type: AWS::ECS::Service
     Properties:
-      ServiceName: scrumptious-spark-service
+      ServiceName: driver-location-kinesis-retry-service
       Cluster: !Ref EcsClusterName
       TaskDefinition: !Ref DriverLocationKinesisRetryTask
       DesiredCount: 1
@@ -60,7 +60,7 @@ Resources:
   TaskExecutionRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: DriverLocationProducerExecutionTaskRole
+      RoleName: DriverLocationKinesisRetryExecutionTaskRole
       AssumeRolePolicyDocument:
         Version: 2012-10-17
         Statement:
@@ -77,7 +77,7 @@ Resources:
   TaskRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: DriverLocationProducerTaskRole
+      RoleName: DriverLocationKinesisRetryTaskRole
       AssumeRolePolicyDocument:
         Version: 2012-10-17
         Statement:

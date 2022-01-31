@@ -41,6 +41,8 @@ examples:
                                   help='directory for points files and static maps (default ./tmp)')
         self._parser.add_argument('--delay', type=float, default=PRODUCER_DEFAULT_DELAY,
                                   help='delay, in seconds, for each location into buffer (default 0.01)')
+        self._parser.add_argument('--no-gapi', action='store_true',
+                                  help='use random generate geolocations without the need for Google API')
         self._args = self._parser.parse_args(args)
 
     def get_args(self):

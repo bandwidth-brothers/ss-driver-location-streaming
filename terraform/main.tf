@@ -49,11 +49,10 @@ module "kinesis" {
 }
 
 module "ecs_cluster" {
-  source            = "./modules/ecs"
-  aws_region        = var.aws_region
-  ec2_instance_type = var.ec2_instance_type
-  key_name          = var.key_name
-  #  spark_docker_image            = var.spark_docker_image
+  source                        = "./modules/ecs"
+  aws_region                    = var.aws_region
+  ec2_instance_type             = var.ec2_instance_type
+  key_name                      = var.key_name
   vpc_id                        = module.vpc.vpc_id
   vpc_zone_identifier           = module.vpc.public_subnets
   vpc_default_security_group_id = module.vpc.default_security_group_id
@@ -78,6 +77,8 @@ module "kinesis_retry" {
   ecs_cluster_name               = module.ecs_cluster.cluster_name
   kinesis_retry_cfn_docker_image = var.kinesis_retry_cfn_docker_image
   failover_queue_url             = module.sqs.failover_queue_url
+
+  depends_on = [module.kinesis, module.ecs_cluster]
 }
 
 module "s3_bucket" {

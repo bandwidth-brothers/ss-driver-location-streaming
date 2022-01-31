@@ -30,14 +30,14 @@ variable "awslogs_region" {
 }
 
 variable "sqs_og_pings_queue_name" {
-  type = string
-  default = "SparkDriverLocationOgPingsFailure"
+  type        = string
+  default     = "SparkDriverLocationOgPingsFailure"
   description = "name of the SQS queue used for Spark original pings failure"
 }
 
 variable "sqs_transformed_pings_queue_name" {
-  type = string
-  default = "SparkDriverLocationTransformedPingsFailure"
+  type        = string
+  default     = "SparkDriverLocationTransformedPingsFailure"
   description = "name of the SQS queue used for Spark transformed pings failure"
 }
 
