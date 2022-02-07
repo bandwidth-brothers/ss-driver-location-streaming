@@ -21,8 +21,8 @@ class KinesisConsumerArgParser:
         self._parser.add_argument('-d', '--delay', type=float, help='delay for each request to Kinesis (default 0.2)',
                                   default=KINESIS_DEFAULT_DELAY)
         self._parser.add_argument('-v', '--verbose', action='store_true', help='same as --log VERBOSE')
-        self._parser.add_argument('--failure-handler', type=str, choices=['sqs', 'file'], default='file',
-                                  help='failure handler when location streaming fails')
+        self._parser.add_argument('--failure-handler', type=str, choices=['sqs', 'file', 'noop'], default='file',
+                                  help='failure handler when location streaming fails (default \'file\')')
         self._parser.add_argument('--failure-dir', type=str, default=KINESIS_DEFAULT_FAILURE_DIR,
                                   help='directory to send locations on streaming failure')
         self._parser.add_argument('--producer-max-threads', type=int, default=PRODUCER_DEFAULT_MAX_THREADS,
@@ -31,6 +31,8 @@ class KinesisConsumerArgParser:
                                   help='producer buffer size for driver locations (default 2000).')
         self._parser.add_argument('--producer-no-api-key', action='store_true',
                                   help='if there is no key, there needs to be points files present for every delivery')
+        self._parser.add_argument('--producer-no-gapi', action='store_true',
+                                  help='producer use random generate geolocations without the need for Google API')
         self._parser.add_argument('--producer-delay', type=float, default=PRODUCER_DEFAULT_DELAY,
                                   help='producer delay, in seconds, for each location into buffer (default 0.0)')
         self._args = self._parser.parse_args(args)

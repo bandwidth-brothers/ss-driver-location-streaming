@@ -4,6 +4,7 @@ import logging as log
 from app.config import Config
 from app.consume.kinesis.parser import KinesisConsumerArgParser
 from app.consume.kinesis.failure import FileFailureHandler
+from app.consume.kinesis.failure import NoopFailureHandler
 from app.consume.kinesis.failure import SqsQueueFailureHandler
 from app.consume.kinesis.consumer import KinesisDriverLocationConsumer
 
@@ -25,6 +26,8 @@ def main(_args):
             log.error('FAILOVER_QUEUE_URL environment variable is not set.')
             sys.exit(1)
         failure_handler = SqsQueueFailureHandler(queue_url=config.failover_queue_url)
+    elif failure_handler_arg == 'noop':
+        failure_handler = NoopFailureHandler()
     else:
         log.error(f"{failure_handler_arg} is not a valid failure handler.")
         sys.exit(1)
@@ -36,5 +39,6 @@ def main(_args):
                                              producer_max_threads=args.producer_max_threads,
                                              producer_delay=args.producer_delay,
                                              producer_no_api_key=args.producer_no_api_key,
+                                             producer_no_gapi=args.producer_no_gapi,
                                              failure_handler=failure_handler)
     consumer.stream_locations_to_kinesis()

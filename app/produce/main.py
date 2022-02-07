@@ -1,8 +1,10 @@
 import json
 import logging as log
+import sys
 
 from functools import reduce
-from app.produce.geo import Geo
+from app.produce.geo import RandomGeo
+from app.produce.geo import GoogleMapsGeo
 from app.produce.parser import DriverLocationParser
 from app.produce.producer import DriverLocationProducer
 
@@ -13,16 +15,22 @@ def main(_args):
         args.log = 'VERBOSE'
     log.basicConfig(level=args.log)
 
+    if args.no_gapi:
+        geo = RandomGeo()
+    else:
+        geo = GoogleMapsGeo(data_dir=args.data_dir, no_api_key=args.no_api_key)
+
     if args.make_maps:
-        Geo(data_dir=args.data_dir, no_api_key=args.no_api_key)\
-            .make_maps()
+        if args.no_gapi:
+            log.error('Maps cannot be made without Google Maps!')
+            sys.exit(1)
+        geo.make_maps()
         return
 
-    producer = DriverLocationProducer(buffer_size=args.buffer_size,
+    producer = DriverLocationProducer(geo,
+                                      buffer_size=args.buffer_size,
                                       max_threads=args.max_threads,
-                                      data_dir=args.data_dir,
-                                      delay=args.delay,
-                                      no_api_key=args.no_api_key)
+                                      delay=args.delay)
     producer.start()
     producer.join()
 

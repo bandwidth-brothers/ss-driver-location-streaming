@@ -6,53 +6,53 @@ import googlemaps
 
 from os import environ
 from shutil import copyfile
-from app.produce.geo import Geo, TravelPlan
+from app.produce.geo import GoogleMapsGeo, TravelPlan
 from tests.produce.common import _get_drivers_list
 
 
-def test_geo_get_points_from_file():
+def test_google_maps_geo_get_points_from_file():
     driver = _get_drivers_list()[0]
 
-    geo = Geo(no_api_key=True, data_dir='tests/files')
+    geo = GoogleMapsGeo(no_api_key=True, data_dir='tests/files')
     plan: TravelPlan = geo.get_points(driver, driver.deliveries[0])
 
     assert plan.distance == 65
     assert len(plan.points) == 10
 
 
-def test_geo_return_when_no_api_key(caplog):
+def test_google_maps_geo_return_when_no_api_key(caplog):
     if os.getenv('GOOGLE_API_KEY'):
         environ.pop('GOOGLE_API_KEY')
-    geo = Geo(no_api_key=True)
+    geo = GoogleMapsGeo(no_api_key=True)
 
     log_msg = caplog.records[0].message
     assert 'Will not be able to make API calls' in log_msg
     assert hasattr(geo, 'gmaps') is False
 
 
-def test_geo_exit_when_no_api_key_environment_variable(caplog):
+def test_google_maps_geo_exit_when_no_api_key_environment_variable(caplog):
     with pytest.raises(SystemExit):
-        Geo()
+        GoogleMapsGeo()
 
     log_msg = caplog.records[0].message
     assert 'GOOGLE_API_KEY environment variable not set' in log_msg
 
 
-def test_geo_with_bad_api_key(caplog):
+def test_google_maps_geo_with_bad_api_key(caplog):
     environ['GOOGLE_API_KEY'] = "InvalidKey"
     with pytest.raises(SystemExit):
-        Geo()
+        GoogleMapsGeo()
 
     log_msg = caplog.records[0].message
     assert 'Invalid API key' in log_msg
 
 
-def test_geo_make_maps(func_args):
+def test_google_maps_geo_make_maps(func_args):
     os.makedirs('tmp/tests/geo/points', exist_ok=True)
     os.makedirs('tmp/tests/geo/maps', exist_ok=True)
     copyfile('tests/files/points/1-1-points.txt', 'tmp/tests/geo/points/1-1-.points.txt')
 
-    geo = Geo(no_api_key=True, data_dir='tmp/tests/geo')
+    geo = GoogleMapsGeo(no_api_key=True, data_dir='tmp/tests/geo')
     geo.gmaps = googlemaps.Client
     og_static_map = googlemaps.Client
     geo.gmaps.static_map = func_args

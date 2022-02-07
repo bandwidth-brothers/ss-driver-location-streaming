@@ -1,6 +1,7 @@
 import logging
 
 from functools import reduce
+from app.produce.geo import GoogleMapsGeo
 from app.produce.domain import Driver
 from app.produce.producer import DeliveryManager
 from app.produce.producer import DriverLocationProducer
@@ -78,7 +79,8 @@ def test_driver_location_producer_get_driver_locations(monkeypatch, caplog):
     monkeypatch.setattr('app.produce.producer.Deliveries.set_delivery_picked_up_at', lambda a, b: None)
     caplog.set_level(logging.INFO)
 
-    producer = DriverLocationProducer(no_api_key=True, data_dir='tests/files')
+    geo = GoogleMapsGeo(no_api_key=True, data_dir='tests/files')
+    producer = DriverLocationProducer(geo=geo)
     producer.start()
     producer.join()
 
