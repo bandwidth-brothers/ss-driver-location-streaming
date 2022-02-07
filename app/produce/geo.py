@@ -30,7 +30,32 @@ class TravelPlan:
         self.points = points
 
 
-class Geo:
+class IGeo(abc.ABC):
+    @abstractmethod
+    def get_points(self, driver: Driver, delivery: Delivery) -> TravelPlan:
+        pass
+
+    @abstractmethod
+    def make_maps(self):
+        pass
+
+
+class RandomGeo(IGeo):
+    def get_points(self, driver: Driver, delivery: Delivery) -> TravelPlan:
+        num_points = random.randrange(50, 500)
+        lat = 38.971652947264985
+        lng = -77.05757761585986
+        points = []
+        for i in range(0, num_points):
+            points.append({'lat': lat, 'lng': lng})
+        return TravelPlan(distance=(num_points * GEO_DEFAULT_METERS_PER_PING),
+                          points=points)
+
+    def make_maps(self):
+        raise Exception('Maps not available with random geo generator')
+
+
+class GoogleMapsGeo(IGeo):
     def __init__(self,
                  meters_per_ping=GEO_DEFAULT_METERS_PER_PING,
                  no_api_key=False, data_dir=GEO_DEFAULT_DATA_DIR):
@@ -54,9 +79,8 @@ class Geo:
             self.gmaps = googlemaps.Client(key=self.api_key)
             log.info('Google maps client created.')
         except Exception as e:
-            log.error('Could not create Google Maps client')
-            traceback.print_exc()
             log.error(e)
+            traceback.print_exc()
             sys.exit(0)
 
     @staticmethod

@@ -1,13 +1,14 @@
 import time
 import datetime
 import logging as log
+import traceback
 
 from queue import Queue
 from typing import Optional, Iterable
 from functools import reduce
 from threading import Lock, Thread
 from concurrent.futures import ThreadPoolExecutor
-from app.produce.geo import Geo
+from app.produce.geo import IGeo
 from app.produce.domain import Driver
 from app.produce.domain import Delivery
 from app.produce.domain import DriverLocation
@@ -81,14 +82,13 @@ class DeliveryManager:
 
 class DriverLocationProducer:
     def __init__(self,
+                 geo: IGeo,
                  buffer_size: int = PRODUCER_DEFAULT_BUFFER_SIZE,
                  max_threads: int = PRODUCER_DEFAULT_MAX_THREADS,
-                 data_dir: str = GEO_DEFAULT_DATA_DIR,
-                 delay: float = PRODUCER_DEFAULT_DELAY,
-                 no_api_key=False):
+                 delay: float = PRODUCER_DEFAULT_DELAY):
         self._delivery_manager = DeliveryManager()
         self._location_buffer = Queue(maxsize=buffer_size)
-        self._geo = Geo(no_api_key=no_api_key, data_dir=data_dir)
+        self._geo = geo
         self._producer_thread = None
         self._lock = Lock()
         self._max_threads = max_threads
@@ -99,21 +99,25 @@ class DriverLocationProducer:
         return now + datetime.timedelta(0, increment * 3)
 
     def _process_delivery(self, delivery: Delivery, driver_id):
-        driver = self._delivery_manager.get_driver(driver_id)
-        plan = self._geo.get_points(driver, delivery)
-        points = plan.points
+        try:
+            driver = self._delivery_manager.get_driver(driver_id)
+            plan = self._geo.get_points(driver, delivery)
+            points = plan.points
 
-        Deliveries.set_delivery_picked_up_at(delivery.id, self._get_timestamp(0))
-        for i in range(len(points)):
-            point = points[i]
-            location = DriverLocation(delivery_id=delivery.id, driver_id=driver_id,
-                                      lat=point['lat'], lng=point['lng'], timestamp=self._get_timestamp(i))
-            self._location_buffer.put(location)
-            if self._delay:
-                time.sleep(self._delay)
+            Deliveries.set_delivery_picked_up_at(delivery.id, self._get_timestamp(0))
+            for i in range(len(points)):
+                point = points[i]
+                location = DriverLocation(delivery_id=delivery.id, driver_id=driver_id,
+                                          lat=point['lat'], lng=point['lng'], timestamp=self._get_timestamp(i))
+                self._location_buffer.put(location)
+                if self._delay:
+                    time.sleep(self._delay)
 
-        self._delivery_manager.complete_driver_delivery(driver_id)
-        log.info(f"Driver: {driver_id}, Delivery: {delivery.id}, Points: {len(plan.points)}")
+            self._delivery_manager.complete_driver_delivery(driver_id)
+            log.info(f"Driver: {driver_id}, Delivery: {delivery.id}, Points: {len(plan.points)}")
+        except Exception:
+            log.error('Could not complete processing delivery')
+            traceback.print_exc()
 
     def _produce(self):
         driver_ids = self._delivery_manager.get_drivers_ids()

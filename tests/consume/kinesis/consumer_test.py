@@ -12,10 +12,12 @@ def test_kinesis_consumer_sets_producer_properties(monkeypatch, ctor_args):
                                   producer_no_api_key=True)
 
     kwargs = ctor_args.get_kwargs()
-    assert kwargs == {'max_threads': 1,
+    assert kwargs['geo'] is not None
+
+    assert kwargs == {'geo': kwargs['geo'],
+                      'max_threads': 1,
                       'buffer_size': 2,
-                      'delay': 0.5,
-                      'no_api_key': True}
+                      'delay': 0.5}
 
 
 def test_kinesis_consumer_calls_streamer_correct_number_of_times(monkeypatch, call_count):

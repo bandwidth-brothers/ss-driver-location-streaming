@@ -2,6 +2,8 @@ import time
 import boto3
 import logging as log
 
+from app.produce.geo import RandomGeo
+from app.produce.geo import GoogleMapsGeo
 from app.common.constants import KINESIS_DEFAULT_DELAY
 from app.common.constants import KINESIS_DEFAULT_STREAM_NAME
 from app.common.constants import KINESIS_DEFAULT_RECORDS_PER_REQUEST
@@ -23,16 +25,23 @@ class KinesisDriverLocationConsumer:
                  producer_buffer_size=PRODUCER_DEFAULT_BUFFER_SIZE,
                  producer_delay=PRODUCER_DEFAULT_DELAY,
                  producer_no_api_key=False,
+                 producer_no_gapi=False,
                  failure_handler: IFailureHandler = None):
         self._kinesis = boto3.client('kinesis')
         self._delay = delay
         self._stream_name = stream_name
         self._records_per_request = records_per_request
         self._failure_handler = failure_handler
-        self._producer = DriverLocationProducer(buffer_size=producer_buffer_size,
+
+        if producer_no_gapi:
+            geo = RandomGeo()
+        else:
+            geo = GoogleMapsGeo(no_api_key=producer_no_api_key)
+
+        self._producer = DriverLocationProducer(geo=geo,
+                                                buffer_size=producer_buffer_size,
                                                 max_threads=producer_max_threads,
-                                                delay=producer_delay,
-                                                no_api_key=producer_no_api_key)
+                                                delay=producer_delay)
 
     def stream_locations_to_kinesis(self):
         self._producer.start()
