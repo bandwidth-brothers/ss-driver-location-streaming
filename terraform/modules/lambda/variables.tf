@@ -1,9 +1,4 @@
 
-variable "aws_region" {
-  type        = string
-  description = "AWS region for the Lambda function"
-}
-
 variable "lambda_function_name" {
   type        = string
   description = "name of the Lambda function"

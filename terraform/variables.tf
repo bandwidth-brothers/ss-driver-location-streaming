@@ -4,6 +4,12 @@ variable "aws_region" {
   description = "AWS region for the Kinesis stream and Lambda"
 }
 
+variable "aws_profile" {
+  type        = string
+  default     = "default"
+  description = "AWS profile to use for authentication"
+}
+
 variable "ecs_cluster_name" {
   type        = string
   description = "ECS cluster to put Spark"

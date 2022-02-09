@@ -6,7 +6,6 @@
 
 ## Variables
 
-* `aws_region` - AWS region for the bucket
 * `bucket_name` - name of the S3 bucket
 * `tags` - tags for the S3 bucket
 

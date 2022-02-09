@@ -11,7 +11,8 @@ terraform {
 }
 
 provider "aws" {
-  region = var.aws_region
+  region  = var.aws_region
+  profile = var.aws_profile
 }
 
 locals {
@@ -43,14 +44,12 @@ module "kinesis" {
   source      = "./modules/kinesis"
   stream_name = "DriverLocationStream"
   enabled     = var.kinesis_enabled
-  aws_region  = var.aws_region
   shard_count = var.kinesis_shard_count
   tags        = local.tags
 }
 
 module "ecs_cluster" {
   source                        = "./modules/ecs"
-  aws_region                    = var.aws_region
   ec2_instance_type             = var.ec2_instance_type
   key_name                      = var.key_name
   vpc_id                        = module.vpc.vpc_id
@@ -83,7 +82,6 @@ module "kinesis_retry" {
 
 module "s3_bucket" {
   source      = "./modules/s3"
-  aws_region  = var.aws_region
   bucket_name = var.s3_bucket_name
   tags        = local.tags
 }
@@ -113,7 +111,6 @@ module "lambda" {
   source               = "./modules/lambda"
   lambda_function_name = "DriverLocationConsumerFunction"
   enabled              = var.lambda_enabled
-  aws_region           = var.aws_region
   kinesis_stream_arn   = module.kinesis.stream_arn
   tags                 = local.tags
 }

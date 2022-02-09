@@ -14,7 +14,6 @@
 
 ## Variables
 
-* `aws_region` - AWS region for the ECS cluster
 * `key_name` - name of key pair for EC2 SSH access
 * `ec2_instance_type` - type of EC2 container instance
 * `vpc_id` - ID of the VPC
