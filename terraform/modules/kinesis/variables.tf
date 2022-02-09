@@ -1,9 +1,4 @@
 
-variable "aws_region" {
-  type        = string
-  description = "AWS region for the Kinesis stream"
-}
-
 variable "stream_name" {
   type        = string
   description = "name of the Kinesis stream"

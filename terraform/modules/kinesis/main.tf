@@ -1,8 +1,4 @@
 
-provider "aws" {
-  region = var.aws_region
-}
-
 resource "aws_kinesis_stream" "driver_location_stream" {
   count            = var.enabled ? 1 : 0
   name             = var.stream_name

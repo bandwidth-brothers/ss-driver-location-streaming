@@ -13,7 +13,6 @@
 
 ## Variables
 
-* `aws_region` - AWS region for the Lambda function
 * `lambda_function_name` - name of the Lambda function
 * `kinesis_stream_arn` - arn of Kinesis stream
 * `tags` - tags for the Lambda function

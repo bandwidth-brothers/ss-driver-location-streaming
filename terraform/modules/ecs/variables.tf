@@ -1,11 +1,4 @@
 
-
-variable "aws_region" {
-  type        = string
-  default     = "us-west-2"
-  description = "aws region for the ecs cluster"
-}
-
 variable "key_name" {
   type        = string
   description = "key pair name to SSH into instance"

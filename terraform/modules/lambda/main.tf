@@ -1,8 +1,4 @@
 
-provider "aws" {
-  region = var.aws_region
-}
-
 locals {
   jar_file    = "${path.module}/data-location-lambda-consumer.jar"
   policy_path = "/policy/lambda/"
