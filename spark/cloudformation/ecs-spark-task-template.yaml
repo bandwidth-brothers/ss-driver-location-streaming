@@ -1,0 +1,173 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: "Create Spark master node container on ECS"
+Parameters:
+  DockerImage:
+    Type: String
+    Description: driver location producer Docker image
+  S3BucketName:
+    Type: String
+    Description: S3 bucket to load driver location data
+  AwsDefaultRegion:
+    Type: String
+    Default: us-west-2
+    Description: AWS region to be used with Boto3
+  EcsClusterName:
+    Type: String
+    Description: name of the ECS cluster to put the task
+    Default: scrumptious-cluster
+  OgPingsFailoverQueueUrl:
+    Type: String
+    Description: URL for SQS original pings failover queue
+  TransformedPingsFailoverQueueUrl:
+    Type: String
+    Description: URL for SQS transformed pings failover queue
+Resources:
+  DriverLocationSparkTask:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      Cpu: "512"
+      Memory: "2048"
+      Family: DriverLocationStreaming
+      ExecutionRoleArn: !GetAtt TaskExecutionRole.Arn
+      TaskRoleArn: !GetAtt TaskRole.Arn
+      ContainerDefinitions:
+        - Name: spark-streaming
+          Image: !Ref DockerImage
+          Command: ["./work/runstream.sh"]
+          Essential: True
+          portMappings:
+            - containerPort: 8888
+              hostPort: 8888
+            - containerPort: 7777
+              hostPort: 7777
+          Environment:
+            - Name: STS_USER_ACCESS_KEY
+              Value: !Ref SparkAwsUserAccessKey
+            - Name: STS_USER_SECRET_KEY
+              Value: !GetAtt SparkAwsUserAccessKey.SecretAccessKey
+            - Name: ECS_SPARK_ROLE_ARN
+              Value: !GetAtt TaskRole.Arn
+            - Name: S3_BUCKET_NAME
+              Value: !Ref S3BucketName
+            - Name: OG_PINGS_FAILOVER_QUEUE_URL
+              Value: !Ref OgPingsFailoverQueueUrl
+            - Name: TRANSFORMED_PINGS_FAILOVER_QUEUE_URL
+              Value: !Ref TransformedPingsFailoverQueueUrl
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-region: !Ref AwsDefaultRegion
+              awslogs-group: ScrumptiousSparkEcsContainer
+              awslogs-stream-prefix: ss-scrumptious
+      Tags:
+        - Key: Project
+          Value: Scrumptious
+    DependsOn: CloudWatchLogGroup
+  DriverLocationSparkService:
+    Type: AWS::ECS::Service
+    Properties:
+      ServiceName: driver-location-spark-service
+      Cluster: !Ref EcsClusterName
+      TaskDefinition: !Ref DriverLocationSparkTask
+      DesiredCount: 1
+      DeploymentConfiguration:
+        MaximumPercent: 100
+        MinimumHealthyPercent: 0
+      Tags:
+        - Key: Project
+          Value: Scrumptious
+
+  TaskExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: DriverLocationSparkExecutionTaskRole
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          Sid: ""
+          Effect: Allow
+          Principal:
+            Service: ecs-tasks.amazonaws.com
+          Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+      Tags:
+        - Key: Project
+          Value: Scrumptious
+  TaskRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: DriverLocationSparkTaskRole
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          Sid: ""
+          Effect: Allow
+          Principal:
+            Service: ecs-tasks.amazonaws.com
+          Action: sts:AssumeRole
+      Policies:
+        - PolicyName: SparkKinesisAccess
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "kinesis:DescribeStream"
+                  - "kinesis:DescribeStreamSummary"
+                  - "kinesis:GetRecords"
+                  - "kinesis:GetShardIterator"
+                  - "kinesis:ListShards"
+                  - "kinesis:ListStreams"
+                  - "kinesis:SubscribeToShard"
+                  - "dynamodb:DescribeTable"
+                  - "dynamodb:CreateTable"
+                  - "dynamodb:Scan"
+                  - "dynamodb:GetItem"
+                  - "dynamodb:BatchGetItem"
+                  - "dynamodb:Query"
+                  - "dynamodb:PutItem"
+                  - "dynamodb:UpdateItem"
+                  - "dynamodb:DeleteItem"
+                  - "dynamodb:BatchWriteItem"
+                  - "logs:CreateLogStream"
+                  - "logs:PutLogEvents"
+                  - "cloudwatch:GetMetricData"
+                  - "cloudwatch:PutMetricData"
+                  - "cloudwatch:CreateLogStream"
+                  - "sts:*"
+                Resource: "*"
+      Tags:
+        - Key: Project
+          Value: Scrumptious
+
+  CloudWatchLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: ScrumptiousSparkEcsContainer
+      RetentionInDays: 1
+
+  SparkAwsUser:
+    Type: AWS::IAM::User
+    Properties:
+      UserName: SparkDriverLocationUser
+      Path: /scrumptious-spark/
+      Groups:
+        - dev-tools
+      Policies:
+        - PolicyName: ScrumptiousSparkS3Access
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "s3:*"
+                Resource: "*"
+      Tags:
+        - Key: Project
+          Value: Scrumptious
+  SparkAwsUserAccessKey:
+    Type: AWS::IAM::AccessKey
+    Properties:
+      UserName: SparkDriverLocationUser
+    DependsOn: SparkAwsUser

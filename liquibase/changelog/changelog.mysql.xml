@@ -1,0 +1,475 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+    <changeSet author="liquibase (generated)" id="1642636381692-1">
+        <createTable tableName="address">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="line1" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="line2" type="VARCHAR(255)"/>
+            <column name="city" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="state" type="CHAR(2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="zip" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-2">
+        <createTable tableName="admin">
+            <column name="id" type="BINARY(16)">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="first_name" type="VARCHAR(255)"/>
+            <column name="last_name" type="VARCHAR(255)"/>
+            <column name="phone" type="VARCHAR(255)"/>
+            <column name="email" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-3">
+        <createTable tableName="category">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="type" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-4">
+        <createTable tableName="cuisine">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="type" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-5">
+        <createTable tableName="customer">
+            <column name="id" type="BINARY(16)">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="address_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="first_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="phone" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="dob" type="date"/>
+            <column defaultValueNumeric="0" name="loyalty_points" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="picture" type="VARCHAR(255)"/>
+            <column name="veteranary_status" type="TINYINT(3)"/>
+            <column name="email" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-6">
+        <createTable tableName="delivery">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="address_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="driver_id" type="BINARY(16)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="estimated_delivery_time" type="timestamp"/>
+            <column name="delivery_status" type="VARCHAR(255)"/>
+            <column name="actual_delivery_time" type="timestamp"/>
+            <column name="picked_up_at" type="timestamp"/>
+            <column defaultValueNumeric="0.0" name="driver_compensation" type="FLOAT(12)"/>
+            <column name="order_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-7">
+        <createTable tableName="driver">
+            <column name="id" type="BINARY(16)">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="address_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="first_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="phone" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="dob" type="VARCHAR(255)"/>
+            <column name="license_num" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rating" type="FLOAT(12)"/>
+            <column name="picture" type="VARCHAR(255)"/>
+            <column name="status" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-8">
+        <createTable tableName="menuitem">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="restaurant_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price" type="FLOAT(12)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="picture" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column defaultValueNumeric="0" name="is_available" type="TINYINT(3)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="size" type="VARCHAR(255)"/>
+            <column name="discount" type="FLOAT(12)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-9">
+        <createTable tableName="menuitem_category">
+            <column name="menuitem_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="category_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-10">
+        <createTable tableName="menuitem_order">
+            <column name="menuitem_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="order_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column defaultValueNumeric="1" name="quantity" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-11">
+        <createTable tableName="menuitem_tag">
+            <column name="menuitem_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="tag_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-12">
+        <createTable tableName="order">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="customer_id" type="BINARY(16)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="restaurant_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="confirmation_code" type="VARCHAR(255)"/>
+            <column name="requested_delivery_time" type="timestamp"/>
+            <column name="order_discount" type="FLOAT(12)"/>
+            <column name="submited_at" type="timestamp"/>
+            <column name="preparation_status" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-13">
+        <createTable tableName="owner">
+            <column name="id" type="BINARY(16)">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="first_name" type="VARCHAR(255)"/>
+            <column name="last_name" type="VARCHAR(255)"/>
+            <column name="phone" type="VARCHAR(255)"/>
+            <column name="email" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-14">
+        <createTable tableName="payment">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="customer_id" type="BINARY(16)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="stripe_id" type="VARCHAR(255)"/>
+            <column name="refunded" type="TINYINT(3)"/>
+            <column name="payment_status" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-15">
+        <createTable tableName="restaurant">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="address_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="owner_id" type="BINARY(16)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="0.0" name="rating" type="FLOAT(12)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price_category" type="VARCHAR(3)"/>
+            <column name="phone" type="VARCHAR(255)"/>
+            <column name="is_active" type="TINYINT(3)"/>
+            <column name="picture" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-16">
+        <createTable tableName="restaurant_cuisine">
+            <column name="restaurant_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="cuisine_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-17">
+        <createTable tableName="tag">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="type" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-18">
+        <createTable tableName="user">
+            <column defaultValueComputed="uuid_to_bin(uuid())" name="id" type="BINARY(16)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="user_role" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="updated_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="enabled" type="TINYINT(3)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="confirmed" type="TINYINT(3)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="account_non_expired" type="TINYINT(3)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="account_non_locked" type="TINYINT(3)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="credentials_non_expired" type="TINYINT(3)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-19">
+        <createIndex indexName="fk_customer_address1_idx" tableName="customer">
+            <column name="address_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-20">
+        <createIndex indexName="fk_delivery_address1_idx" tableName="delivery">
+            <column name="address_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-21">
+        <createIndex indexName="fk_delivery_driver1_idx" tableName="delivery">
+            <column name="driver_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-22">
+        <createIndex indexName="fk_delivery_order1_idx" tableName="delivery">
+            <column name="order_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-23">
+        <createIndex indexName="fk_driver_address1_idx" tableName="driver">
+            <column name="address_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-24">
+        <createIndex indexName="fk_food_restaurant1_idx" tableName="menuitem">
+            <column name="restaurant_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-25">
+        <createIndex indexName="fk_menuitem_has_category_category1_idx" tableName="menuitem_category">
+            <column name="category_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-26">
+        <createIndex indexName="fk_menuitem_has_category_menuitem1_idx" tableName="menuitem_category">
+            <column name="menuitem_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-27">
+        <createIndex indexName="fk_menuitem_has_order_menuitem1_idx" tableName="menuitem_order">
+            <column name="menuitem_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-28">
+        <createIndex indexName="fk_menuitem_has_order_order1_idx" tableName="menuitem_order">
+            <column name="order_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-29">
+        <createIndex indexName="fk_menuitem_has_tag_menuitem1_idx" tableName="menuitem_tag">
+            <column name="menuitem_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-30">
+        <createIndex indexName="fk_menuitem_has_tag_tag1_idx" tableName="menuitem_tag">
+            <column name="tag_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-31">
+        <createIndex indexName="fk_order_customer1_idx" tableName="order">
+            <column name="customer_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-32">
+        <createIndex indexName="fk_order_restaurant1_idx" tableName="order">
+            <column name="restaurant_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-33">
+        <createIndex indexName="fk_payment_customer1_idx" tableName="payment">
+            <column name="customer_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-34">
+        <createIndex indexName="fk_restaurant_address1_idx" tableName="restaurant">
+            <column name="address_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-35">
+        <createIndex indexName="fk_restaurant_has_cuisine_cuisine1_idx" tableName="restaurant_cuisine">
+            <column name="cuisine_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-36">
+        <createIndex indexName="fk_restaurant_has_cuisine_restaurant1_idx" tableName="restaurant_cuisine">
+            <column name="restaurant_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-37">
+        <createIndex indexName="fk_restaurant_restaurant_owner1_idx" tableName="restaurant">
+            <column name="owner_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-38">
+        <addForeignKeyConstraint baseColumnNames="address_id" baseTableName="customer" constraintName="fk_customer_address1" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="address" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-39">
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="customer" constraintName="fk_customer_user1" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="user" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-40">
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="owner" constraintName="fk_customer_user10" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="user" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-41">
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="admin" constraintName="fk_customer_user100" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="user" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-42">
+        <addForeignKeyConstraint baseColumnNames="address_id" baseTableName="delivery" constraintName="fk_delivery_address1" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="address" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-43">
+        <addForeignKeyConstraint baseColumnNames="driver_id" baseTableName="delivery" constraintName="fk_delivery_driver1" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="driver" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-44">
+        <addForeignKeyConstraint baseColumnNames="order_id" baseTableName="delivery" constraintName="fk_delivery_order1" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="order" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-45">
+        <addForeignKeyConstraint baseColumnNames="address_id" baseTableName="driver" constraintName="fk_driver_address1" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="address" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-46">
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="driver" constraintName="fk_driver_user1" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="user" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-47">
+        <addForeignKeyConstraint baseColumnNames="restaurant_id" baseTableName="menuitem" constraintName="fk_food_restaurant1" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="restaurant" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-48">
+        <addForeignKeyConstraint baseColumnNames="category_id" baseTableName="menuitem_category" constraintName="fk_menuitem_has_category_category1" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="category" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-49">
+        <addForeignKeyConstraint baseColumnNames="menuitem_id" baseTableName="menuitem_category" constraintName="fk_menuitem_has_category_menuitem1" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="menuitem" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-50">
+        <addForeignKeyConstraint baseColumnNames="menuitem_id" baseTableName="menuitem_order" constraintName="fk_menuitem_has_order_menuitem1" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="menuitem" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-51">
+        <addForeignKeyConstraint baseColumnNames="order_id" baseTableName="menuitem_order" constraintName="fk_menuitem_has_order_order1" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="order" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-52">
+        <addForeignKeyConstraint baseColumnNames="menuitem_id" baseTableName="menuitem_tag" constraintName="fk_menuitem_has_tag_menuitem1" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="menuitem" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-53">
+        <addForeignKeyConstraint baseColumnNames="tag_id" baseTableName="menuitem_tag" constraintName="fk_menuitem_has_tag_tag1" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="tag" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-54">
+        <addForeignKeyConstraint baseColumnNames="customer_id" baseTableName="order" constraintName="fk_order_customer1" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="customer" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-55">
+        <addForeignKeyConstraint baseColumnNames="restaurant_id" baseTableName="order" constraintName="fk_order_restaurant1" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="restaurant" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-56">
+        <addForeignKeyConstraint baseColumnNames="customer_id" baseTableName="payment" constraintName="fk_payment_customer1" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="customer" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-57">
+        <addForeignKeyConstraint baseColumnNames="address_id" baseTableName="restaurant" constraintName="fk_restaurant_address1" deferrable="false" initiallyDeferred="false" onDelete="CASCADE" onUpdate="CASCADE" referencedColumnNames="id" referencedTableName="address" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-58">
+        <addForeignKeyConstraint baseColumnNames="cuisine_id" baseTableName="restaurant_cuisine" constraintName="fk_restaurant_has_cuisine_cuisine1" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="cuisine" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-59">
+        <addForeignKeyConstraint baseColumnNames="restaurant_id" baseTableName="restaurant_cuisine" constraintName="fk_restaurant_has_cuisine_restaurant1" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="restaurant" validate="true"/>
+    </changeSet>
+    <changeSet author="liquibase (generated)" id="1642636381692-60">
+        <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="restaurant" constraintName="fk_restaurant_restaurant_owner1" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="owner" validate="true"/>
+    </changeSet>
+</databaseChangeLog>

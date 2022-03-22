@@ -7,6 +7,7 @@ from tests.produce.common import _get_drivers_list
 
 def test_producer_main(monkeypatch, caplog):
     monkeypatch.setattr('app.produce.producer.Deliveries.get_driver_deliveries', _get_drivers_list)
+    monkeypatch.setattr('app.produce.producer.Deliveries.set_delivery_picked_up_at', lambda a, b: None)
     caplog.set_level(log.INFO)
 
     main(['--log', 'INFO', '--no-api-key', '--data-dir', 'tests/files'])

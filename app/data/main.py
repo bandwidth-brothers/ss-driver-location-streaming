@@ -52,7 +52,7 @@ def main(_args):
 
     def _generate_records(gen_func, count, msg):
         console.print(f"{msg}...",  style='white')
-        if count:
+        if count is not None:
             gen_func(count)
         else:
             gen_func()

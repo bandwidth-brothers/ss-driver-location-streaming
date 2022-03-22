@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  spark:
+    build:
+      context: .
+    environment:
+      - SPARK_MODE=master
+      - SPARK_RPC_AUTHENTICATION_ENABLED=no
+      - SPARK_RPC_ENCRYPTION_ENABLED=no
+      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+      - SPARK_SSL_ENABLED=no
+    user: root
+    ports:
+      - '8080:8080'
+      - '8888:8888'
+      - '7077:7077'
+    volumes:
+      - .:/opt/bitnami/spark/work
+    command: ["./work/runstream.sh"]

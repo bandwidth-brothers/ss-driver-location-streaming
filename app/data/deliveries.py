@@ -1,12 +1,13 @@
 import json
 import random
-import functools
 
+from datetime import datetime
+from functools import reduce
+from app.config import Config
+from app.db.database import Database
 from app.produce.domain import Driver
 from app.produce.domain import Address
 from app.produce.domain import Delivery
-from app.config import Config
-from app.db.database import Database
 
 
 class Deliveries:
@@ -24,14 +25,14 @@ class Deliveries:
                                'JOIN driver dr ON dr.id = de.driver_Id')
         deliveries = list(map(Deliveries._create_delivery_from_result, results))
 
-        def _map_deliveries_to_driver(_driver_dict: dict, delivery):
+        def _map_deliveries_to_driver(driver_dict: dict, delivery):
             _driver_id = delivery.driver_id
-            if _driver_id not in _driver_dict:
-                _driver_dict[_driver_id] = []
-            _driver_dict[_driver_id].append(delivery)
-            return _driver_dict
+            if _driver_id not in driver_dict:
+                driver_dict[_driver_id] = []
+            driver_dict[_driver_id].append(delivery)
+            return driver_dict
 
-        driver_deliveries = functools.reduce(_map_deliveries_to_driver, deliveries, {})
+        driver_deliveries = reduce(_map_deliveries_to_driver, deliveries, {})
 
         drivers: list[Driver] = []
         start_locations = Deliveries._get_driver_start_locations()
@@ -57,3 +58,15 @@ class Deliveries:
         with open('data/driver-start-locations.json') as f:
             addresses = json.load(f, cls=Deliveries.AddressJsonDecoder)
         return addresses
+
+    @staticmethod
+    def set_delivery_picked_up_at(delivery_id: int, timestamp: datetime):
+        """"
+        Set the delivery picked_up_at field in the database
+
+        :param delivery_id: the id of the delivery
+        :param timestamp: the time the delivery was picked up at
+        :raises jaydebeapi.DatabaseError: if there is a database related problem
+        """
+        db = Database(Config())
+        db.update('UPDATE delivery SET picked_up_at = ? WHERE id = ?', (timestamp.isoformat(), delivery_id))

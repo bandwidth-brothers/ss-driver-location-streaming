@@ -1,4 +1,5 @@
 from typing import Optional
+from datetime import datetime
 
 
 class Address:
@@ -63,11 +64,13 @@ class Driver:
 
 
 class DriverLocation:
-    def __init__(self, delivery_id, driver_id, lat, lng):
+    def __init__(self, delivery_id, driver_id, lat, lng, timestamp: datetime):
         self.delivery_id = delivery_id
         self.driver_id = driver_id
         self.lat = lat
         self.lng = lng
+        self.timestamp = timestamp
 
     def __str__(self):
-        return f"delivery_id: {self.delivery_id}, driver_id: {self.driver_id} lat: {self.lat}, lng: {self.lng}"
+        return f"delivery_id: {self.delivery_id}, driver_id: {self.driver_id} lat: {self.lat}, lng: {self.lng}, " \
+               f"timestamp: {self.timestamp.isoformat()}"

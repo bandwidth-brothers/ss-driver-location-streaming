@@ -26,9 +26,6 @@ examples:
     python -m app.produce --max-threads 5 --buffer-size 3000
     python -m app.produce --make-maps --data-dir ./tmp""")
 
-        self._parser.add_argument('--print-all', action='store_true', help='print all locations')
-        self._parser.add_argument('--csv', type=str, help='save the location data to a csv file')
-        self._parser.add_argument('--json', type=str, help='save the location data to a json file')
         self._parser.add_argument('--log', type=str, default=log.INFO,
                                   help='the log level (VERBOSE, DEBUG, INFO ←, WARN, ERROR)')
         self._parser.add_argument('-v', '--verbose', action='store_true', help='same as --log VERBOSE')
@@ -44,6 +41,8 @@ examples:
                                   help='directory for points files and static maps (default ./tmp)')
         self._parser.add_argument('--delay', type=float, default=PRODUCER_DEFAULT_DELAY,
                                   help='delay, in seconds, for each location into buffer (default 0.01)')
+        self._parser.add_argument('--no-gapi', action='store_true',
+                                  help='use random generate geolocations without the need for Google API')
         self._args = self._parser.parse_args(args)
 
     def get_args(self):

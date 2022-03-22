@@ -2,7 +2,7 @@ version: '3.8'
 services:
   mysqlserver:
     build:
-      context: db/mysql
+      context: ""
     ports:
       - '3306:3306'
     environment:
@@ -16,3 +16,8 @@ services:
 volumes:
   mysql_data:
   mysql_config:
+
+networks:
+  default:
+    external:
+      name: mysql-spark

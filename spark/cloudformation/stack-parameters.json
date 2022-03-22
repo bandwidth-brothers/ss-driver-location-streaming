@@ -1,0 +1,4 @@
+[
+  "DockerImage=419106922284.dkr.ecr.us-west-2.amazonaws.com/ss-spark-kinesis-streaming",
+  "S3BucketName=ss-scrumptious-locations"
+]

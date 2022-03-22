@@ -1,0 +1,118 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: "Create Spark master node container on ECS"
+Parameters:
+  DockerImage:
+    Type: String
+    Description: driver location Kinesis retry Docker image
+  AwsDefaultRegion:
+    Type: String
+    Default: us-west-2
+    Description: AWS region to be used with Boto3
+  EcsClusterName:
+    Type: String
+    Description: name of the ECS cluster to put the task
+    Default: scrumptious-cluster
+  FailoverQueueUrl:
+    Type: String
+    Description: URL for the SQS failover queue
+Resources:
+  DriverLocationKinesisRetryTask:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      Cpu: "256"
+      Memory: "512"
+      Family: DriverLocationKinesisFailover
+      ExecutionRoleArn: !GetAtt TaskExecutionRole.Arn
+      TaskRoleArn: !GetAtt TaskRole.Arn
+      ContainerDefinitions:
+        - Name: driver-location-kinesis-retry
+          Image: !Ref DockerImage
+          Essential: True
+          Environment:
+            - Name: FAILOVER_QUEUE_URL
+              Value: !Ref FailoverQueueUrl
+            - Name: AWS_DEFAULT_REGION
+              Value: !Ref AwsDefaultRegion
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-region: !Ref AwsDefaultRegion
+              awslogs-group: ScrumptiousDriverLocationKinesisFailover
+              awslogs-stream-prefix: ss-scrumptious
+      Tags:
+        - Key: Project
+          Value: Scrumptious
+    DependsOn: CloudWatchLogGroup
+  DriverLocationKinesisRetryService:
+    Type: AWS::ECS::Service
+    Properties:
+      ServiceName: driver-location-kinesis-retry-service
+      Cluster: !Ref EcsClusterName
+      TaskDefinition: !Ref DriverLocationKinesisRetryTask
+      DesiredCount: 1
+      DeploymentConfiguration:
+        MaximumPercent: 100
+        MinimumHealthyPercent: 0
+      Tags:
+        - Key: Project
+          Value: Scrumptious
+
+  TaskExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: DriverLocationKinesisRetryExecutionTaskRole
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          Sid: ""
+          Effect: Allow
+          Principal:
+            Service: ecs-tasks.amazonaws.com
+          Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+      Tags:
+        - Key: Project
+          Value: Scrumptious
+  TaskRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: DriverLocationKinesisRetryTaskRole
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          Sid: ""
+          Effect: Allow
+          Principal:
+            Service: ecs-tasks.amazonaws.com
+          Action: sts:AssumeRole
+      Policies:
+        - PolicyName: SparkKinesisAccess
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "sqs:ChangeMessageVisibility"
+                  - "sqs:DeleteMessage"
+                  - "sqs:GetQueueUrl"
+                  - "sqs:GetQueueAttributes"
+                  - "sqs:ListQueues"
+                  - "sqs:ReceiveMessage"
+                  - "sqs:SendMessage"
+                  - "logs:CreateLogStream"
+                  - "logs:PutLogEvents"
+                  - "cloudwatch:GetMetricData"
+                  - "cloudwatch:PutMetricData"
+                  - "cloudwatch:CreateLogStream"
+                  - "sts:*"
+                Resource: "*"
+      Tags:
+        - Key: Project
+          Value: Scrumptious
+
+  CloudWatchLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: ScrumptiousDriverLocationKinesisFailover
+      RetentionInDays: 1

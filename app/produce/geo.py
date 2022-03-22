@@ -1,9 +1,14 @@
 import os
+import abc
+import random
 import sys
 import math
+import traceback
+
 import googlemaps
 import logging as log
 
+from abc import abstractmethod
 from typing import Iterable
 from datetime import datetime
 from googlemaps.maps import StaticMapMarker
@@ -25,7 +30,32 @@ class TravelPlan:
         self.points = points
 
 
-class Geo:
+class IGeo(abc.ABC):
+    @abstractmethod
+    def get_points(self, driver: Driver, delivery: Delivery) -> TravelPlan:
+        pass
+
+    @abstractmethod
+    def make_maps(self):
+        pass
+
+
+class RandomGeo(IGeo):
+    def get_points(self, driver: Driver, delivery: Delivery) -> TravelPlan:
+        num_points = random.randrange(50, 500)
+        lat = 38.971652947264985
+        lng = -77.05757761585986
+        points = []
+        for i in range(0, num_points):
+            points.append({'lat': lat, 'lng': lng})
+        return TravelPlan(distance=(num_points * GEO_DEFAULT_METERS_PER_PING),
+                          points=points)
+
+    def make_maps(self):
+        raise Exception('Maps not available with random geo generator')
+
+
+class GoogleMapsGeo(IGeo):
     def __init__(self,
                  meters_per_ping=GEO_DEFAULT_METERS_PER_PING,
                  no_api_key=False, data_dir=GEO_DEFAULT_DATA_DIR):
@@ -47,8 +77,10 @@ class Geo:
             sys.exit(0)
         try:
             self.gmaps = googlemaps.Client(key=self.api_key)
-        except ValueError as e:
+            log.info('Google maps client created.')
+        except Exception as e:
             log.error(e)
+            traceback.print_exc()
             sys.exit(0)
 
     @staticmethod
@@ -121,9 +153,14 @@ class Geo:
         :param delivery: the delivery
         :return: the travel plan
         """
-        directions = self.gmaps.directions(str(driver.current_location),
-                                           str(delivery.address),
-                                           mode='driving', departure_time=datetime.now())
+        try:
+            directions = self.gmaps.directions(str(driver.current_location),
+                                               str(delivery.address),
+                                               mode='driving', departure_time=datetime.now())
+        except Exception as ex:
+            log.error(f"Could not retrieve directions for {delivery}")
+            traceback.print_exc()
+            return
         steps = directions[0]['legs'][0]['steps']
         distance = directions[0]['legs'][0]['distance']['value']
         points = []
